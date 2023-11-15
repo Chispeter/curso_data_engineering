@@ -21,7 +21,21 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
         loaded_at_field: _fivetran_synced
         columns:
           - name: _row
+            tests:
+              - unique
+              - not_null
           - name: product_id
+            tests:
+              - not_null
+              - relationships:
+                  to: source('sql_server_dbo', 'products')
+                  field: product_id
           - name: quantity
+            tests:
+              - positive_values
           - name: month
+            tests:
+              - accepted_values:
+                  values: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+                  quote: false
           - name: _fivetran_synced
