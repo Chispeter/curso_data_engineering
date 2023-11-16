@@ -9,7 +9,7 @@ stg_products AS (
             name,
             inventory,
             _fivetran_deleted,
-            _fivetran_synced AS date_load
+            _fivetran_synced AS batched_at
     FROM src_products
     )
 

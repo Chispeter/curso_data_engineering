@@ -5,15 +5,15 @@ WITH src_events AS (
 
 stg_events AS (
     SELECT event_id,
-            page_url,
-            event_type,
             user_id,
             product_id,
-            session_id,
-            created_at,
             order_id,
+            session_id,
+            page_url,
+            event_type,
+            created_at,
             _fivetran_deleted,
-            _fivetran_synced AS date_load
+            _fivetran_synced AS batched_at
     FROM src_events
     )
 

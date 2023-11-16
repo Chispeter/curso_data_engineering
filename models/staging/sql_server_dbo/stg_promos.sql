@@ -1,15 +1,16 @@
-WITH src_promos AS (
+WITH base_promos AS (
     SELECT * 
-    FROM {{ source('sql_server_dbo', 'promos') }}
+    FROM {{ ref('base_promos') }}
     ),
 
 stg_promos AS (
     SELECT promo_id,
+            promo_name,
             discount,
             status,
             _fivetran_deleted,
-            _fivetran_synced AS date_load
-    FROM src_promos
+            _fivetran_synced AS batched_at
+    FROM base_promos
     )
 
 SELECT * FROM stg_promos

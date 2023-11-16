@@ -5,20 +5,20 @@ WITH src_orders AS (
 
 stg_orders AS (
     SELECT order_id,
+            user_id,
+            address_id,
+            promo_id,
+            tracking_id,
             shipping_service,
             shipping_cost,
-            address_id,
-            created_at,
-            promo_id,
-            estimated_delivery_at,
             order_cost,
-            user_id,
             order_total,
+            created_at,
+            status AS order_status,
+            estimated_delivery_at,
             delivered_at,
-            tracking_id,
-            status,
             _fivetran_deleted,
-            _fivetran_synced AS date_load
+            _fivetran_synced AS batched_at
     FROM src_orders
     )
 

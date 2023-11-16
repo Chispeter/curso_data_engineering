@@ -5,16 +5,16 @@ WITH src_users AS (
 
 stg_users AS (
     SELECT user_id,
-            updated_at,
             address_id,
+            first_name,
             last_name,
-            created_at,
             phone_number,
             total_orders,
-            first_name,
             email,
+            created_at,
+            updated_at,
             _fivetran_deleted,
-            _fivetran_synced AS date_load
+            _fivetran_synced AS batched_at
     FROM src_users
     )
 

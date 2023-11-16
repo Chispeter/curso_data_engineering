@@ -81,13 +81,22 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: promos
         columns:
           - name: promo_id
+            tests:
+              - unique
+              - not_null
           - name: discount
+            tests:
+              - not_null
           - name: status
+            tests:
+              - accepted_values:
+                  values: ['inactive', 'active']
+                  quote: true
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
       - name: users
-        loaded_at_field: _fivetran_synced # specific loaded_at_field
+        loaded_at_field: _fivetran_synced
         columns:
           - name: user_id
           - name: updated_at
