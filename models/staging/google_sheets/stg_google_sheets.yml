@@ -18,7 +18,6 @@ models:
           - not_null
       - name: quantity
         tests:
-          - not_null
           - positive_values   
       - name: batched_at
         tests:

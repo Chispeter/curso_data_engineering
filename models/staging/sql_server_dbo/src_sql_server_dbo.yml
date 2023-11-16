@@ -22,6 +22,9 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: addresses
         columns:
           - name: address_id
+            tests:
+              - unique
+              - not_null
           - name: zipcode
           - name: country
           - name: address
@@ -32,6 +35,9 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: events
         columns:
           - name: event_id
+            tests:
+              - unique
+              - not_null
           - name: page_url
           - name: event_type
           - name: user_id
@@ -45,6 +51,9 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: orders
         columns:
           - name: order_id
+            tests:
+              - unique
+              - not_null
           - name: shipping_service
           - name: shipping_cost
           - name: address_id
@@ -64,7 +73,11 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: order_items
         columns:
           - name: order_id
+            tests:
+              - not_null
           - name: product_id
+            tests:
+              - not_null
           - name: quantity
           - name: _fivetran_deleted
           - name: _fivetran_synced
@@ -72,6 +85,9 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: products
         columns:
           - name: product_id
+            tests:
+                - unique
+                - not_null
           - name: price
           - name: name
           - name: inventory
@@ -86,7 +102,7 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
           - name: discount
             tests:
-              - not_null
+              - positive_values
           - name: status
             tests:
               - accepted_values:
@@ -99,8 +115,13 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
         loaded_at_field: _fivetran_synced
         columns:
           - name: user_id
+            tests:
+                - unique
+                - not_null
           - name: updated_at
           - name: address_id
+            tests:
+              - not_null
           - name: last_name
           - name: created_at
           - name: phone_number

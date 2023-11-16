@@ -13,7 +13,6 @@ stg_users AS (
             email,
             created_at,
             updated_at,
-            _fivetran_deleted,
             _fivetran_synced AS batched_at
     FROM src_users
     )

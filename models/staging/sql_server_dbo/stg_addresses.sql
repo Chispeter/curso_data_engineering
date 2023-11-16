@@ -5,12 +5,11 @@ WITH src_addresses AS (
 
 stg_addresses AS (
     SELECT address_id,
-            address,
+            address AS street_number_and_name,
             state,
             zipcode,
             country,
-            _fivetran_deleted,
-            _fivetran_synced AS batched_at
+            _fivetran_synced AS address_batched_at
     FROM src_addresses
     )
 

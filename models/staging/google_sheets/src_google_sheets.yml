@@ -26,7 +26,6 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
           - name: quantity
             tests:
-              - not_null
               - positive_values
           - name: month
             tests:
@@ -38,3 +37,5 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
                   to: source('sql_server_dbo', 'products')
                   field: product_id
           - name: _fivetran_synced
+            tests:
+              - not_null

@@ -7,7 +7,6 @@ stg_order_items AS (
     SELECT order_id,
             product_id,
             quantity,
-            _fivetran_deleted,
             _fivetran_synced AS batched_at
     FROM src_order_items
     )

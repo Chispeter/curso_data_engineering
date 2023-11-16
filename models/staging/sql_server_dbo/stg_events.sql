@@ -12,7 +12,6 @@ stg_events AS (
             page_url,
             event_type,
             created_at,
-            _fivetran_deleted,
             _fivetran_synced AS batched_at
     FROM src_events
     )

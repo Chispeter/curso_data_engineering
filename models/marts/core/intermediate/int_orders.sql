@@ -1,13 +1,18 @@
-WITH src_orders AS (
+WITH stg_orders AS (
     SELECT * 
-    FROM {{ source('sql_server_dbo', 'orders') }}
+    FROM {{ ref('stg_orders') }}
     ),
 
-stg_orders AS (
+stg_promos AS (
+    SELECT * 
+    FROM {{ ref('stg_promos') }}
+    ),
+
+int_orders AS (
     SELECT order_id,
             user_id,
             address_id,
-            promo_id,
+            stg_promos.promo_id,
             tracking_id,
             shipping_service,
             shipping_cost,
@@ -17,8 +22,10 @@ stg_orders AS (
             status AS order_status,
             estimated_delivery_at,
             delivered_at,
+            _fivetran_deleted,
             _fivetran_synced AS batched_at
-    FROM src_orders
+    FROM stg_orders
+    JOIN stg_promos USING (promo_id)
     )
 
-SELECT * FROM stg_orders
+SELECT * FROM int_orders
