@@ -20,9 +20,16 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
       - name: budget
         loaded_at_field: _fivetran_synced # specific loaded_at_field
         columns:
-          - name: budget_id
+          - name: _row
             tests:
               - unique
+              - not_null
+          - name: quantity
+            tests:
+              - not_null
+              - positive_values
+          - name: month
+            tests:
               - not_null
           - name: product_id
             tests:
@@ -30,10 +37,4 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - relationships:
                   to: source('sql_server_dbo', 'products')
                   field: product_id
-          - name: sold_at
-            tests:
-              - not_null
-          - name: quantity
-            tests:
-              - positive_values
           - name: _fivetran_synced
