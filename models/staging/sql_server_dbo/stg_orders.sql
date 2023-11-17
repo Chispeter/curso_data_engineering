@@ -15,9 +15,9 @@ stg_orders AS (
                     WHEN trim(shipping_service, ' ') = 'fedex' THEN 'FedEx'
                     ELSE upper(trim(shipping_service, ' '))
                     END)::varchar(20) AS shipping_service,
-            trim(shipping_cost, ' ')::float AS shipping_cost,
-            trim(order_cost, ' ')::float AS order_cost,
-            trim(order_total, ' ')::float AS order_total,
+            trim(shipping_cost, ' ')::number(38,2) AS shipping_cost_usd,
+            trim(order_cost, ' ')::number(38,2) AS order_cost_usd,
+            trim(order_total, ' ')::number(38,2) AS order_total_usd,
             trim(created_at, ' ')::timestamp_tz AS order_created_at_utc,
             lower(trim(status, ' '))::varchar(20) AS order_status,
             trim(estimated_delivery_at, ' ')::timestamp_tz AS order_estimated_delivery_at_utc,

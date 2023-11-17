@@ -1,20 +1,23 @@
+{% set ref_table = source('sql_server_dbo', 'events') %}
+
 WITH src_events AS (
     SELECT * 
-    FROM {{ source('sql_server_dbo', 'events') }}
+    FROM {{ref_table}}
     ),
 
 stg_events AS (
     SELECT trim(event_id, ' ')::varchar(50) AS event_id,
-            (CASE WHEN trim(user_id, ' ') = '' THEN 'not_registered'
+            {{replace_empty_or_null_values_with_tag('ref_table', product_id, 'xD')}} AS product_id,
+            (CASE WHEN (trim(user_id, ' ') = '' OR trim(user_id, ' ') IS NULL)  THEN 'not_registered'
                     ELSE trim(user_id, ' ')
                     END)::varchar(50) AS user_id,
-            (CASE WHEN trim(product_id, ' ') = '' THEN 'not_registered'
-                    ELSE trim(product_id, ' ')
-                    END)::varchar(50) AS product_id,
-            (CASE WHEN trim(order_id, ' ') = '' THEN 'not_registered'
+            (CASE WHEN (trim(user_id, ' ') = '' OR trim(user_id, ' ') IS NULL)  THEN 'not_registered'
+                    ELSE trim(user_id, ' ')
+                    END)::varchar(50) AS user_id,
+            (CASE WHEN (trim(order_id, ' ') = '' OR trim(order_id, ' ') IS NULL) THEN 'not_registered'
                     ELSE trim(order_id, ' ')
                     END)::varchar(50) AS order_id,
-            (CASE WHEN trim(session_id, ' ') = '' THEN 'not_registered'
+            (CASE WHEN (trim(session_id, ' ') = '' OR trim(session_id, ' ') IS NULL) THEN 'not_registered'
                     ELSE trim(session_id, ' ')
                     END)::varchar(50) AS session_id,
             lower(trim(page_url, ' '))::varchar(200) AS event_page_url,
@@ -26,3 +29,4 @@ stg_events AS (
     )
 
 SELECT * FROM stg_events
+

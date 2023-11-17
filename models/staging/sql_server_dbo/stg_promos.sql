@@ -4,7 +4,7 @@ WITH src_promos AS (
     ),
 
 stg_promos AS (
-    SELECT {{ dbt_utils.generate_surrogate_key(['promo_id']) }}::varchar(50) AS promo_id,
+    SELECT {{ dbt_utils.generate_surrogate_key(['promo_id', 'promo_discount']) }}::varchar(50) AS promo_id,
             promo_id AS promo_name,
             discount AS promo_discount,
             status AS promo_status,
