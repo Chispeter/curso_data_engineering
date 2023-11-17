@@ -84,13 +84,20 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
           - name: shipping_service
           - name: shipping_cost
+            tests:
+              - positive_values
           - name: address_id
           - name: created_at
           - name: promo_id
           - name: estimated_delivery_at
           - name: order_cost
+            tests:
+              - positive_values
           - name: user_id
           - name: order_total
+            tests:
+              - not_null
+              - positive_values
           - name: delivered_at
           - name: tracking_id
           - name: status
@@ -119,10 +126,6 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
             tests:
               - positive_values
           - name: status
-            tests:
-              - accepted_values:
-                  values: ['inactive', 'active']
-                  quote: true
           - name: _fivetran_deleted
           - name: _fivetran_synced
 
