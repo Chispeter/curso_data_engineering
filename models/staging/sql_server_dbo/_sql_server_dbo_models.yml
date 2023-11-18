@@ -1,0 +1,55 @@
+version: 2
+
+models:
+  - name: stg_addresses
+    description: Data about registered addresses.
+    columns:
+      - name: address_id
+        description: Primary key, a unique ID value for each row. Each row represents a separate address.
+        tests:
+          - unique
+          - not_null
+          - relationships:
+              field: address_id
+              to: ref('stg_addresses')
+      - name: street_number
+        description: street number associated with the address identifier.
+      - name: street_name
+        description: street name associated with the address identifier.
+      - name: state
+        description: state associated with the address identifier.
+      - name: zipcode
+        description: zipcode associated with the address identifier.
+      - name: country
+        description: country associated with the address identifier.
+      - name: was_this_address_row_deleted
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+        description: boolean indicating whether data was deleted.
+      - name: address_load_date
+        description: date that the address row data was loaded (inserted or updated).
+
+  - name: stg_events
+    description: Data about registered events.
+    columns:
+      - name: event_id
+        tests:
+          - unique
+          - not_null
+        description: Primary key, a unique ID value for each row. Each row represents a separate event.
+      - name: user_id
+        description: Foreign-key reference to the users table.
+      - name: product_id
+        description: Foreign-key reference to the products table.
+      - name: order_id
+        description: Foreign-key reference to the orders table.
+      - name: session_id
+        description: Foreign-key reference to the sessions table.
+      - name: event_page_url
+      - name: event_type
+      - name: event_created_at_pt
+      - name: was_this_event_row_deleted
+      - name: event_load_date

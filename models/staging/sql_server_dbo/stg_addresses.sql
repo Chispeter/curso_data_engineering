@@ -10,7 +10,7 @@ stg_addresses AS (
             initcap(trim(state, ' '))::varchar(50) AS state,
             trim(zipcode, ' ')::number(38,0) AS zipcode,
             initcap(trim(country, ' '))::varchar(50) AS country,
-            coalesce(_fivetran_deleted, false) AS was_this_address_row_deleted, -- no need to build CASE due to Fivetran always returns NULL
+            coalesce(_fivetran_deleted, false) AS was_this_address_row_deleted, -- no need to build CASE due to Fivetran always returns NULL when row was not deleted
             _fivetran_synced::date AS address_load_date
     FROM src_addresses
     )
