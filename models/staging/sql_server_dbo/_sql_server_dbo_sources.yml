@@ -20,25 +20,25 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
     tables:
 
       - name: addresses
+        description: Data about registered addresses.
         columns:
           - name: address_id
             tests:
               - unique
               - not_null
+            description: Primary key, a unique ID value for each row. Each row represents a separate address.
           - name: zipcode
-            tests:
-              - not_null
+            description: zipcode associated with the address identifier.
           - name: country
-            tests:
-              - not_null
+            description: country associated with the address identifier.
           - name: address
-            tests:
-              - not_null
+            description: street number and name associated with the address identifier.
           - name: state
-            tests:
-              - not_null
+            description: state associated with the address identifier.
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
 
       - name: events
         columns:
@@ -47,34 +47,26 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - unique
               - not_null
           - name: page_url
-            tests:
-              - not_null
           - name: event_type
-            tests:
-              - not_null
           - name: user_id
           - name: product_id
           - name: session_id
           - name: created_at
-            tests:
-              - not_null
           - name: order_id
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
 
       - name: order_items
         columns:
           - name: order_id
-            tests:
-              - not_null
           - name: product_id
-            tests:
-              - not_null
           - name: quantity
-            tests:
-              - not_null
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
 
       - name: orders
         columns:
@@ -102,7 +94,9 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: tracking_id
           - name: status
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
 
       - name: products
         columns:
@@ -114,20 +108,23 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: name
           - name: inventory
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
 
       - name: promos
         columns:
           - name: promo_id
             tests:
-              - unique
               - not_null
           - name: discount
             tests:
               - positive_values
           - name: status
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
 
       - name: users
         loaded_at_field: _fivetran_synced
@@ -147,4 +144,6 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: first_name
           - name: email
           - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).

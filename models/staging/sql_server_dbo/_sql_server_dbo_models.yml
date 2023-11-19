@@ -5,35 +5,47 @@ models:
     description: Data about registered addresses.
     columns:
       - name: address_id
-        description: Primary key, a unique ID value for each row. Each row represents a separate address.
         tests:
           - unique
           - not_null
           - relationships:
               field: address_id
               to: ref('stg_addresses')
+        description: Primary key, a unique ID value for each row. Each row represents a separate address.
       - name: street_number
-        description: street number associated with the address identifier.
+        tests:
+          - not_null
+        description: Street number associated with the address identifier.
       - name: street_name
-        description: street name associated with the address identifier.
+        tests:
+          - not_null
+        description: Street name associated with the address identifier.
       - name: state
-        description: state associated with the address identifier.
+        tests:
+          - not_null
+        description: State associated with the address identifier.
       - name: zipcode
-        description: zipcode associated with the address identifier.
+        tests:
+          - not_null
+        description: Zipcode associated with the address identifier.
       - name: country
-        description: country associated with the address identifier.
+        tests:
+          - not_null
+        description: Country associated with the address identifier.
       - name: was_this_address_row_deleted
         tests:
           - not_null
           - accepted_values:
               values: [true, false]
               quote: false
-        description: boolean indicating whether data was deleted.
+        description: Boolean indicating whether address row data was deleted.
       - name: address_load_date
-        description: date that the address row data was loaded (inserted or updated).
+        tests:
+          - not_null
+        description: Date that the address row data was loaded (inserted or updated).
 
   - name: stg_events
-    description: Data about registered events.
+    description: Data about registered events created by visits to a web page.
     columns:
       - name: event_id
         tests:
@@ -41,15 +53,76 @@ models:
           - not_null
         description: Primary key, a unique ID value for each row. Each row represents a separate event.
       - name: user_id
-        description: Foreign-key reference to the users table.
+        tests:
+          - not_null
+        description: Foreign key reference to the users table.
       - name: product_id
-        description: Foreign-key reference to the products table.
+        tests:
+          - not_null
+        description: Foreign key reference to the products table.
       - name: order_id
-        description: Foreign-key reference to the orders table.
+        tests:
+          - not_null
+        description: Foreign key reference to the orders table.
       - name: session_id
-        description: Foreign-key reference to the sessions table.
-      - name: event_page_url
-      - name: event_type
+        tests:
+          - not_null
+        description: Foreign key reference to the sessions table.
       - name: event_created_at_pt
+        tests:
+          - not_null
+        description: Date and time that the event was created.
+      - name: event_page_url
+        tests:
+          - not_null
+        description: URL website where the event took place.
+      - name: event_type
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['add_to_cart', 'checkout', 'package_shipped', 'page_view']
+              quote: true
+        description: Operation type carried out by the user.
       - name: was_this_event_row_deleted
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+        description: boolean indicating whether event row data was deleted.
       - name: event_load_date
+        tests:
+          - not_null
+        description: date that the event row data was loaded (inserted or updated).
+
+  - name: stg_order_items
+    description: Data about the units of registered product that have been sold in each registered order.
+    columns:
+      - name: order_item_id
+        tests:
+          - unique
+          - not_null
+        description: Primary key, a unique ID value for each row. Each row represents a separate order line.
+      - name: order_id
+        tests:
+          - not_null
+        description: Foreign key reference to the orders table.
+      - name: product_id
+        tests:
+          - not_null
+        description: Foreign key reference to the products table.
+      - name: units_of_product_sold
+        tests:
+          - not_null
+        description: Number of product units sold associated with the order item identifier.
+      - name: was_this_order_item_row_deleted
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+        description: boolean indicating whether order item row data was deleted.
+      - name: order_item_load_date
+        tests:
+          - not_null
+        description: date that the order item row data was loaded (inserted or updated).
