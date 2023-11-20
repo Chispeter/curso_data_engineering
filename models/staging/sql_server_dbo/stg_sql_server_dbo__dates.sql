@@ -1,18 +1,6 @@
-{# call as follows:
-date_spine(
-    "day",
-    "to_date('01/01/2016', 'mm/dd/yyyy')",
-    "dbt.dateadd(week, 1, current_date)"
-) #}
-{% set start_date_value = "cast('2023-01-01' as date)" %} -- value based on min_date macro that maps in each source or on company year foundation
-{% set end_date_value = "cast('2025-01-01' as date)" %}
+WITH stg_dates AS (
+    {{ dbt_utils.get_date_dimension("2023-01-01", "2023-02-01") }}
+),
 
 
-{% endif %}
-
-SELECT * FROM ({{ dbt_utils.date_spine(
-    datepart="day",
-    start_date=start_date_value,
-    end_date=end_date_value
-   )
-}})
+SELECT {{ dbt_utils.get_base_dates(start_date='2023-01-01', end_date='2023-02-01') }} FROM stg_dates
