@@ -4,7 +4,7 @@ WITH src_users AS (
     ),
 
 stg_users AS (
-    SELECT {{ replace_empty_and_null_values_with_tag('user_id', 'not registered') }}::varchar(50) AS user_id,
+    SELECT user_id::varchar(50) AS user_id,
             {{ replace_empty_and_null_values_with_tag('address_id', 'not registered') }}::varchar(50) AS address_id,
             {{ replace_empty_and_null_values_with_tag('first_name', 'not defined') }}::varchar(50) AS first_name,
             {{ replace_empty_and_null_values_with_tag('last_name', 'not defined') }}::varchar(50) AS last_name,

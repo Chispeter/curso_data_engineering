@@ -9,7 +9,7 @@ base_promos AS (
     ),
 
 stg_orders AS (
-    SELECT {{ replace_empty_and_null_values_with_tag('base_orders.order_id', 'not registered') }}::varchar(50) AS order_id,
+    SELECT order_id::varchar(50) AS order_id,
             {{ replace_empty_and_null_values_with_tag('base_orders.user_id', 'not registered') }}::varchar(50) AS user_id,
             {{ replace_empty_and_null_values_with_tag('base_orders.address_id', 'not registered') }}::varchar(50) AS address_id,
             {{ replace_empty_and_null_values_with_tag('base_promos.promo_id', 'not registered') }}::varchar(50) AS promo_id,

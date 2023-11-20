@@ -5,7 +5,7 @@ WITH src_events AS (
 
 stg_events AS (
     SELECT
-        {{ replace_empty_and_null_values_with_tag('event_id', 'not registered') }}::varchar(50) AS event_id,
+        event_id::varchar(50) AS event_id,
         {{ replace_empty_and_null_values_with_tag('user_id', 'not registered') }}::varchar(50) AS user_id,
         {{ replace_empty_and_null_values_with_tag('session_id', 'not registered') }}::varchar(50) AS session_id,
         {{ replace_empty_and_null_values_with_tag('product_id', 'not registered') }}::varchar(50) AS product_id,
