@@ -11,8 +11,8 @@ stg_users AS (
             {{ replace_empty_and_null_values_with_tag('phone_number', 'not defined') }}::varchar(20) AS phone_number,
             {{ get_trimmed_column('total_orders') }}::number(38,0) AS total_orders,
             {{ replace_empty_and_null_values_with_tag('email', 'not defined') }}::varchar(100) AS email,
-            created_at::timestamp_tz AS user_created_at_utc,
-            updated_at::timestamp_tz AS user_updated_at_utc,
+            {{ get_trimmed_column('created_at') }}::timestamp_tz AS user_created_at_utc,
+            {{ get_trimmed_column('updted_at') }}::timestamp_tz AS user_updated_at_utc,
             coalesce(_fivetran_deleted, false) AS was_this_user_row_deleted,
             _fivetran_synced::date AS user_load_date
     FROM src_users

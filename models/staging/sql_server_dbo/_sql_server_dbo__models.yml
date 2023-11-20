@@ -8,9 +8,6 @@ models:
         tests:
           - unique
           - not_null
-          - relationships:
-              field: address_id
-              to: ref('stg_addresses')
         description: Primary key, a unique ID value for each row. Each row represents a separate address.
       - name: street_number
         tests:
@@ -55,14 +52,23 @@ models:
       - name: user_id
         tests:
           - not_null
+          - relationships:
+              field: user_id
+              to: ref('stg_users')
         description: Foreign key reference to the users table.
       - name: product_id
         tests:
           - not_null
+          - relationships:
+              field: product_id
+              to: ref('stg_products')
         description: Foreign key reference to the products table.
       - name: order_id
         tests:
           - not_null
+          - relationships:
+              field: order_id
+              to: ref('stg_orders')
         description: Foreign key reference to the orders table.
       - name: session_id
         tests:
@@ -71,7 +77,7 @@ models:
       - name: event_created_at_pt
         tests:
           - not_null
-        description: Date and time that the event was created.
+        description: Date and time at Pacific Time Zone that the event was created.
       - name: event_page_url
         tests:
           - not_null
@@ -106,10 +112,16 @@ models:
       - name: order_id
         tests:
           - not_null
+          - relationships:
+              field: order_id
+              to: ref('stg_orders')
         description: Foreign key reference to the orders table.
       - name: product_id
         tests:
           - not_null
+          - relationships:
+              field: product_id
+              to: ref('stg_products')
         description: Foreign key reference to the products table.
       - name: number_of_units_of_product_sold
         tests:
@@ -121,11 +133,11 @@ models:
           - accepted_values:
               values: [true, false]
               quote: false
-        description: boolean indicating whether order item row data was deleted.
+        description: Boolean indicating whether order item row data was deleted.
       - name: order_item_load_date
         tests:
           - not_null
-        description: date that the order item row data was loaded (inserted or updated).
+        description: Date that the order item row data was loaded (inserted or updated).
 
   - name: stg_orders
     description: Data about registered orders.
@@ -138,23 +150,56 @@ models:
       - name: user_id
         tests:
           - not_null
+          - relationships:
+              field: user_id
+              to: ref('stg_orders')
         description: Foreign key reference to the users table.
       - name: address_id
         tests:
           - not_null
+          - relationships:
+              field: address_id
+              to: ref('stg_addresses')
         description: Foreign key reference to the addresses table.
-      - name: number_of_units_of_product_sold
+      - name: promo_id
         tests:
           - not_null
-        description: Number of units of product sold associated with the order item identifier.
-      - name: was_this_order_item_row_deleted
+          - relationships:
+              field: promo_id
+              to: ref('stg_promos')
+        description: Foreign key reference to the promos table.
+      - name: tracking_id
+        tests:
+          - not_null
+        description: Foreign key reference to an unknown trackings table.
+      - name: shipping_service_name
+        tests:
+          - not_null
+        description: Shipping service name associated with the order identifier.
+      - name: shipping_service_cost_in_usd
+        description: Shipping service cost in USD associated with the order identifier.
+      - name: order_cost_in_usd
+        description: Order cost in USD associated with the order identifier.
+      - name: total_order_cost_in_usd
+        description: Order total cost (shipping service cost + order cost) in USD associated with the order identifier.
+      - name: order_status
+        tests:
+          - not_null
+        description: Order status associated with the order identifier.
+      - name: order_created_at_utc
+        description: Date and time in UTC that the order was created.
+      - name: order_estimated_delivery_at_utc
+        description: Date and time in UTC that the order delivery was estimated.
+      - name: order_delivered_at_utc
+        description: Date and time in UTC that the order delivery was performed.
+      - name: was_this_order_row_deleted
         tests:
           - not_null
           - accepted_values:
               values: [true, false]
               quote: false
-        description: boolean indicating whether order item row data was deleted.
+        description: Boolean indicating whether order row data was deleted.
       - name: order_item_load_date
         tests:
           - not_null
-        description: date that the order item row data was loaded (inserted or updated).
+        description: Date that the order row data was loaded (inserted or updated).

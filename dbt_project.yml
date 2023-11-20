@@ -38,9 +38,9 @@ clean-targets:         # directories to be removed by `dbt clean`
 models:
   curso_data_engineering:
     # Applies to all files under models/my_model/
-    base:
-      materialized: view
     staging:
-      materialized: view
+      +materialized: view
+    intermediate:
+      +materialized: ephemeral
     marts:
-      materialized: table
+      +materialized: table

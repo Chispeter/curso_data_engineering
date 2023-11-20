@@ -13,12 +13,12 @@ models:
           - relationships:
                 to: ref('stg_products')
                 field: product_id
-      - name: budgeted_at
+      - name: budget_date
         tests:
           - not_null
-      - name: quantity
+      - name: number_of_units_of_product_sold
         tests:
           - positive_values   
-      - name: batched_at
+      - name: budget_load_date
         tests:
           - not_null

@@ -1,7 +1,7 @@
-{% set event_types = get_values_from_column(ref('stg_sql_server_dbo_events'), 'event_type') %}
+{% set event_types = get_values_from_column(ref('stg_events'), 'event_type') %}
 WITH stg_events AS (
     SELECT * 
-    FROM {{ ref('stg_sql_server_dbo_events') }}
+    FROM {{ ref('stg_events') }}
     ),
 
 renamed_casted AS (

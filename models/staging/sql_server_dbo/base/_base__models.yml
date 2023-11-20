@@ -12,9 +12,9 @@ models:
           - positive_values
       - name: status
       - name: _fivetran_deleted
-        description: boolean indicating whether promo row data was deleted (true) or not (NULL).
+        description: Boolean indicating whether promo row data was deleted (true) or not (NULL).
       - name: _fivetran_synced
-        description: date that the promo row data was loaded (inserted or updated).
+        description: Date that the promo row data was loaded (inserted or updated).
 
   - name: base_orders
     columns:
@@ -41,6 +41,6 @@ models:
       - name: tracking_id
       - name: status
       - name: _fivetran_deleted
-        description: boolean indicating whether row data was deleted (true) or not (NULL).
+        description: Boolean indicating whether row data was deleted (true) or not (NULL).
       - name: _fivetran_synced
-        description: date that the address row data was loaded (inserted or updated).
+        description: Date that the address row data was loaded (inserted or updated).

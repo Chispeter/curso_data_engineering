@@ -17,14 +17,14 @@ stg_orders AS (
             (CASE WHEN {{get_trimmed_column('base_orders.shipping_service')}} = '' THEN 'not defined'
                     WHEN {{get_trimmed_column('base_orders.shipping_service')}} = 'fedex' THEN 'FedEx'
                     ELSE {{get_uppercased_column('base_orders.shipping_service')}}
-                    END)::varchar(20) AS shipping_service,
-            {{ replace_empty_and_null_values_with_tag('base_orders.shipping_cost', 'not defined') }}::number(38,2) AS shipping_cost_usd,
-            {{ replace_empty_and_null_values_with_tag('base_orders.order_cost', 'not defined') }}::number(38,2) AS order_cost_usd,
-            {{ replace_empty_and_null_values_with_tag('base_orders.order_total', 'not defined') }}::number(38,2) AS order_total_usd,
+                    END)::varchar(20) AS shipping_service_name,
+            {{ get_trimmed_column('base_orders.shipping_cost') }}::number(38,2) AS shipping_service_cost_in_usd,
+            {{ get_trimmed_column('base_orders.order_cost') }}::number(38,2) AS order_cost_in_usd,
+            {{ get_trimmed_column('base_orders.order_total') }}::number(38,2) AS total_order_cost_in_usd,
             {{ get_lowercased_column('base_orders.status') }}::varchar(20) AS order_status,
-            base_orders.created_at::timestamp_tz AS order_created_at_utc,
-            base_orders.estimated_delivery_at::timestamp_tz AS order_estimated_delivery_at_utc,
-            base_orders.delivered_at::timestamp_tz AS order_delivered_at_utc,
+            {{ get_trimmed_column('base_orders.created_at') }}::timestamp_tz AS order_created_at_utc,
+            {{ get_trimmed_column('base_orders.estimated_delivery_at') }}::timestamp_tz AS order_estimated_delivery_at_utc,
+            {{ get_trimmed_column('base_orders.delivered_at') }}::timestamp_tz AS order_delivered_at_utc,
             coalesce(base_orders._fivetran_deleted, false) AS was_this_order_row_deleted,
             base_orders._fivetran_synced::date AS order_load_date
     FROM base_orders
