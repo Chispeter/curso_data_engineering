@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: base_promos
+    columns:
+      - name: promo_id
+        tests:
+          - not_null
+      - name: name
+      - name: discount
+        tests:
+          - positive_values
+      - name: status
+      - name: _fivetran_deleted
+        description: boolean indicating whether promo row data was deleted (true) or not (NULL).
+      - name: _fivetran_synced
+        description: date that the promo row data was loaded (inserted or updated).
+
+  - name: base_orders
+    columns:
+      - name: order_id
+        tests:
+          - unique
+          - not_null
+      - name: shipping_service
+      - name: shipping_cost
+        tests:
+          - positive_values
+      - name: address_id
+      - name: created_at
+      - name: promo_name
+      - name: estimated_delivery_at
+      - name: order_cost
+        tests:
+          - positive_values
+      - name: user_id
+      - name: order_total
+        tests:
+          - positive_values
+      - name: delivered_at
+      - name: tracking_id
+      - name: status
+      - name: _fivetran_deleted
+        description: boolean indicating whether row data was deleted (true) or not (NULL).
+      - name: _fivetran_synced
+        description: date that the address row data was loaded (inserted or updated).

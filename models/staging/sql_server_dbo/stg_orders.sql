@@ -1,30 +1,34 @@
-WITH src_orders AS (
+WITH base_orders AS (
     SELECT * 
-    FROM {{ source('sql_server_dbo', 'orders') }}
+    FROM {{ ref('base_orders') }}
+    ),
+
+base_promos AS (
+    SELECT * 
+    FROM {{ ref('base_promos') }}
     ),
 
 stg_orders AS (
-    SELECT trim(order_id, ' ')::varchar(50) AS order_id,
-            trim(user_id, ' ')::varchar(50) AS user_id,
-            trim(address_id, ' ')::varchar(50) AS address_id,
-            (CASE WHEN lower(trim(promo_id, ' ')) = '' THEN 'not_applicable'
-                    ELSE lower(trim(promo_id, ' '))
-                    END)::varchar(50) AS promo_name,
-            trim(tracking_id, ' ')::varchar(50) AS tracking_id,
-            (CASE WHEN trim(shipping_service, ' ') = '' THEN 'unknown'
-                    WHEN trim(shipping_service, ' ') = 'fedex' THEN 'FedEx'
-                    ELSE upper(trim(shipping_service, ' '))
+    SELECT {{ replace_empty_and_null_values_with_tag('base_orders.order_id', 'not registered') }}::varchar(50) AS order_id,
+            {{ replace_empty_and_null_values_with_tag('base_orders.user_id', 'not registered') }}::varchar(50) AS user_id,
+            {{ replace_empty_and_null_values_with_tag('base_orders.address_id', 'not registered') }}::varchar(50) AS address_id,
+            {{ replace_empty_and_null_values_with_tag('base_promos.promo_id', 'not registered') }}::varchar(50) AS promo_id,
+            {{ replace_empty_and_null_values_with_tag('base_orders.tracking_id', 'not registered') }}::varchar(50) AS tracking_id,
+            (CASE WHEN {{get_trimmed_column('base_orders.shipping_service')}} = '' THEN 'not defined'
+                    WHEN {{get_trimmed_column('base_orders.shipping_service')}} = 'fedex' THEN 'FedEx'
+                    ELSE {{get_uppercased_column('base_orders.shipping_service')}}
                     END)::varchar(20) AS shipping_service,
-            trim(shipping_cost, ' ')::number(38,2) AS shipping_cost_usd,
-            trim(order_cost, ' ')::number(38,2) AS order_cost_usd,
-            trim(order_total, ' ')::number(38,2) AS order_total_usd,
-            trim(created_at, ' ')::timestamp_tz AS order_created_at_utc,
-            lower(trim(status, ' '))::varchar(20) AS order_status,
-            trim(estimated_delivery_at, ' ')::timestamp_tz AS order_estimated_delivery_at_utc,
-            trim(delivered_at, ' ')::timestamp_tz AS order_delivered_at_utc,
-            coalesce(_fivetran_deleted, false) AS was_this_order_row_deleted,
-            _fivetran_synced::date AS order_load_date
-    FROM src_orders
+            {{ replace_empty_and_null_values_with_tag('base_orders.shipping_cost', 'not defined') }}::number(38,2) AS shipping_cost_usd,
+            {{ replace_empty_and_null_values_with_tag('base_orders.order_cost', 'not defined') }}::number(38,2) AS order_cost_usd,
+            {{ replace_empty_and_null_values_with_tag('base_orders.order_total', 'not defined') }}::number(38,2) AS order_total_usd,
+            {{ get_lowercased_column('base_orders.status') }}::varchar(20) AS order_status,
+            base_orders.created_at::timestamp_tz AS order_created_at_utc,
+            base_orders.estimated_delivery_at::timestamp_tz AS order_estimated_delivery_at_utc,
+            base_orders.delivered_at::timestamp_tz AS order_delivered_at_utc,
+            coalesce(base_orders._fivetran_deleted, false) AS was_this_order_row_deleted,
+            base_orders._fivetran_synced::date AS order_load_date
+    FROM base_orders
+    LEFT JOIN base_promos ON base_orders.promo_name = base_promos.name
     )
 
 SELECT * FROM stg_orders

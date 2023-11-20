@@ -4,16 +4,17 @@ WITH src_users AS (
     ),
 
 stg_users AS (
-    SELECT user_id::varchar(50) AS user_id,
-            address_id::varchar(50) AS address_id,
-            first_name::varchar(50) AS first_name,
-            last_name::varchar(50) AS last_name,
-            phone_number::varchar(20) AS phone_number,
-            total_orders::number(38,0) AS total_orders,
-            email::varchar(100) AS email,
-            created_at AS user_created_at,
-            updated_at AS user_updated_at,
-            _fivetran_synced AS batched_at
+    SELECT {{ replace_empty_and_null_values_with_tag('user_id', 'not registered') }}::varchar(50) AS user_id,
+            {{ replace_empty_and_null_values_with_tag('address_id', 'not registered') }}::varchar(50) AS address_id,
+            {{ replace_empty_and_null_values_with_tag('first_name', 'not defined') }}::varchar(50) AS first_name,
+            {{ replace_empty_and_null_values_with_tag('last_name', 'not defined') }}::varchar(50) AS last_name,
+            {{ replace_empty_and_null_values_with_tag('phone_number', 'not defined') }}::varchar(20) AS phone_number,
+            {{ get_trimmed_column('total_orders') }}::number(38,0) AS total_orders,
+            {{ replace_empty_and_null_values_with_tag('email', 'not defined') }}::varchar(100) AS email,
+            created_at::timestamp_tz AS user_created_at_utc,
+            updated_at::timestamp_tz AS user_updated_at_utc,
+            coalesce(_fivetran_deleted, false) AS was_this_user_row_deleted,
+            _fivetran_synced::date AS user_load_date
     FROM src_users
     )
 
