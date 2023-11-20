@@ -22,3 +22,5 @@ models:
       - name: budget_load_date
         tests:
           - not_null
+
+          

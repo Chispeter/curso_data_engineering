@@ -9,7 +9,7 @@ base_orders AS (
             shipping_cost,
             address_id,
             created_at,
-            lower(promo_id) AS promo_name,
+            {{ replace_empty_and_null_values_with_tag(get_lowercased_column('promo_id'), 'no promo') }} AS promo_name,
             estimated_delivery_at,
             order_cost,
             user_id,

@@ -1,16 +1,17 @@
 WITH base_orders AS (
-    SELECT * 
+    SELECT *
     FROM {{ ref('base_sql_server_dbo__orders') }}
-    ),
+),
 
 base_promos AS (
-    SELECT * 
+    SELECT *
     FROM {{ ref('base_sql_server_dbo__promos') }}
-    ),
+),
 
 stg_orders AS (
-    SELECT order_id::varchar(50) AS order_id,
-            {{ replace_empty_and_null_values_with_tag('base_orders.user_id', 'not registered') }}::varchar(50) AS user_id,
+    SELECT
+        order_id::varchar(50) AS order_id,
+        {{ replace_empty_and_null_values_with_tag('base_orders.user_id', 'not registered') }}::varchar(50) AS user_id,
             {{ replace_empty_and_null_values_with_tag('base_orders.address_id', 'not registered') }}::varchar(50) AS address_id,
             {{ replace_empty_and_null_values_with_tag('base_promos.promo_id', 'not registered') }}::varchar(50) AS promo_id,
             {{ replace_empty_and_null_values_with_tag('base_orders.tracking_id', 'not registered') }}::varchar(50) AS tracking_id,
@@ -29,7 +30,6 @@ stg_orders AS (
             base_orders._fivetran_synced::date AS order_load_date
     FROM base_orders
     LEFT JOIN base_promos ON base_orders.promo_name = base_promos.name
-    )
+)
 
 SELECT * FROM stg_orders
-
