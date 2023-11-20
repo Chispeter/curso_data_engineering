@@ -1,11 +1,11 @@
 WITH stg_orders AS (
     SELECT * 
-    FROM {{ ref('stg_orders') }}
+    FROM {{ ref('stg_sql_server_dbo__orders') }}
     ),
 
 stg_promos AS (
     SELECT * 
-    FROM {{ ref('stg_promos') }}
+    FROM {{ ref('stg_sql_server_dbo__promos') }}
     ),
 
 int_orders AS (

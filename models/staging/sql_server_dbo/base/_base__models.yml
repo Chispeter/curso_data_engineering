@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: base_promos
+  - name: base_sql_server_dbo__promos
     columns:
       - name: promo_id
         tests:
@@ -16,7 +16,7 @@ models:
       - name: _fivetran_synced
         description: Date that the promo row data was loaded (inserted or updated).
 
-  - name: base_orders
+  - name: base_sql_server_dbo__orders
     columns:
       - name: order_id
         tests:

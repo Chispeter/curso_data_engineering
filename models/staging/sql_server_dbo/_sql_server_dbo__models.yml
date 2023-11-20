@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_addresses
+  - name: stg_sql_server_dbo__adresses
     description: Data about registered addresses.
     columns:
       - name: address_id
@@ -41,7 +41,7 @@ models:
           - not_null
         description: Date that the address row data was loaded (inserted or updated).
 
-  - name: stg_events
+  - name: stg_sql_server_dbo__events
     description: Data about registered events created by visits to a web page.
     columns:
       - name: event_id
@@ -101,7 +101,7 @@ models:
           - not_null
         description: date that the event row data was loaded (inserted or updated).
 
-  - name: stg_order_items
+  - name: stg_sql_server_dbo__order_items
     description: Data about units of registered product that have been sold in each registered order.
     columns:
       - name: order_item_id
@@ -139,7 +139,7 @@ models:
           - not_null
         description: Date that the order item row data was loaded (inserted or updated).
 
-  - name: stg_orders
+  - name: stg_sql_server_dbo__orders
     description: Data about registered orders.
     columns:
       - name: order_id

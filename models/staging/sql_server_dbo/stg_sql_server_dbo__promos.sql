@@ -1,6 +1,6 @@
 WITH base_promos AS (
     SELECT * 
-    FROM {{ ref('base_promos') }}
+    FROM {{ ref('base_sql_server_dbo__promos') }}
     ),
 
 stg_promos AS (

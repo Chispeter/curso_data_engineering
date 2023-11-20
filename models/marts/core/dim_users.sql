@@ -1,11 +1,11 @@
 WITH users AS (
     SELECT * 
-    FROM {{ ref('stg_users') }}
+    FROM {{ ref('stg_sql_server_dbo__users') }}
     ),
 
 addresses AS (
     SELECT * 
-    FROM {{ ref('stg_addresses') }}
+    FROM {{ ref('stg_sql_server_dbo__addresses') }}
     ),
 
 orders AS (
@@ -13,7 +13,7 @@ orders AS (
             min(orders.created_at) AS first_order_date,
             max(orders.created_at) AS last_order_date,
             count(orders.order_id) AS number_of_orders
-    FROM {{ ref('stg_orders') }} AS orders
+    FROM {{ ref('stg_sql_server_dbo__orders') }} AS orders
     GROUP BY orders.user_id
     ),
 
