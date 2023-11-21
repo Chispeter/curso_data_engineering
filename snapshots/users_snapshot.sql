@@ -11,6 +11,8 @@
     )
 }}
 
-select * from {{ ref('stg_sql_server_dbo__users_2') }}
+SELECT * FROM {{ ref('stg_users_ej1') }}
+-- Devuelve las filas insertadas o modificadas y las filas originales sin modificar
+WHERE f_carga = (SELECT max(f_carga) FROM {{ ref('stg_users_ej1') }})
 
 {% endsnapshot %}
