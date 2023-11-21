@@ -54,21 +54,21 @@ models:
           - not_null
           - relationships:
               field: user_id
-              to: ref('stg_users')
+              to: ref('stg_sql_server_dbo__users')
         description: Foreign key reference to the users table.
       - name: product_id
         tests:
           - not_null
           - relationships:
               field: product_id
-              to: ref('stg_products')
+              to: ref('stg_sql_server_dbo__products')
         description: Foreign key reference to the products table.
       - name: order_id
         tests:
           - not_null
           - relationships:
               field: order_id
-              to: ref('stg_orders')
+              to: ref('stg_sql_server_dbo__orders')
         description: Foreign key reference to the orders table.
       - name: session_id
         tests:
@@ -114,14 +114,14 @@ models:
           - not_null
           - relationships:
               field: order_id
-              to: ref('stg_orders')
+              to: ref('stg_sql_server_dbo__orders')
         description: Foreign key reference to the orders table.
       - name: product_id
         tests:
           - not_null
           - relationships:
               field: product_id
-              to: ref('stg_products')
+              to: ref('stg_sql_server_dbo__products')
         description: Foreign key reference to the products table.
       - name: number_of_units_of_product_sold
         tests:
@@ -152,21 +152,21 @@ models:
           - not_null
           - relationships:
               field: user_id
-              to: ref('stg_orders')
+              to: ref('stg_sql_server_dbo__users')
         description: Foreign key reference to the users table.
       - name: address_id
         tests:
           - not_null
           - relationships:
               field: address_id
-              to: ref('stg_addresses')
+              to: ref('stg_sql_server_dbo__addresses')
         description: Foreign key reference to the addresses table.
       - name: promo_id
         tests:
           - not_null
           - relationships:
               field: promo_id
-              to: ref('stg_promos')
+              to: ref('stg_sql_server_dbo__promos')
         description: Foreign key reference to the promos table.
       - name: tracking_id
         tests:
@@ -185,6 +185,9 @@ models:
       - name: order_status
         tests:
           - not_null
+          - accepted_values:
+              values: ['delivered', 'preparing', 'shipped']
+              quote: true
         description: Order status associated with the order identifier.
       - name: order_created_at_utc
         description: Date and time in UTC that the order was created.
@@ -236,7 +239,7 @@ models:
           - not_null
         description: Date that the product row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__promos
+  - name: stg_sql_server_dbo__promos ##POR AQUIIIII
     description: Data about registered promotions.
     columns:
       - name: product_id
