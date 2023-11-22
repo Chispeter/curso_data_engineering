@@ -1,7 +1,7 @@
 version: 2
 
 models:
-  - name: stg_sql_server_dbo__adresses
+  - name: stg_sql_server_dbo__addresses # CHECKED
     description: Data about registered addresses.
     columns:
       - name: address_id
@@ -9,26 +9,26 @@ models:
           - unique
           - not_null
         description: Primary key, a unique ID value for each row. Each row represents a separate address.
-      - name: street_number
+      - name: address_street_number
         tests:
           - not_null
         description: Street number associated with the address identifier.
-      - name: street_name
+      - name: address_street_name
         tests:
           - not_null
         description: Street name associated with the address identifier.
-      - name: state
+      - name: address_state_name
         tests:
           - not_null
-        description: State associated with the address identifier.
-      - name: zipcode
+        description: State name associated with the address identifier.
+      - name: address_zipcode
         tests:
           - not_null
         description: Zipcode associated with the address identifier.
-      - name: country
+      - name: address_country_name
         tests:
           - not_null
-        description: Country associated with the address identifier.
+        description: Country name associated with the address identifier.
       - name: was_this_address_row_deleted
         tests:
           - not_null
@@ -36,12 +36,65 @@ models:
               values: [true, false]
               quote: false
         description: Boolean indicating whether address row data was deleted.
-      - name: address_load_date
+      - name: address_batched_at_utc
         tests:
           - not_null
-        description: Date that the address row data was loaded (inserted or updated).
+        description: Date and time in UTC that the address row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__events
+  - name: stg_sql_server_dbo__customers # CHECKED
+    description: Data about registered customers.
+    columns:
+      - name: customer_id
+        tests:
+          - unique
+          - not_null
+        description: Primary key, a unique ID value for each row. Each row represents a separate customer.
+      - name: customer_address_id
+        tests:
+          - not_null
+          - relationships:
+              field: address_id
+              to: ref('stg_sql_server_dbo__addresses')
+        description: Foreign key reference to the addresses table.
+      - name: customer_first_name
+        tests:
+          - not_null
+        description: First name associated with customer identifier.
+      - name: customer_last_name
+        tests:
+          - not_null
+        description: Last name associated with customer identifier.
+      - name: customer_phone_number
+        tests:
+          - not_null
+        description: Phone number associated with customer identifier.
+      - name: customer_email
+        tests:
+          - not_null
+        description: Email associated with customer identifier.
+      - name: customer_number_of_total_orders
+        description: Number of total orders placed by the customer identifier.
+      - name: customer_created_at_utc
+        tests:
+          - not_null
+        description: Date and time in UTC that the customer identifier was created.
+      - name: customer_updated_at_utc
+        description: Date and time in UTC that the customer identifier was updated.
+      - name: was_this_customer_row_deleted
+        tests:
+          - not_null
+          - accepted_values:
+              values: [true, false]
+              quote: false
+        description: Boolean indicating whether customer row data was deleted.
+      - name: customer_batched_at_utc
+        tests:
+          - not_null
+        description: Date and time in UTC that the customer row data was loaded (inserted or updated).
+      
+  # MISSING DATE MODEL
+
+  - name: stg_sql_server_dbo__events # CHECKED
     description: Data about registered events created by visits to a web page.
     columns:
       - name: event_id
@@ -49,35 +102,35 @@ models:
           - unique
           - not_null
         description: Primary key, a unique ID value for each row. Each row represents a separate event.
-      - name: user_id
+      - name: event_customer_id
         tests:
           - not_null
           - relationships:
-              field: user_id
-              to: ref('stg_sql_server_dbo__users')
+              field: customer_id
+              to: ref('stg_sql_server_dbo__customers')
         description: Foreign key reference to the users table.
-      - name: product_id
+      - name: event_product_id
         tests:
           - not_null
           - relationships:
               field: product_id
               to: ref('stg_sql_server_dbo__products')
         description: Foreign key reference to the products table.
-      - name: order_id
+      - name: event_order_id
         tests:
           - not_null
           - relationships:
               field: order_id
               to: ref('stg_sql_server_dbo__orders')
         description: Foreign key reference to the orders table.
-      - name: session_id
+      - name: event_session_id
         tests:
           - not_null
-        description: Foreign key reference to the sessions table.
-      - name: event_created_at_pt
+        description: Foreign key reference to an unknown sessions table.
+      - name: event_created_at_utc
         tests:
           - not_null
-        description: Date and time at Pacific Time Zone that the event was created.
+        description: Date and time in UTC that the event was created.
       - name: event_page_url
         tests:
           - not_null
@@ -88,18 +141,18 @@ models:
           - accepted_values:
               values: ['add_to_cart', 'checkout', 'package_shipped', 'page_view']
               quote: true
-        description: Operation type carried out by the user.
+        description: Operation type carried out by the customer identifier.
       - name: was_this_event_row_deleted
         tests:
           - not_null
           - accepted_values:
               values: [true, false]
               quote: false
-        description: boolean indicating whether event row data was deleted.
-      - name: event_load_date
+        description: Boolean indicating whether event row data was deleted.
+      - name: event_batched_at_utc
         tests:
           - not_null
-        description: date that the event row data was loaded (inserted or updated).
+        description: Date and time in UTC that the event row data was loaded (inserted or updated).
 
   - name: stg_sql_server_dbo__order_items
     description: Data about units of registered product that have been sold in each registered order.
@@ -147,12 +200,12 @@ models:
           - unique
           - not_null
         description: Primary key, a unique ID value for each row. Each row represents a separate order.
-      - name: user_id
+      - name: customer_id
         tests:
           - not_null
           - relationships:
-              field: user_id
-              to: ref('stg_sql_server_dbo__users')
+              field: customer_id
+              to: ref('stg_sql_server_dbo__customers')
         description: Foreign key reference to the users table.
       - name: address_id
         tests:
@@ -239,66 +292,38 @@ models:
           - not_null
         description: Date that the product row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__promos ##POR AQUIIIII
+  - name: stg_sql_server_dbo__promos
     description: Data about registered promotions.
     columns:
-      - name: product_id
+      - name: promo_id
         tests:
           - unique
           - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate product.
-      - name: product_name
+        description: Primary key, a unique ID value for each row. Each row represents a separate promo.
+      - name: promo_name
         tests:
           - not_null
-        description: Product name associated with product identifier.
-      - name: product_price_in_usd
+        description: Promo name associated with promo identifier.
+      - name: promo_discount_in_percentage
         tests:
           - positive_values
-        description: Product price in USD associated with product identifier.
-      - name: number_of_units_of_product_in_inventory
+        description: Promo discount in percentage (%) associated with promo identifier.
+      - name: promo_status
         tests:
-          - positive_values
-        description: Number of units of product in inventory associated with product identifier.
-      - name: was_this_product_row_deleted
+          - accepted_values:
+              values: ['active', 'inactive']
+              quote: true
+        description: Number of units of product in inventory associated with promo identifier.
+      - name: was_this_promo_row_deleted
         tests:
           - not_null
           - accepted_values:
               values: [true, false]
               quote: false
-        description: Boolean indicating whether product row data was deleted.
-      - name: product_load_date
+        description: Boolean indicating whether promo row data was deleted.
+      - name: promo_load_date
         tests:
           - not_null
-        description: Date that the product row data was loaded (inserted or updated).
+        description: Date that the promo row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__users
-    description: Data about registered promotions.
-    columns:
-      - name: product_id
-        tests:
-          - unique
-          - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate product.
-      - name: product_name
-        tests:
-          - not_null
-        description: Product name associated with product identifier.
-      - name: product_price_in_usd
-        tests:
-          - positive_values
-        description: Product price in USD associated with product identifier.
-      - name: number_of_units_of_product_in_inventory
-        tests:
-          - positive_values
-        description: Number of units of product in inventory associated with product identifier.
-      - name: was_this_product_row_deleted
-        tests:
-          - not_null
-          - accepted_values:
-              values: [true, false]
-              quote: false
-        description: Boolean indicating whether product row data was deleted.
-      - name: product_load_date
-        tests:
-          - not_null
-        description: Date that the product row data was loaded (inserted or updated).
+  

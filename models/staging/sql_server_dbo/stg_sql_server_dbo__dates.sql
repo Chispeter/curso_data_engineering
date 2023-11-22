@@ -6,7 +6,7 @@ WITH date_dimension AS (
     {{ dbt_date.get_date_dimension(start_date = start_date_value, end_date = end_date_value) }}
 ),
 
-date_dimension_with_id AS (
+stg_sql_server_dbo__dates AS (
     SELECT {{ dbt_utils.generate_surrogate_key(['date_day']) }} AS date_id,
             date_day,
             prior_date_day,
@@ -47,4 +47,4 @@ date_dimension_with_id AS (
     FROM date_dimension
 )
 
-SELECT * FROM date_dimension_with_id
+SELECT * FROM stg_sql_server_dbo__dates

@@ -1,19 +1,19 @@
-WITH src_addresses AS (
+WITH src_sql_server_dbo__addresses AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'addresses') }}
 ),
 
-stg_addresses AS (
+stg_sql_server_dbo__addresses AS (
     SELECT
-        address_id:varchar(50) AS address_id,
-            {{ get_street_number_column_from_address('address') }}::number(38,0) AS street_number,
-            {{ replace_empty_and_null_values_with_tag(get_uppercased_column_each_word(get_street_name_column_from_address('address')), 'not defined') }}::varchar(150) AS street_name,
-            {{ replace_empty_and_null_values_with_tag(get_uppercased_column_each_word('state'), 'not defined') }}::varchar(50) AS state,
-            {{ get_trimmed_column('zipcode') }}::number(38,0) AS zipcode,
-            {{ replace_empty_and_null_values_with_tag(get_uppercased_column_each_word('country'), 'not defined') }}::varchar(50) AS country,
-            coalesce(_fivetran_deleted, false) AS was_this_address_row_deleted, -- no need to build CASE due to Fivetran always returns NULL when row was not deleted
-            _fivetran_synced::date AS address_load_date
-    FROM src_addresses
+        cast(address_id as varchar(50)) AS address_id,
+            cast({{ get_street_number_column_from_address('address') }} as number(38,0)) AS address_street_number,
+            cast({{ get_street_name_column_from_address('address') }} as varchar(150)) AS address_street_name,
+            cast(state as varchar(50)) AS address_state_name,
+            cast(zipcode as number(38,0)) AS address_zipcode,
+            cast(country as varchar(50)) AS address_country_name,
+            cast(coalesce(_fivetran_deleted, false) as boolean) AS was_this_address_row_deleted,
+            cast(_fivetran_synced as timestamp_tz(9)) AS address_batched_at_utc
+    FROM src_sql_server_dbo__addresses
 )
 
-SELECT * FROM stg_addresses
+SELECT * FROM stg_sql_server_dbo__addresses

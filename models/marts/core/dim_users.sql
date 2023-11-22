@@ -1,6 +1,6 @@
 WITH users AS (
     SELECT * 
-    FROM {{ ref('stg_sql_server_dbo__users') }}
+    FROM {{ ref('stg_sql_server_dbo__customers') }}
     ),
 
 addresses AS (

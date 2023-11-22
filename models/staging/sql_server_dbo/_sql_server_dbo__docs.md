@@ -1,4 +1,4 @@
-{% docs order_status %}
+{% docs stg_sql_server_dbo__orders__order_status %}
 	
 One of the following values: 
 

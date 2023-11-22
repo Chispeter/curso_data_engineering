@@ -1,21 +1,21 @@
-WITH src_events AS (
+WITH src_sql_server_dbo__events AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'events') }}
 ),
 
-stg_events AS (
+stg_sql_server_dbo__events AS (
     SELECT
-        event_id::varchar(50) AS event_id,
-        {{ replace_empty_and_null_values_with_tag('user_id', 'not registered') }}::varchar(50) AS user_id,
-        {{ replace_empty_and_null_values_with_tag('session_id', 'not registered') }}::varchar(50) AS session_id,
-        {{ replace_empty_and_null_values_with_tag('product_id', 'not registered') }}::varchar(50) AS product_id,
-        {{ replace_empty_and_null_values_with_tag('order_id', 'not registered') }}::varchar(50) AS order_id,
-        {{ get_trimmed_column('created_at') }}::timestamp_ntz AS event_created_at_pt,
-        {{ replace_empty_and_null_values_with_tag(get_lowercased_column('page_url'), 'not defined') }}::varchar(200) AS event_page_url,
-        {{ replace_empty_and_null_values_with_tag(get_lowercased_column('event_type'), 'not defined') }}::varchar(50) AS event_type,
-        coalesce(_fivetran_deleted, false) AS was_this_event_row_deleted,
-        _fivetran_synced::date AS event_load_date
-    FROM src_events
+        cast(event_id as varchar(50)) AS event_id,
+        cast(user_id as varchar(50)) AS event_customer_id,
+        cast(session_id as varchar(50)) AS event_session_id,
+        cast(product_id as varchar(50)) AS event_product_id,
+        cast(order_id as varchar(50)) AS event_order_id,
+        cast(created_at as timestamp_tz(9)) AS event_created_at_utc,
+        cast(page_url as varchar(200)) AS event_page_url,
+        cast(event_type as varchar(50)) AS event_type,
+        cast(coalesce(_fivetran_deleted, false) as boolean) AS was_this_event_row_deleted,
+        cast(_fivetran_synced as timestamp_tz(9)) AS event_batched_at_utc
+    FROM src_sql_server_dbo__events
 )
 
-SELECT * FROM stg_events
+SELECT * FROM stg_sql_server_dbo__events
