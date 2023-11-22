@@ -1,6 +1,6 @@
-WITH src_sql_server_dbo__addresses AS (
+WITH base_sql_server_dbo__addresses AS (
     SELECT *
-    FROM {{ source('sql_server_dbo', 'addresses') }}
+    FROM {{ ref('base_sql_server_dbo__addresses') }}
 ),
 
 stg_sql_server_dbo__addresses AS (
@@ -13,7 +13,7 @@ stg_sql_server_dbo__addresses AS (
             cast(country as varchar(50)) AS address_country_name,
             cast(coalesce(_fivetran_deleted, false) as boolean) AS was_this_address_row_deleted,
             cast(_fivetran_synced as timestamp_tz(9)) AS address_batched_at_utc
-    FROM src_sql_server_dbo__addresses
+    FROM base_sql_server_dbo__addresses
 )
 
 SELECT * FROM stg_sql_server_dbo__addresses

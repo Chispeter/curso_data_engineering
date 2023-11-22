@@ -154,10 +154,10 @@ models:
           - not_null
         description: Date and time in UTC that the event row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__order_items
-    description: Data about units of registered product that have been sold in each registered order.
+  - name: stg_sql_server_dbo__order_products
+    description: Data about number of units of registered product that have been sold in each registered order.
     columns:
-      - name: order_item_id
+      - name: order_product_id
         tests:
           - unique
           - not_null
@@ -179,20 +179,20 @@ models:
       - name: number_of_units_of_product_sold
         tests:
           - not_null
-        description: Number of units of product sold associated with the order item identifier.
-      - name: was_this_order_item_row_deleted
+        description: Number of units of product sold associated with the order product identifier.
+      - name: was_this_order_product_row_deleted
         tests:
           - not_null
           - accepted_values:
               values: [true, false]
               quote: false
-        description: Boolean indicating whether order item row data was deleted.
-      - name: order_item_load_date
+        description: Boolean indicating whether order product row data was deleted.
+      - name: order_product_batched_at_utc
         tests:
           - not_null
-        description: Date that the order item row data was loaded (inserted or updated).
+        description: Date and time in UTC that the order product row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__orders
+  - name: stg_sql_server_dbo__orders # CHECKED
     description: Data about registered orders.
     columns:
       - name: order_id
@@ -206,34 +206,35 @@ models:
           - relationships:
               field: customer_id
               to: ref('stg_sql_server_dbo__customers')
-        description: Foreign key reference to the users table.
-      - name: address_id
+        description: Foreign key reference to the customers table.
+      - name: order_address_id
         tests:
           - not_null
           - relationships:
               field: address_id
               to: ref('stg_sql_server_dbo__addresses')
         description: Foreign key reference to the addresses table.
-      - name: promo_id
+      - name: promotion_id
         tests:
-          - not_null
           - relationships:
-              field: promo_id
-              to: ref('stg_sql_server_dbo__promos')
-        description: Foreign key reference to the promos table.
+              field: promotion_id
+              to: ref('stg_sql_server_dbo__promotions')
+        description: Foreign key reference to the promotions table.
       - name: tracking_id
-        tests:
-          - not_null
         description: Foreign key reference to an unknown trackings table.
       - name: shipping_service_name
-        tests:
-          - not_null
         description: Shipping service name associated with the order identifier.
       - name: shipping_service_cost_in_usd
+        tests:
+          - positive_values
         description: Shipping service cost in USD associated with the order identifier.
       - name: order_cost_in_usd
+        tests:
+          - positive_values
         description: Order cost in USD associated with the order identifier.
       - name: total_order_cost_in_usd
+        tests:
+          - positive_values
         description: Order total cost (shipping service cost + order cost) in USD associated with the order identifier.
       - name: order_status
         tests:
@@ -255,12 +256,12 @@ models:
               values: [true, false]
               quote: false
         description: Boolean indicating whether order row data was deleted.
-      - name: order_load_date
+      - name: order_batched_at_utc
         tests:
           - not_null
-        description: Date that the order row data was loaded (inserted or updated).
+        description: Date and time in UTC that the order row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__products
+  - name: stg_sql_server_dbo__products # CHECKED
     description: Data about registered products.
     columns:
       - name: product_id
@@ -292,38 +293,39 @@ models:
           - not_null
         description: Date that the product row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__promos
+  - name: stg_sql_server_dbo__promotions # CHECKED
     description: Data about registered promotions.
     columns:
-      - name: promo_id
+      - name: promotion_id
         tests:
           - unique
           - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate promo.
-      - name: promo_name
+        description: Primary key, a unique ID value for each row. Each row represents a separate promotion.
+      - name: promotion_name
         tests:
           - not_null
-        description: Promo name associated with promo identifier.
-      - name: promo_discount_in_percentage
+        description: Promotion name associated with promotion identifier.
+      - name: promotion_discount_in_percentage
         tests:
+          - not_null
           - positive_values
-        description: Promo discount in percentage (%) associated with promo identifier.
-      - name: promo_status
+        description: Promotion discount in percentage (%) associated with promotion identifier.
+      - name: promotion_status
         tests:
           - accepted_values:
               values: ['active', 'inactive']
               quote: true
-        description: Number of units of product in inventory associated with promo identifier.
-      - name: was_this_promo_row_deleted
+        description: Number of units of product in inventory associated with promotion identifier.
+      - name: was_this_promotion_row_deleted
         tests:
           - not_null
           - accepted_values:
               values: [true, false]
               quote: false
-        description: Boolean indicating whether promo row data was deleted.
-      - name: promo_load_date
+        description: Boolean indicating whether promotion row data was deleted.
+      - name: promotion_batched_at_utc
         tests:
           - not_null
-        description: Date that the promo row data was loaded (inserted or updated).
+        description: Date and time in UTC that the promotion row data was loaded (inserted or updated).
 
   

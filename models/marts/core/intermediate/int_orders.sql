@@ -5,7 +5,7 @@ WITH stg_orders AS (
 
 stg_promos AS (
     SELECT * 
-    FROM {{ ref('stg_sql_server_dbo__promos') }}
+    FROM {{ ref('stg_sql_server_dbo__promotions') }}
     ),
 
 int_orders AS (

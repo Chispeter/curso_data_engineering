@@ -2,7 +2,7 @@
 {% set margin_of_years_of_data_forecast = 1 %} -- given by company especifications (e.g. margin of years of data forecast of the company for the future)
 {% set end_date_value = "2023-01-31" %} 
 
-WITH date_dimension AS (
+WITH src_sql_server_dbo__dates AS (
     {{ dbt_date.get_date_dimension(start_date = start_date_value, end_date = end_date_value) }}
 ),
 
@@ -44,7 +44,7 @@ stg_sql_server_dbo__dates AS (
             year_number,
             year_start_date,
             year_end_date
-    FROM date_dimension
+    FROM src_sql_server_dbo__dates
 )
 
 SELECT * FROM stg_sql_server_dbo__dates

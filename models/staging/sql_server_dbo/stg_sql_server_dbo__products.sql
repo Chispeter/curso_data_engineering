@@ -1,16 +1,16 @@
-WITH src_products AS (
+WITH base_sql_server_dbo__products AS (
     SELECT * 
-    FROM {{ source('sql_server_dbo', 'products') }}
+    FROM {{ ref('base_sql_server_dbo__products') }}
     ),
 
-stg_products AS (
-    SELECT product_id::varchar(50) AS product_id,
-            {{ replace_empty_and_null_values_with_tag(get_uppercased_column_each_word('name'), 'not registered') }}::varchar(100) AS product_name,
-            {{ get_trimmed_column('price') }}::number(38, 2) AS product_price_in_usd,
-            {{ get_trimmed_column('inventory') }}::number(38,0) AS number_of_units_of_product_in_inventory,
+stg_sql_server_dbo__products AS (
+    SELECT cast(product_id as varchar(50)) AS product_id,
+            cast(name as varchar(100)) AS product_name,
+            cast(price as number(38, 2)) AS product_price_in_usd,
+            cast(inventory as number(38,0)) AS number_of_units_of_product_in_inventory,
             coalesce(_fivetran_deleted, false) AS was_this_product_row_deleted,
-            _fivetran_synced::date AS product_load_date
-    FROM src_products
+            cast(_fivetran_synced as timestamp_tz(9)) AS product_batched_at_utc
+    FROM base_sql_server_dbo__products
     )
 
-SELECT * FROM stg_products
+SELECT * FROM stg_sql_server_dbo__products

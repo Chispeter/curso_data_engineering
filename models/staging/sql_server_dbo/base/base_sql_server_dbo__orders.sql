@@ -20,6 +20,10 @@ base_orders AS (
             _fivetran_deleted,
             _fivetran_synced
     FROM src_orders
+
+    UNION ALL
+
+    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }}, 0, 'No Product', 0, null, current_timestamp()
     )
 
 SELECT * FROM base_orders

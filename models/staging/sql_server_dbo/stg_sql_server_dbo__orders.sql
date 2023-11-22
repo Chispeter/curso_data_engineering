@@ -8,28 +8,25 @@ base_promos AS (
     FROM {{ ref('base_sql_server_dbo__promos') }}
 ),
 
-stg_orders AS (
+stg_sql_server_dbo__orders AS (
     SELECT
-        order_id::varchar(50) AS order_id,
-        {{ replace_empty_and_null_values_with_tag('base_orders.user_id', 'not registered') }}::varchar(50) AS user_id,
-            {{ replace_empty_and_null_values_with_tag('base_orders.address_id', 'not registered') }}::varchar(50) AS address_id,
-            {{ replace_empty_and_null_values_with_tag('base_promos.promo_id', 'not registered') }}::varchar(50) AS promo_id,
-            {{ replace_empty_and_null_values_with_tag('base_orders.tracking_id', 'not registered') }}::varchar(50) AS tracking_id,
-            (CASE WHEN {{get_trimmed_column('base_orders.shipping_service')}} = '' THEN 'not defined'
-                    WHEN {{get_trimmed_column('base_orders.shipping_service')}} = 'fedex' THEN 'FedEx'
-                    ELSE {{get_uppercased_column('base_orders.shipping_service')}}
-                    END)::varchar(20) AS shipping_service_name,
-            {{ get_trimmed_column('base_orders.shipping_cost') }}::number(38,2) AS shipping_service_cost_in_usd,
-            {{ get_trimmed_column('base_orders.order_cost') }}::number(38,2) AS order_cost_in_usd,
-            {{ get_trimmed_column('base_orders.order_total') }}::number(38,2) AS total_order_cost_in_usd,
-            {{ replace_empty_and_null_values_with_tag(get_lowercased_column('base_orders.status'), 'not defined') }}::varchar(20) AS order_status,
-            {{ get_trimmed_column('base_orders.created_at') }}::timestamp_tz AS order_created_at_utc,
-            {{ get_trimmed_column('base_orders.estimated_delivery_at') }}::timestamp_tz AS order_estimated_delivery_at_utc,
-            {{ get_trimmed_column('base_orders.delivered_at') }}::timestamp_tz AS order_delivered_at_utc,
-            coalesce(base_orders._fivetran_deleted, false) AS was_this_order_row_deleted,
-            base_orders._fivetran_synced::date AS order_load_date
+        cast(base_orders.order_id as varchar(50)) AS order_id,
+        cast(base_orders.user_id as varchar(50)) AS customer_id,
+        cast(base_orders.address_id as varchar(50)) AS order_address_id,
+        cast(base_promos.promo_id as varchar(50)) AS promotion_id,
+        cast(decode(base_orders.tracking_id, '', null) as varchar(50)) AS tracking_id,
+        cast(base_orders.shipping_service as varchar(20)) AS shipping_service_name,
+        cast(base_orders.shipping_cost as number(38,2)) AS shipping_service_cost_in_usd,
+        cast(base_orders.order_cost as number(38,2)) AS order_cost_in_usd,
+        cast(base_orders.order_total as number(38,2)) AS total_order_cost_in_usd,
+        cast(base_orders.status as varchar(20)) AS order_status,
+        cast(base_orders.created_at as timestamp_tz(9)) AS order_created_at_utc,
+        cast(base_orders.estimated_delivery_at as timestamp_tz(9)) AS order_estimated_delivery_at_utc,
+        cast(base_orders.delivered_at as timestamp_tz(9)) AS order_delivered_at_utc,
+        cast(coalesce(base_orders._fivetran_deleted, false) as boolean) AS was_this_order_row_deleted,
+        cast(base_orders._fivetran_synced as timestamp_tz(9)) AS order_batched_at_utc
     FROM base_orders
     INNER JOIN base_promos ON base_orders.promo_name = base_promos.name
 )
 
-SELECT * FROM stg_orders
+SELECT * FROM stg_sql_server_dbo__orders

@@ -1,21 +1,6 @@
-version: 2
+version: 2 # copy and paste from source yml
 
 models:
-  - name: base_sql_server_dbo__promos
-    columns:
-      - name: promo_id
-        tests:
-          - not_null
-      - name: name
-      - name: discount
-        tests:
-          - positive_values
-      - name: status
-      - name: _fivetran_deleted
-        description: Boolean indicating whether promo row data was deleted (true) or not (NULL).
-      - name: _fivetran_synced
-        description: Date that the promo row data was loaded (inserted or updated).
-
   - name: base_sql_server_dbo__orders
     columns:
       - name: order_id
@@ -44,3 +29,33 @@ models:
         description: Boolean indicating whether row data was deleted (true) or not (NULL).
       - name: _fivetran_synced
         description: Date that the address row data was loaded (inserted or updated).
+    
+  - name: base_sql_server_dbo__products
+    columns:
+      - name: product_id
+        tests:
+          - unique
+          - not_null
+      - name: price
+      - name: name
+      - name: inventory
+      - name: _fivetran_deleted
+        description: Boolean indicating whether row data was deleted (true) or not (NULL).
+      - name: _fivetran_synced
+        description: Date that the address row data was loaded (inserted or updated).
+    
+  - name: base_sql_server_dbo__promos
+    columns:
+      - name: promo_id
+        tests:
+          - not_null
+      - name: name
+      - name: discount
+        tests:
+          - positive_values
+      - name: status
+      - name: _fivetran_deleted
+        description: Boolean indicating whether promo row data was deleted (true) or not (NULL).
+      - name: _fivetran_synced
+        description: Date that the promo row data was loaded (inserted or updated).
+
