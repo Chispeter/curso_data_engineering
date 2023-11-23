@@ -1,0 +1,38 @@
+version: 2 # yml version used in this file, always defined to do not get errors
+
+sources: # to reference bronze data and to allow lineage, testing and documentation
+
+  - name: google_sheets # name of the source
+    schema: google_sheets # this is the schema our raw data lives in the DWH (Snowflake)
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database in the DWH (Snowflake)
+
+    quoting: # allow quotes in queries (true) or not (false, by default)
+      database: false
+      schema: false
+      identifier: false
+
+    freshness: # refresh the source
+      warn_after: {count: 24, period: hour}
+      error_after: {count: 48, period: hour}
+
+    tables:
+
+      - name: budget
+        loaded_at_field: _fivetran_synced # specific loaded_at_field
+        columns:
+          - name: _row
+            tests:
+              - unique
+              - not_null
+          - name: quantity
+            tests:
+              - positive_values
+          - name: month
+            tests:
+              - not_null
+          - name: product_id
+            tests:
+              - not_null
+          - name: _fivetran_synced
+            tests:
+              - not_null

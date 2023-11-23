@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: stg_google_sheets__budget
+    description: Data about registered budgets.
+    columns:
+      - name: budget_id
+        tests:
+          - unique
+          - not_null
+        description: Primary key, a unique ID value for each row. Each row represents a separate budget.
+      - name: product_id
+        tests:
+          - not_null
+        description: Foreign key reference to the products table.
+      - name: budget_date
+        tests:
+          - not_null
+        description: Budget date associated with the budget identifier.
+      - name: number_of_units_of_product_sold
+        tests:
+          - positive_values
+        description: Number of units of a product sold associated with the product identifier.
+      - name: budget_batched_at_utc
+        tests:
+          - not_null
+        description: Date and time in UTC that the budget row data was loaded (inserted or updated).

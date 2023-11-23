@@ -1,0 +1,149 @@
+version: 2 # yml version used in this file, always defined to do not get errors
+
+sources: # to reference bronze data and to allow lineage, testing and documentation
+
+  - name: sql_server_dbo # name of the source
+    schema: sql_server_dbo # this is the schema our raw data lives in the DWH (Snowflake)
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database in the DWH (Snowflake)
+
+    quoting: # allow quotes in queries (true) or not (false, by default)
+      database: false
+      schema: false
+      identifier: false
+
+    freshness: # refresh the source
+      warn_after: {count: 72, period: hour}
+      error_after: {count: 100, period: hour}
+
+    loaded_at_field: _fivetran_synced
+
+    tables:
+
+      - name: addresses
+        description: Data about registered addresses.
+        columns:
+          - name: address_id
+            tests:
+              - unique
+              - not_null
+            description: Primary key, a unique ID value for each row. Each row represents a separate address.
+          - name: zipcode
+            description: zipcode associated with the address identifier.
+          - name: country
+            description: country associated with the address identifier.
+          - name: address
+            description: street number and name associated with the address identifier.
+          - name: state
+            description: state associated with the address identifier.
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
+
+      - name: events
+        columns:
+          - name: event_id
+            tests:
+              - unique
+              - not_null
+          - name: page_url
+          - name: event_type
+          - name: user_id
+          - name: product_id
+          - name: session_id
+          - name: created_at
+          - name: order_id
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
+
+      - name: order_items
+        columns:
+          - name: order_id
+          - name: product_id
+          - name: quantity
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
+
+      - name: orders
+        columns:
+          - name: order_id
+            tests:
+              - unique
+              - not_null
+          - name: shipping_service
+          - name: shipping_cost
+            tests:
+              - positive_values
+          - name: address_id
+          - name: created_at
+          - name: promo_id
+          - name: estimated_delivery_at
+          - name: order_cost
+            tests:
+              - positive_values
+          - name: user_id
+          - name: order_total
+            tests:
+              - not_null
+              - positive_values
+          - name: delivered_at
+          - name: tracking_id
+          - name: status
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
+
+      - name: products
+        columns:
+          - name: product_id
+            tests:
+                - unique
+                - not_null
+          - name: price
+          - name: name
+          - name: inventory
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
+
+      - name: promos
+        columns:
+          - name: promo_id
+            tests:
+              - not_null
+          - name: discount
+            tests:
+              - positive_values
+          - name: status
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
+
+      - name: users
+        loaded_at_field: _fivetran_synced
+        columns:
+          - name: user_id
+            tests:
+                - unique
+                - not_null
+          - name: updated_at
+          - name: address_id
+            tests:
+              - not_null
+          - name: last_name
+          - name: created_at
+          - name: phone_number
+          - name: total_orders
+          - name: first_name
+          - name: email
+          - name: _fivetran_deleted
+            description: boolean indicating whether row data was deleted (true) or not (NULL).
+          - name: _fivetran_synced
+            description: date that the address row data was loaded (inserted or updated).
