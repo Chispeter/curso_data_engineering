@@ -1,6 +1,21 @@
 version: 2 # copy and paste from source yml
 
 models:
+  - name: base_sql_server_dbo__addresses
+    columns:
+      - name: address_id
+        tests:
+          - unique
+          - not_null
+      - name: zipcode
+      - name: country
+      - name: address
+      - name: state
+      - name: _fivetran_deleted
+        description: Boolean indicating whether row data was deleted (true) or not (NULL).
+      - name: _fivetran_synced
+        description: Date that the address row data was loaded (inserted or updated).
+    
   - name: base_sql_server_dbo__orders
     columns:
       - name: order_id

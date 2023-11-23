@@ -24,7 +24,7 @@ customer_orders AS (
 
 dim_customers AS (
     SELECT
-        users.user_id,
+        users.customer_id,
         users.first_name,
         users.last_name,
         users.phone_number,

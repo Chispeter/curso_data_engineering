@@ -1,3 +1,9 @@
+{{
+  config(
+    materialized='table'
+  )
+}}
+
 {% set start_date_value = "2023-01-01" %} -- 1) company year foundation or 2) create macro that calculates the minimum date in all the sources table
 {% set margin_of_years_of_data_forecast = 1 %} -- given by company especifications (e.g. margin of years of data forecast of the company for the future)
 {% set end_date_value = "2023-12-31" %} 

@@ -1,4 +1,4 @@
-WITH base_promos AS (
+WITH base_sql_server_dbo__promos AS (
     SELECT *
     FROM {{ ref('base_sql_server_dbo__promos') }}
 ),
@@ -11,7 +11,7 @@ stg_sql_server_dbo__promotions AS (
         cast(status as varchar(50)) AS promotion_status,
         cast(coalesce(_fivetran_deleted, false) as boolean) AS was_this_promotion_row_deleted,
         cast(_fivetran_synced as timestamp_tz(9)) AS promotion_batched_at_utc
-    FROM base_promos
+    FROM base_sql_server_dbo__promos
 )
 
 SELECT * FROM stg_sql_server_dbo__promotions

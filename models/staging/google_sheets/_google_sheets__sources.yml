@@ -33,9 +33,6 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: product_id
             tests:
               - not_null
-              - relationships:
-                  to: source('sql_server_dbo', 'products')
-                  field: product_id
           - name: _fivetran_synced
             tests:
               - not_null

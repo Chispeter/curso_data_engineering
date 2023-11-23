@@ -19,7 +19,7 @@ base_sql_server_dbo__addresses AS (
     SELECT {{ dbt_utils.generate_surrogate_key(['null']) }},
             0,
             'No Country',
-            'No Address',
+            '0 No Address',
             'No State',
             null,
             min(_fivetran_synced)

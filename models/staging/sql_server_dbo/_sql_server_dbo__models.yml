@@ -108,7 +108,7 @@ models:
           - relationships:
               field: customer_id
               to: ref('stg_sql_server_dbo__customers')
-        description: Foreign key reference to the users table.
+        description: Foreign key reference to the customers table.
       - name: event_product_id
         tests:
           - not_null

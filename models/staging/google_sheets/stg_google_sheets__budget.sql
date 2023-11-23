@@ -1,15 +1,26 @@
-WITH src_budget AS (
+{{ config(
+    materialized='incremental',
+    unique_key='budget_id'
+    ) 
+    }}
+
+WITH src_google_sheets__budget AS (
     SELECT * 
     FROM {{ source('google_sheets', 'budget') }}
+    {% if is_incremental() %}
+
+        WHERE _fivetran_synced > (SELECT max(budget_batched_at_utc) FROM {{ this }})
+
+    {% endif %}
     ),
 
-stg_budget AS (
-    SELECT {{ dbt_utils.generate_surrogate_key(['_row']) }}::varchar(50) AS budget_id,
-            {{ replace_empty_and_null_values_with_tag('product_id', 'not registered') }}::varchar(50) AS product_id,
-            month::date AS budget_date,
-            quantity::number(38, 0) AS number_of_units_of_product_sold,
-            _fivetran_synced::date AS budget_load_date
-    FROM src_budget
+stg_google_sheets__budget AS (
+    SELECT cast({{ dbt_utils.generate_surrogate_key(['_row']) }} as varchar(50)) AS budget_id,
+            cast(product_id as varchar(50)) AS product_id,
+            cast(month as date) AS budget_date,
+            cast(quantity as number(38,0)) AS number_of_units_of_product_sold,
+            cast(_fivetran_synced as timestamp_tz(9))AS budget_batched_at_utc
+    FROM src_google_sheets__budget
     )
 
-SELECT * FROM stg_budget
+SELECT * FROM stg_google_sheets__budget
