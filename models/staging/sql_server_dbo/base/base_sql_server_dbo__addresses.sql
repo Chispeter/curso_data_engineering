@@ -8,7 +8,7 @@ base_sql_server_dbo__addresses AS (
         address_id,
         zipcode,
         country,
-        address
+        address,
         state,
         _fivetran_deleted,
         _fivetran_synced
@@ -16,7 +16,14 @@ base_sql_server_dbo__addresses AS (
 
     UNION ALL
 
-    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }}, 0, 'No Country', 'No Address', 'No State', null, current_timestamp()
+    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }},
+            0,
+            'No Country',
+            'No Address',
+            'No State',
+            null,
+            min(_fivetran_synced)
+    FROM src_sql_server_dbo__addresses
 )
 
 SELECT * FROM base_sql_server_dbo__addresses
