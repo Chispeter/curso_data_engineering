@@ -4,7 +4,7 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
 
   - name: google_sheets # name of the source
     schema: google_sheets # this is the schema our raw data lives in the DWH (Snowflake)
-    database: ALUMNO23_DEV_BRONZE_DB # this is the name of our database in the DWH (Snowflake)
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database in the DWH (Snowflake)
 
     quoting: # allow quotes in queries (true) or not (false, by default)
       database: false
