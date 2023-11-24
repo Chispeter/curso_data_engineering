@@ -16,7 +16,7 @@ number_of_total_orders_by_customer_id AS (
      
 ),
 
-number_of_total_orders_customers AS (
+number_of_orders_customers AS (
     SELECT CASE
                 WHEN order_number >= 3 THEN '3+'
                 ELSE cast(order_number as varchar(5))
@@ -24,12 +24,6 @@ number_of_total_orders_customers AS (
             COUNT(DISTINCT order_customer_id) AS total_customer_number
     FROM number_of_total_orders_by_customer_id
     GROUP BY total_order_number
-),
-
-example AS (
-    SELECT DISTINCT(event_session_id) AS event_counter,
-            event_created_at_utc
-    FROM stg_events
 )
 
-SELECT * FROM example
+SELECT * FROM number_of_orders_customers
