@@ -5,27 +5,41 @@ WITH src_sql_server_dbo__orders AS (
 
 base_sql_server_dbo__orders AS (
     SELECT order_id,
-            shipping_service,
+            decode(shipping_service, '', 'no shipping service', shipping_service) AS shipping_service,
             shipping_cost,
             address_id,
             created_at,
-            {{ replace_empty_and_null_values_with_tag(get_lowercased_column('promo_id'), 'no promo') }} AS promo_name,
+            decode(promo_id, '', 'no promo', {{get_lowercased_column('promo_id')}}) AS promo_name,
             estimated_delivery_at,
             order_cost,
             user_id,
             order_total,
             delivered_at,
-            tracking_id,
+            decode(tracking_id, '', {{ dbt_utils.generate_surrogate_key(['null']) }}, tracking_id) AS tracking_id,
             status,
             _fivetran_deleted,
             _fivetran_synced
     FROM src_sql_server_dbo__orders
-    /*
+
     UNION ALL
 
-    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }}, 0, 'No Product', 0, null, min(_fivetran_synced)
+    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }},
+            'no shipping service',
+            0,
+            {{ dbt_utils.generate_surrogate_key(['null']) }},
+            null,
+            'no promo',
+           null,
+            0,
+            {{ dbt_utils.generate_surrogate_key(['null']) }},
+            0,
+            null,
+            {{ dbt_utils.generate_surrogate_key(['null']) }},
+            'no status',
+            null,
+            min(_fivetran_synced)
     FROM src_sql_server_dbo__orders
-    */
+
     )
 
 SELECT * FROM base_sql_server_dbo__orders

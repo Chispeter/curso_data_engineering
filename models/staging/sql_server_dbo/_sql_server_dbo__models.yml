@@ -91,8 +91,6 @@ models:
         tests:
           - not_null
         description: Date and time in UTC that the customer row data was loaded (inserted or updated).
-      
-  # MISSING DATE MODEL
 
   - name: stg_sql_server_dbo__events # CHECKED
     description: Data about registered events created by visits to a web page.
@@ -109,6 +107,10 @@ models:
               field: customer_id
               to: ref('stg_sql_server_dbo__customers')
         description: Foreign key reference to the customers table.
+      - name: event_session_id
+        tests:
+          - not_null
+        description: Foreign key reference to an unknown sessions table.
       - name: event_product_id
         tests:
           - not_null
@@ -123,10 +125,6 @@ models:
               field: order_id
               to: ref('stg_sql_server_dbo__orders')
         description: Foreign key reference to the orders table.
-      - name: event_session_id
-        tests:
-          - not_null
-        description: Foreign key reference to an unknown sessions table.
       - name: event_created_at_utc
         tests:
           - not_null
@@ -154,14 +152,14 @@ models:
           - not_null
         description: Date and time in UTC that the event row data was loaded (inserted or updated).
 
-  - name: stg_sql_server_dbo__order_products
-    description: Data about number of units of registered product that have been sold in each registered order.
+  - name: stg_sql_server_dbo__order_products # CHECKED
+    description: Data about number of units of each registered product that have been sold in each registered order.
     columns:
       - name: order_product_id
         tests:
           - unique
           - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate order line.
+        description: Primary key, a unique ID value for each row. Each row represents a separate order product (order line).
       - name: order_id
         tests:
           - not_null
@@ -179,7 +177,7 @@ models:
       - name: number_of_units_of_product_sold
         tests:
           - not_null
-        description: Number of units of product sold associated with the order product identifier.
+        description: Number of units of product sold associated with the product identifier.
       - name: was_this_order_product_row_deleted
         tests:
           - not_null
@@ -200,7 +198,7 @@ models:
           - unique
           - not_null
         description: Primary key, a unique ID value for each row. Each row represents a separate order.
-      - name: customer_id
+      - name: order_customer_id
         tests:
           - not_null
           - relationships:
@@ -214,17 +212,18 @@ models:
               field: address_id
               to: ref('stg_sql_server_dbo__addresses')
         description: Foreign key reference to the addresses table.
-      - name: promotion_id
+      - name: order_promotion_id
         tests:
+          - not_null
           - relationships:
               field: promotion_id
               to: ref('stg_sql_server_dbo__promotions')
         description: Foreign key reference to the promotions table.
-      - name: tracking_id
+      - name: order_tracking_id
         description: Foreign key reference to an unknown trackings table.
-      - name: shipping_service_name
+      - name: order_shipping_service_name
         description: Shipping service name associated with the order identifier.
-      - name: shipping_service_cost_in_usd
+      - name: order_shipping_service_cost_in_usd
         tests:
           - positive_values
         description: Shipping service cost in USD associated with the order identifier.
@@ -232,7 +231,7 @@ models:
         tests:
           - positive_values
         description: Order cost in USD associated with the order identifier.
-      - name: total_order_cost_in_usd
+      - name: order_total_cost_in_usd
         tests:
           - positive_values
         description: Order total cost (shipping service cost + order cost) in USD associated with the order identifier.
@@ -246,9 +245,9 @@ models:
       - name: order_created_at_utc
         description: Date and time in UTC that the order was created.
       - name: order_estimated_delivery_at_utc
-        description: Date and time in UTC that the order delivery was estimated.
+        description: Date and time in UTC that the order delivery was estimated to be delivered.
       - name: order_delivered_at_utc
-        description: Date and time in UTC that the order delivery was performed.
+        description: Date and time in UTC that the order delivery was delivered.
       - name: was_this_order_row_deleted
         tests:
           - not_null
@@ -277,10 +276,10 @@ models:
         tests:
           - positive_values
         description: Product price in USD associated with product identifier.
-      - name: number_of_units_of_product_in_inventory
+      - name: product_number_of_units_in_inventory
         tests:
           - positive_values
-        description: Number of units of product in inventory associated with product identifier.
+        description: Number of units of a product in inventory associated with product identifier.
       - name: was_this_product_row_deleted
         tests:
           - not_null
@@ -315,7 +314,7 @@ models:
           - accepted_values:
               values: ['active', 'inactive']
               quote: true
-        description: Number of units of product in inventory associated with promotion identifier.
+        description: Promotion status associated with promotion identifier.
       - name: was_this_promotion_row_deleted
         tests:
           - not_null

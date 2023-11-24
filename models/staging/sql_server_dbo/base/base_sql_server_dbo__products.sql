@@ -14,7 +14,13 @@ base_sql_server_dbo__products AS (
 
     UNION ALL
 
-    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }}, 0, 'No Product', 0, null, current_timestamp()
+    SELECT {{ dbt_utils.generate_surrogate_key(['null']) }},
+            0,
+            'No Product',
+            0,
+            null,
+            min(_fivetran_synced)
+    FROM src_sql_server_dbo__products
     )
 
 SELECT * FROM base_sql_server_dbo__products

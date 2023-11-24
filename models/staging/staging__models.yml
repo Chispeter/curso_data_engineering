@@ -88,7 +88,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "Octuber", "November", "December"]
+              values: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
               quote: true
         description: Month name associated with the date identifier.
       - name: month_name_short

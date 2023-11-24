@@ -1,6 +1,6 @@
-WITH src_sql_server_dbo__events AS (
+WITH base_sql_server_dbo__events AS (
     SELECT *
-    FROM {{ source('sql_server_dbo', 'events') }}
+    FROM {{ ref('base_sql_server_dbo__events') }}
 ),
 
 stg_sql_server_dbo__events AS (
@@ -15,7 +15,7 @@ stg_sql_server_dbo__events AS (
         cast(event_type as varchar(50)) AS event_type,
         cast(coalesce(_fivetran_deleted, false) as boolean) AS was_this_event_row_deleted,
         cast(_fivetran_synced as timestamp_tz(9)) AS event_batched_at_utc
-    FROM src_sql_server_dbo__events
+    FROM base_sql_server_dbo__events
 )
 
 SELECT * FROM stg_sql_server_dbo__events
