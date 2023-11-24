@@ -1,5 +1,4 @@
-WITH WITH src_sql_server_dbo__order_items AS (
- AS (
+WITH src_sql_server_dbo__order_items AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'order_items') }}
 ),

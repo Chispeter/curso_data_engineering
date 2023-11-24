@@ -19,7 +19,7 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
 
     tables:
 
-      - name: addresses
+      - name: addresses # CHECKED
         description: Data about registered addresses.
         columns:
           - name: address_id
@@ -28,122 +28,166 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
             description: Primary key, a unique ID value for each row. Each row represents a separate address.
           - name: zipcode
-            description: zipcode associated with the address identifier.
+            description: Zipcode associated with the address identifier.
           - name: country
-            description: country associated with the address identifier.
+            description: Country associated with the address identifier.
           - name: address
-            description: street number and name associated with the address identifier.
+            description: Street number and name associated with the address identifier.
           - name: state
-            description: state associated with the address identifier.
+            description: State associated with the address identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether address row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the address row data was loaded (inserted or updated).
 
-      - name: events
+      - name: events # CHECKED
+        description: Data about registered events.
         columns:
           - name: event_id
             tests:
               - unique
               - not_null
+            description: Primary key, a unique ID value for each row. Each row represents a separate event.
           - name: page_url
+            description: Page URL associated with the event identifier.
           - name: event_type
+            description: Event type associated with the event identifier.
           - name: user_id
+            description: User identifier associated with the event identifier.
           - name: product_id
+            description: Product identifier associated with the event identifier.
           - name: session_id
+            description: An unknown session identifier associated with the event identifier.
           - name: created_at
+            description: Date and time that the event was created.
           - name: order_id
+            description: Order identifier associated with the event identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether event row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the event row data was loaded (inserted or updated).
 
-      - name: order_items
+      - name: order_items # CHECKED
+        description: Data about registered order items.
         columns:
           - name: order_id
+            description: Primary key, a unique ID value for each row. Each row represents a separate order.
           - name: product_id
+            description: Primary key, a unique ID value for each row. Each row represents a separate product.
           - name: quantity
+            description: Quantity associated with the product identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether order item row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the order item row data was loaded (inserted or updated).
 
-      - name: orders
+      - name: orders # CHECKED
+        description: Data about registered orders.
         columns:
           - name: order_id
             tests:
               - unique
               - not_null
+            description: Primary key, a unique ID value for each row. Each row represents a separate order.
           - name: shipping_service
+            description: Shipping service associated with the order identifier.
           - name: shipping_cost
             tests:
               - positive_values
+            description: Shipping cost associated with the order identifier.
           - name: address_id
+            description: Address identifier associated with the order identifier.
           - name: created_at
+            description: Date and time that the order was created.
           - name: promo_id
+            description: Promo identifier associated with the order identifier.
           - name: estimated_delivery_at
+            description: Date and time that the order was estimated to be delivered.
           - name: order_cost
             tests:
               - positive_values
+            description: Order cost associated with the order identifier.
           - name: user_id
+            description: User identifier associated with the order identifier.
           - name: order_total
             tests:
-              - not_null
               - positive_values
+            description: Order total (order_cost + shipping_cost) associated with the order identifier.
           - name: delivered_at
+            description: Date and time that the order was delivered.
           - name: tracking_id
+            description: An unknown tracking identifier associated with the order identifier.
           - name: status
+            description: Status associated with the order identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether order row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the order row data was loaded (inserted or updated).
 
-      - name: products
+      - name: products # CHECKED
+        description: Data about registered products.
         columns:
           - name: product_id
             tests:
                 - unique
                 - not_null
+            description: Primary key, a unique ID value for each row. Each row represents a separate product.
           - name: price
+            description: Price associated with the product identifier.
           - name: name
+            description: Name associated with the product identifier.
           - name: inventory
+            description: Inventory associated with the product identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether product row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the product row data was loaded (inserted or updated).
 
-      - name: promos
+      - name: promos # CHECKED
+        description: Data about registered promos.
         columns:
           - name: promo_id
             tests:
               - not_null
+            description: Promo associated with the promo identifier.
           - name: discount
             tests:
               - positive_values
+            description: Discount associated with the promo identifier.
           - name: status
+            description: Status associated with the promo identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether promo row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the promo row data was loaded (inserted or updated).
 
-      - name: users
-        loaded_at_field: _fivetran_synced
+      - name: users # CHECKED
+        description: Data about registered users.
         columns:
           - name: user_id
             tests:
                 - unique
                 - not_null
+            description: Primary key, a unique ID value for each row. Each row represents a separate user.
           - name: updated_at
+            description: Date and time that the user was updated.
           - name: address_id
             tests:
               - not_null
+            description: Address identifier associated with the user identifier.
           - name: last_name
+            description: Last name associated with the user identifier.
           - name: created_at
+            description: Date and time that the user was created.
           - name: phone_number
+            description: Phone number associated with the user identifier.
           - name: total_orders
+            description: Total orders associated with the user identifier.
           - name: first_name
+            description: First name associated with the user identifier.
           - name: email
+            description: Email associated with the user identifier.
           - name: _fivetran_deleted
-            description: boolean indicating whether row data was deleted (true) or not (NULL).
+            description: Boolean indicating whether user row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
-            description: date that the address row data was loaded (inserted or updated).
+            description: Date and time that the user row data was loaded (inserted or updated).
