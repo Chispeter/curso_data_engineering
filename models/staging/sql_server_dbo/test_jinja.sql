@@ -1,3 +1,4 @@
+/*
 {% set event_types = get_values_from_column(ref('stg_sql_server_dbo__events'), 'event_type') %}
 WITH stg_events AS (
     SELECT * 
@@ -16,3 +17,4 @@ renamed_casted AS (
     )
 
 SELECT * FROM renamed_casted
+*/

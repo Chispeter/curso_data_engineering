@@ -239,7 +239,7 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['delivered', 'preparing', 'shipped']
+              values: ['delivered', 'preparing', 'shipped', 'no status']
               quote: true
         description: Order status associated with the order identifier.
       - name: order_created_at_utc
@@ -287,10 +287,10 @@ models:
               values: [true, false]
               quote: false
         description: Boolean indicating whether product row data was deleted.
-      - name: product_load_date
+      - name: product_batched_at_utc
         tests:
           - not_null
-        description: Date that the product row data was loaded (inserted or updated).
+        description: Date and time in UTC that the product row data was loaded (inserted or updated).
 
   - name: stg_sql_server_dbo__promotions # CHECKED
     description: Data about registered promotions.
