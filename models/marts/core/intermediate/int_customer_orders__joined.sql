@@ -9,7 +9,14 @@ int_customer_orders__grouped AS (
 ),
 
 int_customer_orders__joined AS (
-    SELECT customers.customer_id AS customer_id,
+    SELECT -- CUSTOMERS
+            -- customer data
+            customers.customer_id AS customer_id,
+            customers.customer_first_name AS customer_first_name,
+            customers.customer_last_name AS customer_last_name,
+            customers.customer_phone_number AS customer_phone_number,
+            customers.customer_email AS customer_email,
+            -- INT_CUSTOMER_ORDERS__GROUPED (order data of each customer_id)
             -- order dates
             customer_orders.oldest_order_date AS oldest_order_date,
             customer_orders.most_recent_order_date AS most_recent_order_date,
