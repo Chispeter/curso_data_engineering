@@ -3,7 +3,7 @@ WITH stg_orders AS (
     FROM {{ ref('stg_sql_server_dbo__orders') }}
 ),
 
-dim_orders AS (
+fct_orders AS (
     SELECT
         order_id,
         user_id,
@@ -23,4 +23,4 @@ dim_orders AS (
     FROM stg_orders
     )
 
-SELECT * FROM dim_orders
+SELECT * FROM fct_orders
