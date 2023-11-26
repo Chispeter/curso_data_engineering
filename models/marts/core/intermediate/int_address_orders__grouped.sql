@@ -13,8 +13,13 @@ int_address_orders__grouped AS (
             max(order_cost_in_usd) AS most_expensive_order_cost_in_usd,
             cast(avg(order_cost_in_usd) as number(38,2)) AS average_order_cost_in_usd,
             sum(order_cost_in_usd) AS total_amount_spent_in_usd,
-            -- number of total orders
-            cast(count(order_address_id) as number(38,0)) AS number_of_total_orders,
+            -- number of orders
+            count(case when order_status = 'no status' then 1 end) AS number_of_pending_orders,
+            count(case when order_status = 'preparing' then 1 end) AS number_of_preparing_orders,
+            count(case when order_status = 'shipped' then 1 end) AS number_of_shipped_orders,
+            count(case when order_status = 'delivered' then 1 end) AS number_of_delivered_orders,
+            -- number of total orders should be equal to the sum of all the above
+            count(order_address_id) AS number_of_total_orders,
             -- address_value = average_order_cost_in_usd * number_of_total_orders
             cast((avg(order_cost_in_usd) *  count(order_address_id)) as number(38,2)) AS address_value_in_usd
     FROM stg_orders

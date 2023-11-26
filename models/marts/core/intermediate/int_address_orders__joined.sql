@@ -26,12 +26,17 @@ int_address_orders__joined AS (
             coalesce(address_orders.most_expensive_order_cost_in_usd, 0) AS most_expensive_order_cost_in_usd,
             coalesce(address_orders.average_order_cost_in_usd, 0) AS average_order_cost_in_usd,
             coalesce(address_orders.total_amount_spent_in_usd, 0) AS total_amount_spent_in_usd,
-            -- number of total orders
+            -- number of orders
+            coalesce (address_orders.number_of_pending_orders, 0) AS number_of_pending_orders,
+            coalesce (address_orders.number_of_preparing_orders, 0) AS number_of_preparing_orders,
+            coalesce (address_orders.number_of_shipped_orders, 0) AS number_of_shipped_orders,
+            coalesce (address_orders.number_of_delivered_orders, 0) AS number_of_delivered_orders,
+            -- number of total orders should be equal to the sum of all the above
             coalesce (address_orders.number_of_total_orders, 0) AS number_of_total_orders,
             -- address_value = average_order_cost_in_usd * number_of_total_orders
             coalesce(address_orders.address_value_in_usd, 0) AS address_value_in_usd
     FROM stg_addresses AS addresses
-    LEFT JOIN int_address_orders__grouped address_orders ON addresses.address_id = address_orders.order_address_id
+    LEFT JOIN int_address_orders__grouped AS address_orders ON addresses.address_id = address_orders.order_address_id
     
     )
 

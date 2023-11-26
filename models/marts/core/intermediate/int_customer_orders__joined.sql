@@ -25,12 +25,17 @@ int_customer_orders__joined AS (
             coalesce(customer_orders.most_expensive_order_cost_in_usd, 0) AS most_expensive_order_cost_in_usd,
             coalesce(customer_orders.average_order_cost_in_usd, 0) AS average_order_cost_in_usd,
             coalesce(customer_orders.total_amount_spent_in_usd, 0) AS total_amount_spent_in_usd,
-            -- number of total orders
+            -- number of orders
+            coalesce (customer_orders.number_of_pending_orders, 0) AS number_of_pending_orders,
+            coalesce (customer_orders.number_of_preparing_orders, 0) AS number_of_preparing_orders,
+            coalesce (customer_orders.number_of_shipped_orders, 0) AS number_of_shipped_orders,
+            coalesce (customer_orders.number_of_delivered_orders, 0) AS number_of_delivered_orders,
+            -- number of total orders should be equal to the sum of all the above
             coalesce (customer_orders.number_of_total_orders, 0) AS number_of_total_orders,
             -- customer_value = average_order_cost_in_usd * number_of_total_orders
             coalesce(customer_orders.customer_value_in_usd, 0) AS customer_value_in_usd
     FROM snapshot_customers AS customers
-    LEFT JOIN int_customer_orders__grouped customer_orders ON customers.customer_id = customer_orders.order_customer_id
+    LEFT JOIN int_customer_orders__grouped AS customer_orders ON customers.customer_id = customer_orders.order_customer_id
     
     )
 
