@@ -17,6 +17,8 @@ dim_customers AS (
         customers.customer_last_name AS customer_last_name,
         customers.customer_phone_number AS customer_phone_number,
         customers.customer_email AS customer_email,
+        customers.customer_created_at_utc AS customer_created_at_utc,
+        customers.customer_updated_at_utc AS customer_updated_at_utc,
         -- address_id of customer_id
         customers.customer_address_id AS customer_address_id,
         -- INT_CUSTOMER_ORDERS__JOINED
@@ -28,9 +30,9 @@ dim_customers AS (
         customer_orders.most_expensive_order_cost_in_usd AS most_expensive_order_cost_in_usd,
         customer_orders.average_order_cost_in_usd AS average_order_cost_in_usd,
         customer_orders.total_amount_spent_in_usd AS total_amount_spent_in_usd,
-        -- number of total orders
-        customer_orders.number_of_total_orders AS number_of_total_orders,
-        -- customer_value = average_order_cost_in_usd * number_of_orders
+        -- total number of orders
+        customer_orders.number_of_total_orders AS total_number_of_orders,
+        -- customer_value = average_order_cost_in_usd * total_number_of_orders
         customer_orders.customer_value_in_usd AS customer_value_in_usd
     FROM snapshot_customers AS customers
     LEFT JOIN int_customer_orders__joined AS customer_orders ON customers.customer_id = customer_orders.customer_id

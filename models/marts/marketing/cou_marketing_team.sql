@@ -1,28 +1,22 @@
-WITH customers AS (
+WITH int_customer_addresses__joined AS (
     SELECT *
-    FROM {{ ref('stg_sql_server_dbo__customers') }}
-),
-
-addresses AS (
-    SELECT *
-    FROM {{ ref('stg_sql_server_dbo__addresses') }}
+    FROM {{ ref('int_customer_addresses__joined') }}
 ),
 
 cou_marketing_team AS (
-    SELECT customers.customer_id,
-            customers.customer_first_name,
-            customers.customer_last_name,
-            customers.customer_email,
-            customers.customer_phone_number,
-            customers.customer_created_at_utc,
-            customers.customer_updated_at_utc,
-            addresses.address_street_number,
-            addresses.address_street_name,
-            addresses.address_state_name,
-            addresses.address_zipcode,
-            addresses.address_country_name
-    FROM customers
-    LEFT JOIN addresses ON customers.customer_address_id = addresses.address_id
+    SELECT customer_addresses.customer_id,
+            customer_addresses.customer_first_name,
+            customer_addresses.customer_last_name,
+            customer_addresses.customer_email,
+            customer_addresses.customer_phone_number,
+            customer_addresses.customer_created_at_utc,
+            customer_addresses.customer_updated_at_utc,
+            customer_addresses.address_street_number,
+            customer_addresses.address_street_name,
+            customer_addresses.address_state_name,
+            customer_addresses.address_zipcode,
+            customer_addresses.address_country_name
+    FROM int_customer_addresses__joined AS customer_addresses
 )
 
 SELECT * FROM cou_marketing_team
