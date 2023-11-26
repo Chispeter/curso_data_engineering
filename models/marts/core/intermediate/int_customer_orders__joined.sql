@@ -1,6 +1,6 @@
-WITH stg_customers AS (
+WITH snapshot_customers AS (
     SELECT * 
-    FROM {{ ref('stg_sql_server_dbo__customers') }}
+    FROM {{ ref('snapshot_customers') }}
     ),
     
 int_customer_orders__grouped AS (
@@ -9,7 +9,7 @@ int_customer_orders__grouped AS (
 ),
 
 int_customer_orders__joined AS (
-    SELECT -- CUSTOMERS
+    SELECT -- SNAPSHOT_CUSTOMERS
             -- customer data
             customers.customer_id AS customer_id,
             customers.customer_first_name AS customer_first_name,
@@ -27,9 +27,9 @@ int_customer_orders__joined AS (
             coalesce(customer_orders.total_amount_spent_in_usd, 0) AS total_amount_spent_in_usd,
             -- number of total orders
             coalesce (customer_orders.number_of_total_orders, 0) AS number_of_total_orders,
-            -- customer_value = average_order_cost_in_usd * number_of_orders
+            -- customer_value = average_order_cost_in_usd * number_of_total_orders
             coalesce(customer_orders.customer_value_in_usd, 0) AS customer_value_in_usd
-    FROM stg_customers AS customers
+    FROM snapshot_customers AS customers
     LEFT JOIN int_customer_orders__grouped customer_orders ON customers.customer_id = customer_orders.order_customer_id
     
     )

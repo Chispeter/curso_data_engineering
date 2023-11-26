@@ -10,7 +10,7 @@ int_customer_orders__joined AS (
 
 dim_customers AS (
     SELECT
-        -- SNAPSHOT__CUSTOMERS
+        -- SNAPSHOT_CUSTOMERS
         -- customer data of customer_id
         customers.customer_id AS customer_id,
         customers.customer_first_name AS customer_first_name,
