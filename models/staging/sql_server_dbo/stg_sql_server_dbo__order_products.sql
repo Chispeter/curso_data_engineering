@@ -1,6 +1,12 @@
 WITH src_sql_server_dbo__order_items AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'order_items') }}
+    
+    {% if is_incremental() %}
+
+        WHERE _fivetran_synced > (SELECT max(_fivetran_synced) FROM {{ this }})
+
+    {% endif %}
 ),
 
 stg_sql_server_dbo__order_products AS (

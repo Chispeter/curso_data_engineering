@@ -1,6 +1,12 @@
 WITH src_sql_server_dbo_events AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'events') }}
+
+    {% if is_incremental() %}
+
+        WHERE _fivetran_synced > (SELECT max(_fivetran_synced) FROM {{ this }})
+
+    {% endif %}
 ),
 
 base_sql_server_dbo_events AS (

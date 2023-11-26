@@ -1,16 +1,25 @@
-WITH int_customer_orders__joined AS (
+WITH snapshot_customers AS (
+    SELECT *
+    FROM {{ ref('snapshot_customers') }}
+),
+
+int_customer_orders__joined AS (
     SELECT *
     FROM {{ ref('int_customer_orders__joined') }}
-    ),
+),
 
 dim_customers AS (
     SELECT
-        -- customer data
-        customer_orders.customer_id AS customer_id,
-        customer_orders.customer_first_name AS customer_first_name,
-        customer_orders.customer_last_name AS customer_last_name,
-        customer_orders.customer_phone_number AS customer_phone_number,
-        customer_orders.customer_email AS customer_email,
+        -- SNAPSHOT__CUSTOMERS
+        -- customer data of customer_id
+        customers.customer_id AS customer_id,
+        customers.customer_first_name AS customer_first_name,
+        customers.customer_last_name AS customer_last_name,
+        customers.customer_phone_number AS customer_phone_number,
+        customers.customer_email AS customer_email,
+        -- address_id of customer_id
+        customers.customer_address_id AS customer_address_id,
+        -- INT_CUSTOMER_ORDERS__JOINED
         -- order dates
         customer_orders.oldest_order_date AS oldest_order_date,
         customer_orders.most_recent_order_date AS most_recent_order_date,
@@ -23,7 +32,8 @@ dim_customers AS (
         customer_orders.number_of_total_orders AS number_of_total_orders,
         -- customer_value = average_order_cost_in_usd * number_of_orders
         customer_orders.customer_value_in_usd AS customer_value_in_usd
-    FROM int_customer_orders__joined AS customer_orders
+    FROM snapshot_customers AS customers
+    LEFT JOIN int_customer_orders__joined AS customer_orders ON customers.customer_id = customer_orders.customer_id
     )
 
 SELECT * FROM dim_customers
