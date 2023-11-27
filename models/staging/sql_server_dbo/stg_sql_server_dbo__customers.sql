@@ -15,7 +15,7 @@ WITH src_sql_server_dbo__users AS (
 
     {% endif %}
 
-    ),
+),
 
 stg_sql_server_dbo__customers AS (
     SELECT cast(user_id as varchar(50)) AS customer_id,
