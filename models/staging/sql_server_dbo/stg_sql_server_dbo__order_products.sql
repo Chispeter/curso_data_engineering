@@ -17,6 +17,7 @@ stg_sql_server_dbo__order_products AS (
             cast(coalesce(_fivetran_deleted, false) as boolean) AS was_this_order_product_row_deleted,
             cast(_fivetran_synced as timestamp_tz(9)) AS order_product_batched_at_utc
 FROM src_sql_server_dbo__order_items
+ORDER BY 2, 3
 )
 
 SELECT * FROM stg_sql_server_dbo__order_products
