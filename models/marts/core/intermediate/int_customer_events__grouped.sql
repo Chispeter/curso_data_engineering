@@ -16,8 +16,9 @@ int_customer_events__grouped AS (
             -- total number of events should be equal to the sum of all the above
             cast(count(event_customer_id) as number(38,0)) AS total_number_of_events,
             -- conditional probabilities of events
-            -- % probability of adding a product to the cart after having seen and analyzed it
+            -- % probability of adding a product to the cart after viewing and analyzing it
             cast(100*number_of_add_to_cart_events/number_of_page_view_events as number(38,2)) AS probability_of_add_to_cart_in_percentage,
+            -- % probability of checkout a order after adding products to the cart
             cast(100*number_of_checkout_events/number_of_add_to_cart_events as number(38,2)) AS probability_of_checkout_in_percentage,
             -- % probability of ending in a purchase
             cast(100*number_of_package_shipped_events/number_of_checkout_events as number(38,2)) AS probability_of_package_shipped_in_percentage
