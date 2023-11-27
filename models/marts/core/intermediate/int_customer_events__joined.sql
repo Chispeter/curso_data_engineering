@@ -34,7 +34,7 @@ int_customer_events__joined AS (
             coalesce(customer_events.probability_of_add_to_cart_in_percentage, 0) AS probability_of_add_to_cart_in_percentage,
             -- % probability of checkout a order after adding products to the cart
             coalesce(customer_events.probability_of_checkout_in_percentage, 0) AS probability_of_checkout_in_percentage,
-            -- % probability of ending in a purchase
+            -- % probability of ending in a purchase after checking out the order
             coalesce(customer_events.probability_of_package_shipped_in_percentage, 0) AS probability_of_package_shipped_in_percentage
     FROM snapshot_customers AS customers
     LEFT JOIN int_customer_events__grouped AS customer_events ON customers.customer_id = customer_events.event_customer_id
