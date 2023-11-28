@@ -30,9 +30,7 @@ int_promotion_orders__joined AS (
             coalesce (promotion_orders.number_of_shipped_orders, 0) AS number_of_shipped_orders,
             coalesce (promotion_orders.number_of_delivered_orders, 0) AS number_of_delivered_orders,
             -- total number of orders should be equal to the sum of all the above
-            coalesce (promotion_orders.number_of_total_orders, 0) AS total_number_of_orders,
-            -- promotion_value = average_order_cost_in_usd * number_of_total_orders
-            coalesce(promotion_orders.promotion_value_in_usd, 0) AS promotion_value_in_usd
+            coalesce (promotion_orders.number_of_total_orders, 0) AS total_number_of_orders
     FROM snapshot_promotions AS promotions
     LEFT JOIN int_promotion_orders__grouped AS promotion_orders ON promotions.promotion_id = promotion_orders.order_promotion_id
     

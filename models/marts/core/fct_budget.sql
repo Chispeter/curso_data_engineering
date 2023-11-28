@@ -8,7 +8,7 @@ fct_budget AS (
         budget_id,
         product_id,
         budget_date,
-        number_of_units_of_product_sold
+        number_of_units_of_product_expected_to_be_sold
     FROM snapshot_budget
     )
 

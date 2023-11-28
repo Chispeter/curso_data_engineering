@@ -17,10 +17,10 @@ models:
         tests:
           - not_null
         description: Budget date associated with the budget identifier.
-      - name: number_of_units_of_product_sold
+      - name: number_of_units_of_product_expected_to_be_sold
         tests:
           - positive_values
-        description: Number of units of a product sold associated with the product identifier.
+        description: Number of units of a product expected to be sold associated with the product identifier.
       - name: budget_batched_at_utc
         tests:
           - not_null

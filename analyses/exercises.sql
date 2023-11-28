@@ -1,7 +1,7 @@
 -- 1. ¿Cuántos usuarios tenemos?
 -- Solucion: 130 usuarios
 SELECT count(*) AS number_of_total_customers
-FROM {{ ref('stg_sql_server_dbo__customers') }}
+FROM {{ ref('dim_customers') }}
 
 -- 2. En promedio, ¿cuánto tiempo tarda un pedido desde que se realiza hasta que se entrega?
 -- Solucion: 3.89 dias

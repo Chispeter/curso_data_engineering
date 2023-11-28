@@ -20,6 +20,7 @@ int_customer_addresses__joined AS (
             customers.customer_updated_at_utc AS customer_updated_at_utc,
             -- INT_CUSTOMER_ADDRESSES__JOINED (address data of each customer_id)
             -- address data
+            addresses.address_id AS address_id,
             addresses.address_street_number AS address_street_number,
             addresses.address_street_name AS address_street_name,
             addresses.address_state_name AS address_state_name,

@@ -10,6 +10,7 @@ fct_order_products AS (
         product_id,
         number_of_units_of_product_sold
     FROM stg_order_products
+    ORDER BY 2
     )
 
 SELECT * FROM fct_order_products

@@ -19,9 +19,7 @@ int_promotion_orders__grouped AS (
             count(case when order_status = 'shipped' then 1 end) AS number_of_shipped_orders,
             count(case when order_status = 'delivered' then 1 end) AS number_of_delivered_orders,
             -- total number of orders should be equal to the sum of all the above
-            count(order_promotion_id) AS total_number_of_orders,
-            -- promotion_value = average_order_cost_in_usd * total_number_of_orders
-            cast((avg(order_cost_in_usd) *  count(order_promotion_id)) as number(38,2)) AS promotion_value_in_usd
+            count(order_promotion_id) AS total_number_of_orders
     FROM stg_orders
     GROUP BY order_promotion_id
     )

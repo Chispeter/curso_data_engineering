@@ -15,9 +15,11 @@ dim_orders AS (
         order_cost_in_usd,
         order_total_cost_in_usd,
         order_status,
-        corder_created_at_utc,
+        order_created_at_utc,
         order_estimated_delivery_at_utc,
-        order_delivered_at_utc
+        order_delivered_at_utc,
+        -- 
+        timestampdiff(minute, min(cast(order_created_at_utc as timestamp_ntz(9))), max(cast(order_delivered_at_utc as timestamp_ntz(9)))) AS session_length_minutes
     FROM stg_orders
     )
 
