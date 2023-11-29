@@ -19,7 +19,7 @@ dim_orders AS (
         order_estimated_delivery_at_utc,
         order_delivered_at_utc,
         -- 
-        timestampdiff(minute, min(cast(order_created_at_utc as timestamp_ntz(9))), max(cast(order_delivered_at_utc as timestamp_ntz(9)))) AS session_length_minutes
+        timestampdiff(hour, min(cast(order_created_at_utc as timestamp_ntz(9))), max(cast(order_delivered_at_utc as timestamp_ntz(9)))) AS order_delivery_time_in_hours
     FROM stg_orders
     )
 
