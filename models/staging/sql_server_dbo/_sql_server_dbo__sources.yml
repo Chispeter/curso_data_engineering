@@ -28,13 +28,13 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
             description: Primary key, a unique ID value for each row. Each row represents a separate address.
           - name: zipcode
-            description: Zipcode associated with the address identifier.
+            description: Zipcode related to the address identifier.
           - name: country
-            description: Country associated with the address identifier.
+            description: Country related to the address identifier.
           - name: address
-            description: Street number and name associated with the address identifier.
+            description: Street number and name related to the address identifier.
           - name: state
-            description: State associated with the address identifier.
+            description: State related to the address identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether address row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
@@ -49,19 +49,19 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
             description: Primary key, a unique ID value for each row. Each row represents a separate event.
           - name: page_url
-            description: Page URL associated with the event identifier.
+            description: Page URL related to the event identifier.
           - name: event_type
-            description: Event type associated with the event identifier.
+            description: Event type related to the event identifier.
           - name: user_id
-            description: User identifier associated with the event identifier.
+            description: User identifier related to the event identifier.
           - name: product_id
-            description: Product identifier associated with the event identifier.
+            description: Product identifier related to the event identifier.
           - name: session_id
-            description: An unknown session identifier associated with the event identifier.
+            description: An unknown session identifier related to the event identifier.
           - name: created_at
             description: Date and time that the event was created.
           - name: order_id
-            description: Order identifier associated with the event identifier.
+            description: Order identifier related to the event identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether event row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
@@ -75,7 +75,7 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: product_id
             description: Primary key, a unique ID value for each row. Each row represents a separate product.
           - name: quantity
-            description: Quantity associated with the product identifier.
+            description: Quantity related to the product identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether order item row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
@@ -90,35 +90,35 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
               - not_null
             description: Primary key, a unique ID value for each row. Each row represents a separate order.
           - name: shipping_service
-            description: Shipping service associated with the order identifier.
+            description: Shipping service related to the order identifier.
           - name: shipping_cost
             tests:
               - positive_values
-            description: Shipping cost associated with the order identifier.
+            description: Shipping cost related to the order identifier.
           - name: address_id
-            description: Address identifier associated with the order identifier.
+            description: Address identifier related to the order identifier.
           - name: created_at
             description: Date and time that the order was created.
           - name: promo_id
-            description: Promo identifier associated with the order identifier.
+            description: Promo identifier related to the order identifier.
           - name: estimated_delivery_at
             description: Date and time that the order was estimated to be delivered.
           - name: order_cost
             tests:
               - positive_values
-            description: Order cost associated with the order identifier.
+            description: Order cost related to the order identifier.
           - name: user_id
-            description: User identifier associated with the order identifier.
+            description: User identifier related to the order identifier.
           - name: order_total
             tests:
               - positive_values
-            description: Order total (order_cost + shipping_cost) associated with the order identifier.
+            description: Order total (order_cost + shipping_cost) related to the order identifier.
           - name: delivered_at
             description: Date and time that the order was delivered.
           - name: tracking_id
-            description: An unknown tracking identifier associated with the order identifier.
+            description: An unknown tracking identifier related to the order identifier.
           - name: status
-            description: Status associated with the order identifier.
+            description: Status related to the order identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether order row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
@@ -133,11 +133,11 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
                 - not_null
             description: Primary key, a unique ID value for each row. Each row represents a separate product.
           - name: price
-            description: Price associated with the product identifier.
+            description: Price related to the product identifier.
           - name: name
-            description: Name associated with the product identifier.
+            description: Name related to the product identifier.
           - name: inventory
-            description: Inventory associated with the product identifier.
+            description: Inventory related to the product identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether product row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
@@ -149,13 +149,13 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: promo_id
             tests:
               - not_null
-            description: Promo associated with the promo identifier.
+            description: Promo related to the promo identifier.
           - name: discount
             tests:
               - positive_values
-            description: Discount associated with the promo identifier.
+            description: Discount related to the promo identifier.
           - name: status
-            description: Status associated with the promo identifier.
+            description: Status related to the promo identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether promo row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
@@ -174,19 +174,19 @@ sources: # to reference bronze data and to allow lineage, testing and documentat
           - name: address_id
             tests:
               - not_null
-            description: Address identifier associated with the user identifier.
+            description: Address identifier related to the user identifier.
           - name: last_name
-            description: Last name associated with the user identifier.
+            description: Last name related to the user identifier.
           - name: created_at
             description: Date and time that the user was created.
           - name: phone_number
-            description: Phone number associated with the user identifier.
+            description: Phone number related to the user identifier.
           - name: total_orders
-            description: Total orders associated with the user identifier.
+            description: Total orders related to the user identifier.
           - name: first_name
-            description: First name associated with the user identifier.
+            description: First name related to the user identifier.
           - name: email
-            description: Email associated with the user identifier.
+            description: Email related to the user identifier.
           - name: _fivetran_deleted
             description: Boolean indicating whether user row data was deleted (true) or not (NULL).
           - name: _fivetran_synced
