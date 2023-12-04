@@ -42,6 +42,6 @@ dim_orders AS (
         total_number_of_units_of_product_sold
     FROM int_orders__grouped AS orders
     JOIN int_order_order_products__grouped AS order_order_products ON orders.order_id = order_order_products.order_id
-    )
+)
 
 SELECT * FROM dim_orders

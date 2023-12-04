@@ -4,6 +4,7 @@
 import pandas as pd
 import pyodbc
 
+
 def model(dbt, session):
     # dbt configuration
     dbt.config(packages=["pyodbc", "pandas"], tags="data_movement")
