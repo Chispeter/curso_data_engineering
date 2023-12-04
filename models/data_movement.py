@@ -34,7 +34,7 @@ def model(dbt, session):
     END;
     """
     table_names_result = pd.read_sql(table_names_query, conn_sql)
-
+    
     #for table in table_names_result:
 
 
