@@ -16,7 +16,7 @@ int_customer_events__joined AS (
 dim_customers AS (
     SELECT
         -- SNAPSHOT_CUSTOMERS
-        -- customer data of customer_id
+        -- customer data of each customer_id
         customer_addresses.customer_id AS customer_id,
         customer_addresses.customer_first_name AS customer_first_name,
         customer_addresses.customer_last_name AS customer_last_name,
@@ -24,7 +24,8 @@ dim_customers AS (
         customer_addresses.customer_email AS customer_email,
         customer_addresses.customer_created_at_utc AS customer_created_at_utc,
         customer_addresses.customer_updated_at_utc AS customer_updated_at_utc,
-        -- address data of customer_id
+        -- address data of each customer_id
+        customer_addresses.address_id AS address_id,
         customer_addresses.address_street_number AS address_street_number,
         customer_addresses.address_street_name AS address_street_name,
         customer_addresses.address_state_name AS address_state_name,
