@@ -1,0 +1,8 @@
+version: 2
+
+models:
+  - name: data_movement
+    description: This model moves data, i.e. data ingestion, from data sources (in this case, SQL Server) to Snowflake.
+    config:
+      materialized: table
+      tags: ["python"]
