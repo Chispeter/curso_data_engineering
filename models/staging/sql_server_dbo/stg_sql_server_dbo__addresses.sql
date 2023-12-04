@@ -1,6 +1,19 @@
-WITH base_sql_server_dbo__addresses AS (
+WITH src_sql_server_dbo__addresses AS (
     SELECT *
-    FROM {{ ref('base_sql_server_dbo__addresses') }}
+    FROM {{ source('sql_server_dbo', 'addresses') }}
+    UNION ALL
+    SELECT
+        {{ dbt_utils.generate_surrogate_key(['null']) }},
+        0,
+        'No Country',
+        '0 No Address',
+        'No State',
+        null,
+        min(_fivetran_synced)
+    FROM {{ source('sql_server_dbo', 'addresses') }}
+    {% if is_incremental() %}
+    WHERE _fivetran_synced > (SELECT max(_fivetran_synced) FROM {{ this }})
+    {% endif %}
 ),
 
 stg_sql_server_dbo__addresses AS (
@@ -13,7 +26,7 @@ stg_sql_server_dbo__addresses AS (
         cast(country as varchar(50)) AS address_country_name,
         cast(coalesce(_fivetran_deleted, false) AS boolean) AS was_this_address_row_deleted,
         cast(_fivetran_synced as timestamp_tz(9)) AS address_batched_at_utc
-    FROM base_sql_server_dbo__addresses
+    FROM src_sql_server_dbo__addresses
 )
 
 SELECT * FROM stg_sql_server_dbo__addresses

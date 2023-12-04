@@ -1,7 +1,16 @@
-WITH base_sql_server_dbo__products AS (
+WITH src_sql_server_dbo__products AS (
     SELECT * 
-    FROM {{ ref('base_sql_server_dbo__products') }}
-    ),
+    FROM {{ source('sql_server_dbo', 'products') }}
+    UNION ALL
+    SELECT
+        {{ dbt_utils.generate_surrogate_key(['null']) }},
+        0,
+        'No Product',
+        0,
+        null,
+        min(_fivetran_synced)
+    FROM {{ source('sql_server_dbo', 'products') }}
+),
 
 stg_sql_server_dbo__products AS (
     SELECT cast(product_id as varchar(50)) AS product_id,
@@ -10,7 +19,7 @@ stg_sql_server_dbo__products AS (
             cast(inventory as number(38,0)) AS product_number_of_units_in_inventory,
             coalesce(_fivetran_deleted, false) AS was_this_product_row_deleted,
             cast(_fivetran_synced as timestamp_tz(9)) AS product_batched_at_utc
-    FROM base_sql_server_dbo__products
+    FROM src_sql_server_dbo__products
     )
 
 SELECT * FROM stg_sql_server_dbo__products

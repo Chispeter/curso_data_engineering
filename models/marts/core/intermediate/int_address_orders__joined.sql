@@ -37,7 +37,6 @@ int_address_orders__joined AS (
             coalesce(address_orders.address_value_in_usd, 0) AS address_value_in_usd
     FROM stg_addresses AS addresses
     LEFT JOIN int_address_orders__grouped AS address_orders ON addresses.address_id = address_orders.order_address_id
-    
-    )
+)
 
 SELECT * FROM int_address_orders__joined

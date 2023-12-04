@@ -1,54 +1,6 @@
 version: 2 # copy and paste from source yml
 
 models:
-  - name: base_sql_server_dbo__addresses # CHECKED
-    description: Data about registered addresses.
-    columns:
-      - name: address_id
-        tests:
-          - unique
-          - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate address.
-      - name: zipcode
-        description: Zipcode related to the address identifier.
-      - name: country
-        description: Country related to the address identifier.
-      - name: address
-        description: Street number and name related to the address identifier.
-      - name: state
-        description: State related to the address identifier.
-      - name: _fivetran_deleted
-        description: Boolean indicating whether address row data was deleted (true) or not (NULL).
-      - name: _fivetran_synced
-        description: Date and time that the address row data was loaded (inserted or updated).
-
-  - name: base_sql_server_dbo__events # CHECKED
-    description: Data about registered events.
-    columns:
-      - name: event_id
-        tests:
-          - unique
-          - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate event.
-      - name: page_url
-        description: Page URL related to the event identifier.
-      - name: event_type
-        description: Event type related to the event identifier.
-      - name: user_id
-        description: User identifier related to the event identifier.
-      - name: product_id
-        description: Product identifier related to the event identifier.
-      - name: session_id
-        description: An unknown session identifier related to the event identifier.
-      - name: created_at
-        description: Date and time that the event was created.
-      - name: order_id
-        description: Order identifier related to the event identifier.
-      - name: _fivetran_deleted
-        description: Boolean indicating whether event row data was deleted (true) or not (NULL).
-      - name: _fivetran_synced
-        description: Date and time that the event row data was loaded (inserted or updated).
-
   - name: base_sql_server_dbo__orders # CHECKED
     description: Data about registered orders.
     columns:
@@ -91,25 +43,6 @@ models:
       description: Boolean indicating whether order row data was deleted (true) or not (NULL).
     - name: _fivetran_synced
       description: Date and time that the order row data was loaded (inserted or updated).   
-
-  - name: base_sql_server_dbo__products # CHECKED
-    description: Data about registered products.
-    columns:
-      - name: product_id
-        tests:
-            - unique
-            - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate product.
-      - name: price
-        description: Price related to the product identifier.
-      - name: name
-        description: Name related to the product identifier.
-      - name: inventory
-        description: Inventory related to the product identifier.
-      - name: _fivetran_deleted
-        description: Boolean indicating whether product row data was deleted (true) or not (NULL).
-      - name: _fivetran_synced
-        description: Date and time that the product row data was loaded (inserted or updated).
     
   - name: base_sql_server_dbo__promos # CHECKED
     description: Data about registered promos.
