@@ -12,7 +12,7 @@ int_customer_events__grouped AS (
             cast(max(event_created_at_utc) as date) AS most_recent_event_date,
             -- number of events
             {%- for event_type in event_types %}
-                cast(sum(case when event_type = '{{event_type}}' then 1 end) as number(38,0)) AS number_of_{{event_type}}_events,
+                cast(sum(case when event_type = '{{event_type}}' then 1 else 0 end) as number(38,0)) AS number_of_{{event_type}}_events,
             --{%- if not loop.last %},{% endif -%}
             {% endfor %}
             -- total number of events should be equal to the sum of all the above

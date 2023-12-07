@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: stg_google_sheets__budget
-    description: Data about registered budgets.
+    description: Data about registered product supplies to match its estimated sales quantity.
     columns:
       - name: budget_id
         tests:

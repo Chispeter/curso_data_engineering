@@ -14,10 +14,10 @@ int_address_orders__grouped AS (
             cast(avg(order_cost_in_usd) as number(38,2)) AS average_order_cost_in_usd,
             sum(order_cost_in_usd) AS total_amount_spent_in_usd,
             -- number of orders
-            count(case when order_status = 'no status' then 1 end) AS number_of_pending_orders,
-            count(case when order_status = 'preparing' then 1 end) AS number_of_preparing_orders,
-            count(case when order_status = 'shipped' then 1 end) AS number_of_shipped_orders,
-            count(case when order_status = 'delivered' then 1 end) AS number_of_delivered_orders,
+            count(case when order_status = 'no status' then 1 else 0 end) AS number_of_pending_orders,
+            count(case when order_status = 'preparing' then 1 else 0 end) AS number_of_preparing_orders,
+            count(case when order_status = 'shipped' then 1 else 0 end) AS number_of_shipped_orders,
+            count(case when order_status = 'delivered' then 1 else 0 end) AS number_of_delivered_orders,
             -- total number of orders should be equal to the sum of all the above
             count(order_address_id) AS total_number_of_orders,
             -- address_value = average_order_cost_in_usd * total_number_of_orders
