@@ -2,17 +2,14 @@
 
 {{
     config(
-      target_schema='snapshots',
       unique_key='promotion_id',
-
       strategy='check',
-      check_cols=['promotion_name', 'promotion_discount_in_percentage']
-
+      check_cols=['name', 'discount_in_percentage', 'status']
     )
 }}
 
 SELECT *
 FROM {{ ref('stg_sql_server_dbo__promotions') }}
-WHERE promotion_batched_at_utc = (SELECT max(promotion_batched_at_utc) FROM {{ ref('stg_sql_server_dbo__promotions') }})
+WHERE batched_at_utc = (SELECT max(batched_at_utc) FROM {{ ref('stg_sql_server_dbo__promotions') }})
 
 {% endsnapshot %}
