@@ -5,7 +5,7 @@ WITH src_sql_server_dbo__users AS (
 
 stg_sql_server_dbo__customers AS (
     SELECT
-        cast(user_id as varchar(50))                             AS customer_id,
+        cast(user_id as varchar(50))                            AS customer_id,
         cast(address_id as varchar(50))                         AS address_id,
         cast(first_name as varchar(50))                         AS first_name,
         cast(last_name as varchar(50))                          AS last_name,

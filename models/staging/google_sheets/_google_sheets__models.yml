@@ -21,7 +21,7 @@ models:
         tests:
           - positive_values
         description: Number of units of a product expected to be sold associated with the product identifier.
-      - name: budget_batched_at_utc
+      - name: batched_at_utc
         tests:
           - not_null
         description: Date and time in UTC that the budget row data was loaded (inserted or updated).

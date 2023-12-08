@@ -5,14 +5,19 @@ WITH stg_orders AS (
 
 dim_trackings AS (
     SELECT
-        -- STG_ADDRESSES (address data of each address_id)
-        -- address data
+        order_id,
+        customer_id,
         address_id,
-        address_street_number,
-        address_street_name,
-        address_state_name,
-        address_zipcode,
-        address_country_name
+        promotion_id,
+        tracking_id,
+        shipping_service_name,
+        shipping_service_cost_in_usd,
+        order_cost_in_usd,
+        order_total_cost_in_usd,
+        order_status,
+        order_created_at_utc,
+        order_estimated_delivery_at_utc,
+        order_delivered_at_utc
     FROM stg_orders
 )
 

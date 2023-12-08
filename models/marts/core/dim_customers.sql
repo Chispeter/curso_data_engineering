@@ -4,16 +4,14 @@ WITH stg_customers AS (
 ),
 
 dim_customers AS (
-    SELECT
-        -- STG_CUSTOMERS (customer data of each customer_id)
-        -- customer data 
+    SELECT 
         customer_id,
-        customer_first_name,
-        customer_last_name,
-        customer_phone_number,
-        customer_email,
-        customer_created_at_utc,
-        customer_updated_at_utc
+        first_name,
+        last_name,
+        phone_number,
+        email,
+        created_at_utc,
+        updated_at_utc
     FROM stg_customers
 )
 

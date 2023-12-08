@@ -1,15 +1,15 @@
-WITH snapshot_products AS (
+WITH stg_products AS (
     SELECT * 
-    FROM {{ ref('snapshot_products') }}
+    FROM {{ ref('stg_sql_server_dbo__products') }}
 ),
 
 dim_products AS (
     SELECT
         product_id,
-        product_name,
-        product_price_in_usd,
-        product_number_of_units_in_inventory
-    FROM snapshot_products
-    )
+        name,
+        price_in_usd,
+        number_of_units_in_inventory
+    FROM stg_products
+)
 
 SELECT * FROM dim_products

@@ -1,15 +1,15 @@
-WITH snapshot_promotions AS (
+WITH stg_promotions AS (
     SELECT * 
-    FROM {{ ref('snapshot_promotions') }}
+    FROM {{ ref('stg_sql_server_dbo__promotions') }}
 ),
 
 dim_promotions AS (
     SELECT
         promotion_id,
-        promotion_name,
-        promotion_discount_in_percentage,
-        promotion_status,
-    FROM snapshot_promotions
-    )
+        name,
+        discount_in_percentage,
+        status,
+    FROM stg_promotions
+)
 
 SELECT * FROM dim_promotions
