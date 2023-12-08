@@ -8,7 +8,7 @@ dim_promotions AS (
         promotion_id,
         name,
         discount_in_percentage,
-        status,
+        status
     FROM stg_promotions
 )
 

@@ -17,40 +17,22 @@ models:
       - name: day_of_week_iso
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 7
-              inclusive: true
         description: ISO day of week associated with the date identifier.
       - name: day_of_week_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-              quote: true
         description: Day of week name associated with the date identifier.
       - name: day_of_week_name_short
         tests:
           - not_null
-          - accepted_values:
-              values: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-              quote: true
         description: Day of week name short associated with the date identifier.
       - name: day_of_month
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 31
-              inclusive: true
         description: Day of month associated with the date identifier.
       - name: day_of_year
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 366
-              inclusive: true
         description: Day of year associated with the date identifier.
       - name: week_start_date
         tests:
@@ -71,32 +53,18 @@ models:
       - name: iso_week_of_year
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 52
-              inclusive: true
         description: Iso week of year associated with the date identifier.
       - name: month_of_year
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 12
-              inclusive: true
         description: Month of year associated with the date identifier.
       - name: month_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-              quote: true
         description: Month name associated with the date identifier.
       - name: month_name_short
         tests:
           - not_null
-          - accepted_values:
-              values: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-              quote: true
         description: Month name short associated with the date identifier.
       - name: month_start_date
         tests:

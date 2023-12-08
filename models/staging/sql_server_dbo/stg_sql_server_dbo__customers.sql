@@ -1,6 +1,20 @@
 WITH src_sql_server_dbo__users AS (
     SELECT * 
     FROM {{ source('sql_server_dbo', 'users') }}
+    UNION ALL
+    SELECT
+        {{ dbt_utils.generate_surrogate_key(['null']) }},
+        min(_fivetran_synced),
+        {{ dbt_utils.generate_surrogate_key(['null']) }},
+        'No Last Name',
+        min(_fivetran_synced),
+        '0',
+        NULL,
+        'No First Name',
+        'No Email',
+        NULL,
+        min(_fivetran_synced)
+    FROM {{ source('sql_server_dbo', 'products') }}
 ),
 
 stg_sql_server_dbo__customers AS (

@@ -44,4 +44,4 @@ base_sql_server_dbo__orders AS (
     FROM src_sql_server_dbo__orders
 )
 
-SELECT * FROM base_sql_server_dbo__orders
+SELECT distinct(user_id) FROM base_sql_server_dbo__orders
