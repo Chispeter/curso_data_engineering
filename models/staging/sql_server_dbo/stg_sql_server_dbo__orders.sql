@@ -29,4 +29,4 @@ stg_sql_server_dbo__orders AS (
     INNER JOIN base_sql_server_dbo__promos AS base_promos ON base_orders.promo_name = base_promos.name
 )
 
-SELECT * FROM stg_sql_server_dbo__orders
+SELECT * FROM stg_sql_server_dbo__orders order by 5
