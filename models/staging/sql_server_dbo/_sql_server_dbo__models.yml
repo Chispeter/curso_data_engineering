@@ -304,11 +304,11 @@ models:
         tests:
           - not_null
         description: Promotion name related to promotion identifier.
-      - name: discount_in_percentage
+      - name: discount_in_usd
         tests:
           - not_null
           - positive_values
-        description: Promotion discount in percentage (%) related to promotion identifier.
+        description: Promotion discount in USD related to promotion identifier.
       - name: status
         tests:
           - accepted_values:

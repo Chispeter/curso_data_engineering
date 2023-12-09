@@ -1,4 +1,4 @@
-{% snapshot snapshot_budget %}
+{% snapshot snapshot_budgets %}
 
 {{
     config(
@@ -9,6 +9,6 @@
 }}
 
 SELECT *
-FROM {{ ref('stg_google_sheets__budget') }}
+FROM {{ ref('stg_google_sheets__budgets') }}
 
 {% endsnapshot %}

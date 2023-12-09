@@ -1,22 +1,26 @@
 version: 2
 
 models:
-  - name: stg_google_sheets__budget
-    description: Data about registered product supplies to match its estimated sales quantity.
+  - name: stg_google_sheets__budgets
+    description: Data about registered budgets.
     columns:
       - name: budget_id
         tests:
           - unique
           - not_null
         description: Primary key, a unique ID value for each row. Each row represents a separate budget.
+      - name: budget_year
+        tests:
+          - not_null
+        description: Budget year associated with the budget identifier.
+      - name: budget_month
+        tests:
+          - not_null
+        description: Budget month associated with the budget identifier.
       - name: product_id
         tests:
           - not_null
         description: Foreign key reference to the products table.
-      - name: budget_date
-        tests:
-          - not_null
-        description: Budget date associated with the budget identifier.
       - name: number_of_units_of_product_expected_to_be_sold
         tests:
           - positive_values
