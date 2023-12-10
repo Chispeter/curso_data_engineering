@@ -1,12 +1,12 @@
 WITH stg_events AS (
     SELECT
         event_id,
-        cast(event_created_at_utc as date) AS event_creation_date,
-        cast(event_created_at_utc as time) AS event_creation_time,
         customer_id,
         session_id,
         product_id,
         order_id,
+        cast(event_created_at_utc as date) AS event_creation_date,
+        cast(event_created_at_utc as time) AS event_creation_time,
         page_url,
         event_type
     FROM {{ ref('stg_sql_server_dbo__events') }}
