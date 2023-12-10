@@ -43,6 +43,7 @@ fct_order_products AS (
         o_p.order_product_id                                                                AS order_product_id,
         o_p.order_id                                                                        AS order_id,
         o_p.product_id                                                                      AS product_id,
+        int_oln.promotion_id                                                                AS promotion_id,
         o_p.number_of_units_of_product_sold                                                 AS number_of_units_of_product_sold,
         o_p.number_of_units_of_product_sold * p.price_in_usd                                AS product_revenue_in_usd,
         int_oln.promotion_discount_in_usd                                                   AS promotion_discount_in_usd,

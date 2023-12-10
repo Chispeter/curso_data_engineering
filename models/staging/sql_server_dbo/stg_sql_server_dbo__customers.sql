@@ -14,7 +14,7 @@ WITH src_sql_server_dbo__users AS (
         'No Email',
         NULL,
         min(_fivetran_synced)
-    FROM {{ source('sql_server_dbo', 'products') }}
+    FROM {{ source('sql_server_dbo', 'users') }}
 ),
 
 stg_sql_server_dbo__customers AS (

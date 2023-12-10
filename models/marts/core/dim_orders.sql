@@ -3,7 +3,6 @@ WITH stg_orders AS (
         order_id,
         customer_id,
         address_id,
-        promotion_id,
         tracking_id,
         cast(order_created_at_utc as date)              AS creation_date,
         cast(order_created_at_utc as time)              AS creation_time,
@@ -31,7 +30,6 @@ dim_orders AS (
         o.order_id                          AS order_id,
         o.customer_id                       AS customer_id,
         o.address_id                        AS address_id,
-        o.promotion_id                      AS promotion_id,
         o.tracking_id                       AS tracking_id,
         d1.date_id                          AS creation_date_id,
         d2.date_id                          AS estimated_delivery_date_id,
@@ -47,7 +45,6 @@ dim_orders AS (
     LEFT JOIN stg_dates AS d1 ON o.creation_date = d1.date_day
     LEFT JOIN stg_dates AS d2 ON o.estimated_delivery_date = d2.date_day
     LEFT JOIN stg_dates AS d3 ON o.delivery_date = d3.date_day
-    where order_id = 'c615ea16-2b87-471c-a40e-f1a1b81df308'
 )
 
 SELECT * FROM dim_orders

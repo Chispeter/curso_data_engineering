@@ -1,6 +1,6 @@
-WITH int_customer_addresses__joined AS (
+WITH dim_customers AS (
     SELECT * 
-    FROM {{ ref('int_customer_addresses__joined') }}
+    FROM {{ ref('dim_customers') }}
 ),
 
 int_address_customers__grouped AS (
