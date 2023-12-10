@@ -6,6 +6,8 @@ WITH stg_dates AS (
 dim_dates AS (
     SELECT
         date_id,
+        month_of_year_id,
+        year_number_id,
         date_day,
         --prior_date_day,
         --next_date_day,
@@ -29,7 +31,6 @@ dim_dates AS (
         iso_week_of_year,
         --prior_year_week_of_year,
         --prior_year_iso_week_of_year,
-        month_of_year,
         month_name,
         month_name_short,
         month_start_date,
@@ -38,8 +39,7 @@ dim_dates AS (
         --prior_year_month_end_date,
         quarter_of_year,
         quarter_start_date,
-        quarter_end_date,
-        year_number
+        quarter_end_date
         --year_start_date,
         --year_end_date
     FROM stg_dates

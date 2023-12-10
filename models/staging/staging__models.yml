@@ -54,6 +54,10 @@ models:
         tests:
           - not_null
         description: Iso week of year associated with the date identifier.
+      - name: month_of_year_id
+        tests:
+          - not_null
+        description: Month of year identifier associated with the month of year.
       - name: month_of_year
         tests:
           - not_null
@@ -86,6 +90,10 @@ models:
         tests:
           - not_null
         description: Quarter of year associated with the date identifier.
+      - name: year_number_id
+        tests:
+          - not_null
+        description: Year number identifier associated with the year number.
       - name: year_number
         tests:
           - not_null

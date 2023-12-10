@@ -7,7 +7,7 @@ dim_promotions AS (
     SELECT
         promotion_id,
         name,
-        discount_in_percentage,
+        discount_in_usd,
         status
     FROM stg_promotions
 )

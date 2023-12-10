@@ -19,21 +19,31 @@ stg_product_orders AS (
     GROUP BY product_id, product_purchase_year, product_purchase_month
 ),
 
+stg_dates AS (
+    SELECT
+        month_of_year_id,
+        month_of_year,
+        year_number_id,
+        year_number
+    FROM {{ ref('stg_staging__dates') }}
+),
+
 fct_budgets AS (
     SELECT
         b.budget_id                                                         AS budget_id,
-        b.budget_year                                                       AS budget_year,
-        b.budget_month                                                      AS budget_month,
+        d.year_number_id                                                    AS budget_year_id,
+        d.month_of_year_id                                                  AS budget_month_id,
         b.product_id                                                        AS product_id,
         p.price_in_usd                                                      AS product_price_in_usd,
         b.number_of_units_of_product_expected_to_be_sold                    AS total_number_of_units_of_product_expected_to_be_sold,
-        p_o.total_number_of_units_of_product_sold                           AS total_number_of_units_of_product_sold,
         b.number_of_units_of_product_expected_to_be_sold * p.price_in_usd   AS expected_sales_in_usd,
+        p_o.total_number_of_units_of_product_sold                           AS total_number_of_units_of_product_sold,
         p_o.total_number_of_units_of_product_sold * p.price_in_usd          AS real_sales_in_usd
     FROM stg_budgets AS b
     LEFT JOIN stg_products AS p ON b.product_id = p.product_id
-    LEFT JOIN stg_product_orders AS p_o ON p_o.product_purchase_year = b.budget_year
-            AND p_o.product_purchase_month = b.budget_month
+    LEFT JOIN stg_product_orders AS p_o ON b.budget_year = p_o.product_purchase_year
+            AND p_o.product_purchase_month = b.budget_month AND p_o.product_id = b.product_id
+    LEFT JOIN stg_dates AS d ON b.budget_year = d.year_number AND b.budget_month = d.month_of_year
 )
 
 SELECT * FROM fct_budgets
