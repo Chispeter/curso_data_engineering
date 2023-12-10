@@ -3,6 +3,13 @@ WITH stg_orders AS (
     FROM {{ ref('stg_sql_server_dbo__orders') }}
 ),
 
+stg_dates AS (
+    SELECT
+        date_id,
+        date_day
+    FROM {{ ref('stg_sql_server_dbo__orders') }}
+),
+
 dim_orders AS (
     SELECT
         order_id,
@@ -18,7 +25,8 @@ dim_orders AS (
         order_created_at_utc,
         order_estimated_delivery_at_utc,
         order_delivered_at_utc
-    FROM stg_orders
+    FROM stg_orders AS o
+    LEFT JOIN stg_dates AS d ON
 )
 
 SELECT * FROM dim_orders

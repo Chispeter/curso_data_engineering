@@ -74,12 +74,12 @@ models:
         description: Email related to customer identifier.
       - name: number_of_total_orders
         description: Number of total orders placed by the customer identifier.
-      - name: created_at_utc
+      - name: creation_date
         tests:
           - not_null
-        description: Date and time in UTC that the customer identifier was created.
-      - name: updated_at_utc
-        description: Date and time in UTC that the customer identifier was updated.
+        description: Date that the customer identifier was created.
+      - name: update_date
+        description: Date that the customer identifier was updated.
       - name: was_this_row_deleted
         tests:
           - not_null
