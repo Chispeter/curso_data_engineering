@@ -14,31 +14,31 @@ WITH int_orders_dates__joined AS (
     FROM {{ ref('int_orders_dates__joined') }}
 ),
 
-int_order_promotions__joined AS (
+stg_promotions AS (
     SELECT
-        order_id,
-        promotion_discount_in_usd
-    FROM {{ ref('int_order_promotions__joined') }}
+        promotion_id,
+        discount_in_usd
+    FROM {{ ref('stg_sql_server_dbo__promotions') }}
 ),
 
 fct_order_header AS (
     SELECT
-        {{ dbt_utils.generate_surrogate_key(['o_d.order_id']) }} AS order_header_id,
-        o_d.order_id,
-        o_d.promotion_id,
-        o_d.creation_date_id,
-        o_d.estimated_delivery_date_id,
-        o_d.delivery_date_id,
-        o_d.creation_time,
-        o_d.estimated_delivery_time,
-        o_d.delivery_time,
-        o_d.shipping_service_cost_in_usd,
-        o_p.promotion_discount_in_usd,
-        o_d.order_cost_in_usd,
+        {{ dbt_utils.generate_surrogate_key(['o_d.order_id']) }}    AS order_header_id,
+        o_d.order_id                                                AS order_id,
+        o_d.promotion_id                                            AS promotion_id,
+        o_d.creation_date_id                                        AS creation_date_id,
+        o_d.estimated_delivery_date_id                              AS estimated_delivery_date_id,
+        o_d.delivery_date_id                                        AS delivery_date_id,
+        o_d.creation_time                                           AS creation_time,
+        o_d.estimated_delivery_time                                 AS estimated_delivery_time,
+        o_d.delivery_time                                           AS delivery_time,
+        o_d.shipping_service_cost_in_usd                            AS shipping_service_cost_in_usd,
+        p.discount_in_usd                                           AS discount_in_usd,
+        o_d.order_cost_in_usd                                       AS order_cost_in_usd,
         -- order_total_cost_in_usd = order_cost_in_usd + shipping_service_cost_in_usd - promotion_discount_in_usd
-        o_d.order_total_cost_in_usd
+        o_d.order_total_cost_in_usd                                 AS order_total_cost_in_usd
     FROM int_orders_dates__joined AS o_d
-    LEFT JOIN int_order_promotions__joined AS o_p ON o_d.order_id = o_p.order_id
+    LEFT JOIN stg_promotions AS p ON o_d.promotion_id = p.promotion_id
 )
 
 SELECT * FROM fct_order_header

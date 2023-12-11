@@ -1,7 +1,5 @@
 WITH int_order_status_orders AS (
-    SELECT
-        order_status_id,
-        order_status
+    SELECT *
     FROM {{ ref('int_order_status_orders') }}
 ),
 

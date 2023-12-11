@@ -1,7 +1,5 @@
 WITH int_shipping_service_orders AS (
-    SELECT
-        shipping_service_id,
-        shipping_service_name
+    SELECT *
     FROM {{ ref('int_shipping_service_orders') }}
 ),
 
