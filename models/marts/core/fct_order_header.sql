@@ -16,7 +16,7 @@ WITH int_orders_dates__joined AS (
 
 int_order_promotions__joined AS (
     SELECT
-        promotion_id,
+        order_id,
         promotion_discount_in_usd
     FROM {{ ref('int_order_promotions__joined') }}
 ),
@@ -38,7 +38,7 @@ fct_order_header AS (
         -- order_total_cost_in_usd = order_cost_in_usd + shipping_service_cost_in_usd - promotion_discount_in_usd
         o_d.order_total_cost_in_usd
     FROM int_orders_dates__joined AS o_d
-    LEFT JOIN int_order_promotions__joined AS o_p ON o_d.promotion_id = o_p.promotion_id
+    LEFT JOIN int_order_promotions__joined AS o_p ON o_d.order_id = o_p.order_id
 )
 
-SELECT count(*) FROM fct_order_header
+SELECT * FROM fct_order_header
