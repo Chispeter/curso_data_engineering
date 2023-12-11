@@ -4,6 +4,7 @@ WITH stg_orders AS (
         customer_id,
         address_id,
         tracking_id,
+        promotion_id,
         cast(order_created_at_utc as date)              AS creation_date,
         cast(order_created_at_utc as time)              AS creation_time,
         cast(order_estimated_delivery_at_utc as date)   AS estimated_delivery_date,
@@ -31,6 +32,7 @@ dim_orders AS (
         o.customer_id                       AS customer_id,
         o.address_id                        AS address_id,
         o.tracking_id                       AS tracking_id,
+        o.promotion_id                      AS promotion_id,
         d1.date_id                          AS creation_date_id,
         d2.date_id                          AS estimated_delivery_date_id,
         d3.date_id                          AS delivery_date_id,
@@ -38,6 +40,7 @@ dim_orders AS (
         o.estimated_delivery_time           AS estimated_delivery_time,
         o.delivery_time                     AS delivery_time,
         o.shipping_service_name             AS shipping_service_name,
+        o.shipping_service_cost_in_usd      AS shipping_service_cost_in_usd,
         o.order_cost_in_usd                 AS order_cost_in_usd,
         o.order_total_cost_in_usd           AS order_total_cost_in_usd,
         o.order_status                      AS order_status

@@ -51,8 +51,13 @@ models:
     marts:
       +materialized: table
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
+      aggregates:
+        +schema: aggregates
+      intermediates:
+        +schema: intermediates
       core:
         +schema: core
+      
 
 seeds:
   +schema: seed_data

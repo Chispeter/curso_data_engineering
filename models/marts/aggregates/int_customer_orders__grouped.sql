@@ -24,6 +24,6 @@ int_customer_orders__grouped AS (
             cast((avg(order_cost_in_usd) *  count(order_customer_id)) as number(38,2)) AS customer_value_in_usd
     FROM stg_orders
     GROUP BY order_customer_id
-    )
+)
 
 SELECT * FROM int_customer_orders__grouped
