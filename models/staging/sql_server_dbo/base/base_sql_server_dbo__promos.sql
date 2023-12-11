@@ -6,7 +6,7 @@ WITH src_sql_server_dbo_promos AS (
 base_sql_server_dbo_promos AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['promo_id', 'discount']) }} AS promo_id,
-        {{ get_lowercased_column('promo_id') }} AS name,
+        lower(promo_id) AS name,
         discount,
         status,
         _fivetran_deleted,

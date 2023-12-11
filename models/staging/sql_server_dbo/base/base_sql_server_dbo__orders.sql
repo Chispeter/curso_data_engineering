@@ -31,7 +31,7 @@ base_sql_server_dbo__orders AS (
         shipping_cost,
         address_id,
         created_at,
-        decode(promo_id, '', 'no promo', {{get_lowercased_column('promo_id')}}) AS promo_name,
+        decode(promo_id, '', 'no promo', lower(promo_id)) AS promo_name,
         estimated_delivery_at,
         order_cost,
         user_id,
@@ -44,4 +44,4 @@ base_sql_server_dbo__orders AS (
     FROM src_sql_server_dbo__orders
 )
 
-SELECT distinct(user_id) FROM base_sql_server_dbo__orders
+SELECT * FROM base_sql_server_dbo__orders
