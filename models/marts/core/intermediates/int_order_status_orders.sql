@@ -1,14 +1,14 @@
-WITH int_orders_dates__joined AS (
+WITH stg_orders AS (
     SELECT
         order_status
-    FROM {{ ref('int_orders_dates__joined') }}
+    FROM {{ ref('stg_sql_server_dbo__orders') }}
 ),
 
 int_order_status_orders AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['order_status']) }}   AS order_status_id,
         order_status                                               AS order_status
-    FROM int_orders_dates__joined
+    FROM stg_orders
     GROUP BY order_status_id, order_status
 )
 

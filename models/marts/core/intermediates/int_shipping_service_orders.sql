@@ -1,15 +1,15 @@
-WITH int_orders_dates__joined AS (
+WITH stg_orders AS (
     SELECT
         shipping_service_name
-    FROM {{ ref('int_orders_dates__joined') }}
+    FROM {{ ref('stg_sql_server_dbo__orders') }}
 ),
 
-int_shipping_services_orders AS (
+int_shipping_service_orders AS (
     SELECT
         {{ dbt_utils.generate_surrogate_key(['shipping_service_name']) }}   AS shipping_service_id,
         shipping_service_name                                               AS shipping_service_name
-    FROM int_orders_dates__joined
+    FROM stg_orders
     GROUP BY shipping_service_id, shipping_service_name
 )
 
-SELECT * FROM int_shipping_services_orders
+SELECT * FROM int_shipping_service_orders
