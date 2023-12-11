@@ -1,4 +1,4 @@
-WITH int_orders__grouped AS (
+/*WITH int_orders__grouped AS (
     SELECT * 
     FROM {{ ref('int_orders__grouped') }}
 ),
@@ -44,4 +44,4 @@ dim_orders AS (
     JOIN int_order_order_products__grouped AS order_order_products ON orders.order_id = order_order_products.order_id
 )
 
-SELECT * FROM dim_orders
+SELECT * FROM dim_orders*/

@@ -24,8 +24,8 @@ fct_events AS (
         e.session_id            AS session_id,
         e.product_id            AS product_id,
         e.order_id              AS order_id,
-        d.date_id               AS event_creation_date_id,
-        e.event_creation_time   AS event_creation_time,
+        d.date_id               AS creation_date_id,
+        e.event_creation_time   AS creation_time,
         e.page_url              AS page_url,
         e.event_type            AS event_type
     FROM stg_events AS e

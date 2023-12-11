@@ -1,5 +1,9 @@
 WITH stg_promotions AS (
-    SELECT * 
+    SELECT
+        promotion_id,
+        name,
+        discount_in_usd,
+        status
     FROM {{ ref('stg_sql_server_dbo__promotions') }}
 ),
 

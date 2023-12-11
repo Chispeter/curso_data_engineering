@@ -1,11 +1,11 @@
-WITH int_customer_addresses__joined AS (
+/*WITH int_customer_addresses__joined AS (
     SELECT *
     FROM {{ ref('int_customer_addresses__joined') }}
 ),
 
-int_customer_orders__joined AS (
+agg_customer_orders AS (
     SELECT *
-    FROM {{ ref('int_customer_orders__joined') }}
+    FROM {{ ref('agg_customer_orders') }}
 ),
 
 int_customer_events__joined AS (
@@ -67,4 +67,4 @@ dim_customers AS (
     INNER JOIN int_customer_events__joined AS customer_events ON customer_addresses.customer_id = customer_events.customer_id
     )
 
-SELECT * FROM dim_customers
+SELECT * FROM dim_customers*/

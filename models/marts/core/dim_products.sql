@@ -1,5 +1,9 @@
 WITH stg_products AS (
-    SELECT * 
+    SELECT
+        product_id,
+        name,
+        price_in_usd,
+        number_of_units_in_inventory
     FROM {{ ref('stg_sql_server_dbo__products') }}
 ),
 

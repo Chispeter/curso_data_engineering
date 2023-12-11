@@ -74,12 +74,12 @@ models:
         description: Email related to customer identifier.
       - name: number_of_total_orders
         description: Number of total orders placed by the customer identifier.
-      - name: creation_date
+      - name: created_at_utc
         tests:
           - not_null
-        description: Date that the customer identifier was created.
-      - name: update_date
-        description: Date that the customer identifier was updated.
+        description: Date and time in UTC that the customer identifier was created.
+      - name: updated_at_utc
+        description: Date and time in UTC that the customer identifier was updated.
       - name: was_this_row_deleted
         tests:
           - not_null
@@ -125,7 +125,7 @@ models:
               field: order_id
               to: ref('stg_sql_server_dbo__orders')
         description: Foreign key reference to the orders table.
-      - name: event_created_at_utc
+      - name: created_at_utc
         tests:
           - not_null
         description: Date and time in UTC that the event was created.
@@ -242,11 +242,11 @@ models:
               values: ['delivered', 'preparing', 'shipped', 'no status']
               quote: true
         description: "{{ doc('order_status') }}"
-      - name: order_created_at_utc
+      - name: created_at_utc
         description: Date and time in UTC that the order was created.
-      - name: order_estimated_delivery_at_utc
+      - name: estimated_delivery_at_utc
         description: Date and time in UTC that the order delivery was estimated to be delivered.
-      - name: order_delivered_at_utc
+      - name: delivered_at_utc
         description: Date and time in UTC that the order delivery was delivered.
       - name: was_this_row_deleted
         tests:
