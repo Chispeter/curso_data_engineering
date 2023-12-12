@@ -11,13 +11,13 @@ models:
           - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate budget."
 
-      - name: budget_year_id
+      - name: year_id
         data_type: varchar
         tests:
           - not_null
         description: "Foreign key reference to the years table."
         
-      - name: budget_month_id
+      - name: month_id
         data_type: varchar
         tests:
           - not_null
@@ -131,14 +131,7 @@ models:
 
       - name: event_type
         data_type: varchar
-        description: "Operation type carried out by the customer identifier. One of the following values: 
-
-| type            | definition                                 |
-|-----------------|--------------------------------------------|
-| add_to_cart     | A customer added a product to his/her cart |
-| checkout        | A customer checked out his/her order       |
-| package_shipped | The order was sent to the customer         |
-| page_view       | A customer viewed a product                |"
+        description: "{{ doc('event_type') }}"
 
   - name: int_order_status_orders
     description: "Data about registered order status extracted from orders table."
@@ -155,14 +148,7 @@ models:
         tests:
           - not_null
           - unique
-        description: "Order status related to the order status identifier. One of the following values: 
-
-| status    | definition                                           |
-|-----------|------------------------------------------------------|
-| delivered | The order has been received by customer              |
-| preparing | The order has been checked out, not yet been shipped |
-| shipped   | The order has been shipped, not yet been delivered   |
-| no status | The order does not exist                             |"
+        description: "{{ doc('order_status') }}"
 
   - name: int_orders_dates__joined
     description: ""
@@ -241,14 +227,7 @@ models:
 
       - name: order_status
         data_type: varchar
-        description: "Order status related to the order identifier. One of the following values: 
-
-| status    | definition                                           |
-|-----------|------------------------------------------------------|
-| delivered | The order has been received by customer              |
-| preparing | The order has been checked out, not yet been shipped |
-| shipped   | The order has been shipped, not yet been delivered   |
-| no status | The order does not exist                             |"
+        description: "{{ doc('order_status') }}"
 
   - name: int_shipping_service_orders
     description: "Data about registered shipping services extracted from orders table."

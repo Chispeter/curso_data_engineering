@@ -1,13 +1,11 @@
-WITH stg_dates AS (
+WITH distinct_months AS (
     SELECT
         month_of_year_id,
         month_of_year,
         month_name,
-        month_name_short,
-        month_start_date,
-        month_end_date
+        month_name_short
     FROM {{ ref('stg_staging__dates') }}
-    GROUP BY month_of_year_id, month_of_year, month_name, month_name_short, month_start_date, month_end_date
+    GROUP BY month_of_year_id, month_of_year, month_name, month_name_short
 ),
 
 dim_months AS (
@@ -15,10 +13,8 @@ dim_months AS (
         month_of_year_id,
         month_of_year,
         month_name,
-        month_name_short,
-        month_start_date,
-        month_end_date
-    FROM stg_dates
+        month_name_short
+    FROM distinct_months
 )
 
 SELECT * FROM dim_months

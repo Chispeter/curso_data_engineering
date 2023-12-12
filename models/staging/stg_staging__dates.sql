@@ -31,7 +31,7 @@ stg_staging__dates AS (
             iso_week_of_year,
             --prior_year_week_of_year,
             --prior_year_iso_week_of_year,
-            {{ dbt_utils.generate_surrogate_key(['month_of_year']) }} AS month_of_year_id,
+            {{ dbt_utils.generate_surrogate_key(['month_of_year']) }} AS month_id,
             month_of_year,
             month_name,
             month_name_short,
@@ -42,7 +42,7 @@ stg_staging__dates AS (
             quarter_of_year,
             quarter_start_date,
             quarter_end_date,
-            {{ dbt_utils.generate_surrogate_key(['year_number']) }} AS year_number_id,
+            {{ dbt_utils.generate_surrogate_key(['year_number']) }} AS year_id,
             year_number
             --year_start_date,
             --year_end_date

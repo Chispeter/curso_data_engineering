@@ -33,7 +33,7 @@ fct_order_header AS (
         o_d.estimated_delivery_time                                 AS estimated_delivery_time,
         o_d.delivery_time                                           AS delivery_time,
         o_d.shipping_service_cost_in_usd                            AS shipping_service_cost_in_usd,
-        p.discount_in_usd                                           AS discount_in_usd,
+        p.discount_in_usd                                           AS promotion_discount_in_usd,
         o_d.order_cost_in_usd                                       AS order_cost_in_usd,
         -- order_total_cost_in_usd = order_cost_in_usd + shipping_service_cost_in_usd - promotion_discount_in_usd
         o_d.order_total_cost_in_usd                                 AS order_total_cost_in_usd

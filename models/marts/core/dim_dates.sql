@@ -31,8 +31,6 @@ dim_dates AS (
         iso_week_of_year,
         --prior_year_week_of_year,
         --prior_year_iso_week_of_year,
-        month_name,
-        month_name_short,
         month_start_date,
         month_end_date,
         --prior_year_month_start_date,
