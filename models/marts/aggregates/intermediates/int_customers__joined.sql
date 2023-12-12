@@ -28,6 +28,7 @@ int_customers__joined AS (
         c.phone_number,
         c.email,
         -- address data
+        a.address_id,
         a.street_number,
         a.street_name,
         a.state_name,

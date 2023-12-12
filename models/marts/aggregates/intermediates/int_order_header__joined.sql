@@ -8,6 +8,16 @@ dim_orders AS (
     FROM {{ ref('dim_orders') }}
 ),
 
+dim_customers AS (
+    SELECT *
+    FROM {{ ref('dim_customers') }}
+),
+
+dim_addresses AS (
+    SELECT *
+    FROM {{ ref('dim_addresses') }}
+),
+
 dim_promotions AS (
     SELECT *
     FROM {{ ref('dim_promotions') }}
@@ -23,7 +33,6 @@ dim_dates AS (
 int_order_header__joined AS (
     SELECT
         o_h.order_header_id,
-
         o_d.order_id,
         o_d.customer_id,
         o_d.address_id,
@@ -44,6 +53,8 @@ int_order_header__joined AS (
         o_h.order_total_cost_in_usd
     FROM fct_order_header AS o_h
     LEFT JOIN dim_orders AS o ON o_h.order_id = o.order_id
+    LEFT JOIN dim_customers AS c ON o.customer_id = c.customer_id
+    LEFT JOIN dim_addresses AS a ON o.address_id = a.address_id
     LEFT JOIN dim_promotions AS p ON o_h.promotion_id = p.promotion_id
     LEFT JOIN dim_dates AS d1 ON o_h.creation_date_id = d1.date_id
     LEFT JOIN dim_dates AS d2 ON o_h.estimated_delivery_date_id = d2.date_id
