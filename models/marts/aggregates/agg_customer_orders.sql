@@ -25,12 +25,12 @@ int_customer_orders__grouped AS (
     FROM int_orders_date__joined
     GROUP BY customer_id
 ),
-
+/*
 int_customers_date__joined AS (
     SELECT * 
     FROM {{ ref('int_customers_date__joined') }}
 ),
-
+*/
 agg_customer_orders AS (
     SELECT 
         -- DIM_CUSTOMERS

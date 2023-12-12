@@ -245,9 +245,9 @@ models:
       - name: created_at_utc
         description: Date and time in UTC that the order was created.
       - name: estimated_delivery_at_utc
-        description: Date and time in UTC that the order delivery was estimated to be delivered.
+        description: Date and time in UTC that the order was estimated to be delivered.
       - name: delivered_at_utc
-        description: Date and time in UTC that the order delivery was delivered.
+        description: Date and time in UTC that the order was delivered.
       - name: was_this_row_deleted
         tests:
           - not_null

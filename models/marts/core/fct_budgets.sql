@@ -9,7 +9,7 @@ fct_budgets AS (
         budget_year_id,
         budget_month_id,
         product_id,
-        total_number_of_units_of_product_expected_to_be_sold
+        number_of_units_of_product_expected_to_be_sold
     FROM int_budgets_dates__joined
 )
 

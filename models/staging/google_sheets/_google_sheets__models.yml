@@ -2,30 +2,41 @@ version: 2
 
 models:
   - name: stg_google_sheets__budgets
-    description: Data about registered budgets.
+    description: "Data about registered budgets."
     columns:
       - name: budget_id
+        data_type: varchar
         tests:
           - unique
           - not_null
-        description: Primary key, a unique ID value for each row. Each row represents a separate budget.
+        description: "Primary key, a unique ID value for each row. Each row represents a separate budget."
+
       - name: budget_year
+        data_type: number
         tests:
           - not_null
-        description: Budget year associated with the budget identifier.
+        description: "Budget year related to the budget identifier."
+
       - name: budget_month
+        data_type: number
         tests:
           - not_null
-        description: Budget month associated with the budget identifier.
+        description: "Budget month related to the budget identifier."
+
       - name: product_id
+        data_type: varchar
         tests:
           - not_null
-        description: Foreign key reference to the products table.
+        description: "Foreign key reference to the products table."
+
       - name: number_of_units_of_product_expected_to_be_sold
+        data_type: number
         tests:
           - positive_values
-        description: Number of units of a product expected to be sold associated with the product identifier.
+        description: "Number of units of a product expected to be sold related to the product identifier."
+        
       - name: batched_at_utc
+        data_type: timestamp_tz
         tests:
           - not_null
-        description: Date and time in UTC that the budget row data was loaded (inserted or updated).
+        description: "Date and time in UTC that the budget row data was loaded (inserted or updated)."

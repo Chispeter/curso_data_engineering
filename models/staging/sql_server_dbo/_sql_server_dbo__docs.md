@@ -18,7 +18,7 @@ Order status related to the order identifier. One of the following values:
 |-----------|------------------------------------------------------|
 | delivered | The order has been received by customer              |
 | preparing | The order has been checked out, not yet been shipped |
-| shipped   | The order has been shipped, not yet been delivere    |
+| shipped   | The order has been shipped, not yet been delivered   |
 | no status | The order does not exist                             |
 
 {% enddocs %}

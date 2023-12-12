@@ -1,0 +1,268 @@
+version: 2
+
+models:
+  - name: int_budgets_dates__joined
+    description: "Data about registered budgets with date identifiers."
+    columns:
+      - name: budget_id
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Primary key, a unique ID value for each row. Each row represents a separate budget."
+
+      - name: budget_year_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the years table."
+        
+      - name: budget_month_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the months table."
+        
+      - name: product_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the products table."
+
+      - name: number_of_units_of_product_expected_to_be_sold
+        data_type: number
+        tests:
+          - positive_values
+        description: "Number of units of a product expected to be sold related to the product identifier."
+
+  - name: int_customers_dates__joined
+    description: "Data about registered customers with date identifiers."
+    columns:
+      - name: customer_id
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Primary key, a unique ID value for each row. Each row represents a separate customer."
+
+      - name: address_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the addresses table."
+
+      - name: creation_date_id
+        data_type: varchar
+        description: "Foreign key reference to the dates table."
+
+      - name: update_date_id
+        data_type: varchar
+        description: "Foreign key reference to the dates table."
+
+      - name: creation_time
+        data_type: time
+        description: "Time that the customer identifier was created"
+
+      - name: update_time
+        data_type: time
+        description: "Time that the customer identifier was updated"
+
+      - name: first_name
+        data_type: varchar
+        description: "First name related to customer identifier."
+
+      - name: last_name
+        data_type: varchar
+        description: "Last name related to customer identifier."
+
+      - name: phone_number
+        data_type: number
+        description: "Phone number related to customer identifier."
+
+      - name: email
+        data_type: varchar
+        description: "Email related to customer identifier."
+
+  - name: int_events_dates__joined
+    description: "Data about registered events with date identifiers."
+    columns:
+      - name: event_id
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Primary key, a unique ID value for each row. Each row represents a separate event."
+
+      - name: customer_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the customers table."
+
+      - name: session_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to an unknown sessions table."
+
+      - name: product_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the products table."
+
+      - name: order_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the orders table."
+
+      - name: creation_date_id
+        data_type: varchar
+        description: "Foreign key reference to the dates table."
+
+      - name: creation_time
+        data_type: time
+        description: "Time that the event identifier was created"
+
+      - name: page_url
+        data_type: varchar
+        description: "URL website where the event took place."
+
+      - name: event_type
+        data_type: varchar
+        description: "Operation type carried out by the customer identifier. One of the following values: 
+
+| type            | definition                                 |
+|-----------------|--------------------------------------------|
+| add_to_cart     | A customer added a product to his/her cart |
+| checkout        | A customer checked out his/her order       |
+| package_shipped | The order was sent to the customer         |
+| page_view       | A customer viewed a product                |"
+
+  - name: int_order_status_orders
+    description: "Data about registered order status extracted from orders table."
+    columns:
+      - name: order_status_id
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Primary key, a unique ID value for each row. Each row represents a separate order status."
+
+      - name: order_status
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Order status related to the order status identifier. One of the following values: 
+
+| status    | definition                                           |
+|-----------|------------------------------------------------------|
+| delivered | The order has been received by customer              |
+| preparing | The order has been checked out, not yet been shipped |
+| shipped   | The order has been shipped, not yet been delivered   |
+| no status | The order does not exist                             |"
+
+  - name: int_orders_dates__joined
+    description: ""
+    columns:
+      - name: order_id
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Primary key, a unique ID value for each row. Each row represents a separate order."
+
+      - name: customer_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the customers table."
+
+      - name: address_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the addresses table."
+
+      - name: promotion_id
+        data_type: varchar
+        tests:
+          - not_null
+
+        description: "Foreign key reference to the promotions table."
+
+      - name: tracking_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to an unknown trackings table."
+
+      - name: creation_date_id
+        data_type: varchar
+        description: "Foreign key reference to the dates table."
+
+      - name: estimated_delivery_date_id
+        data_type: varchar
+        description: "Foreign key reference to the dates table."
+
+      - name: delivery_date_id
+        data_type: varchar
+        description: "Foreign key reference to the dates table."
+
+      - name: creation_time
+        data_type: time
+        description: "Time that the order was created."
+
+      - name: estimated_delivery_time
+        data_type: time
+        description: "Time that the order was estimated to be delivered."
+
+      - name: delivery_time
+        data_type: time
+        description: "Time that the order was delivered."
+
+      - name: shipping_service_name
+        data_type: varchar
+        description: "Shipping service name related to the order identifier."
+
+      - name: shipping_service_cost_in_usd
+        data_type: number
+        description: "Shipping service cost in USD related to the order identifier."
+
+      - name: order_cost_in_usd
+        data_type: number
+        description: "Order cost in USD related to the order identifier."
+
+      - name: order_total_cost_in_usd
+        data_type: number
+        description: "Order total cost (shipping service cost + order cost) in USD related to the order identifier."
+
+      - name: order_status
+        data_type: varchar
+        description: "Order status related to the order identifier. One of the following values: 
+
+| status    | definition                                           |
+|-----------|------------------------------------------------------|
+| delivered | The order has been received by customer              |
+| preparing | The order has been checked out, not yet been shipped |
+| shipped   | The order has been shipped, not yet been delivered   |
+| no status | The order does not exist                             |"
+
+  - name: int_shipping_service_orders
+    description: "Data about registered shipping services extracted from orders table."
+    columns:
+      - name: shipping_service_id
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Primary key, a unique ID value for each row. Each row represents a separate shipping service."
+
+      - name: shipping_service_name
+        data_type: varchar
+        tests:
+          - not_null
+          - unique
+        description: "Shipping service name related to the shipping service identifier."
