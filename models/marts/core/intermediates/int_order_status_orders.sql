@@ -1,6 +1,6 @@
 WITH distinct_order_status AS (
     SELECT
-        distinct(distinct_order_status) AS order_status
+        distinct(order_status) AS order_status
     FROM {{ ref('stg_sql_server_dbo__orders') }}
 ),
 

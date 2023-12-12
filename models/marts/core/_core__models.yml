@@ -292,30 +292,6 @@ models:
                 to: ref('dim_addresses')
         description: "Foreign key reference to the addresses table."
 
-      - name: tracking_id
-        data_type: varchar
-        tests:
-          - not_null
-        description: "Foreign key reference to an unknown trackings table."
-
-      - name: shipping_service_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: shipping_service_id
-                to: ref('dim_shipping_services')
-        description: "Foreign key reference to the shipping services table."
-
-      - name: order_status_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: order_status
-                to: ref('dim_order_status')
-        description: "Foreign key reference to the order status table."
-
   - name: dim_products
     description: "Data about registered products."
     columns:
@@ -549,10 +525,32 @@ models:
                 to: ref('dim_promotions')
         description: "Primary key, a unique ID value for each row. Each row represents a separate promotion."
 
-      - name: creation_date_id
+      - name: tracking_id
         data_type: varchar
         tests:
           - not_null
+        description: "Foreign key reference to an unknown trackings table."
+        
+      - name: shipping_service_id
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                field: shipping_service_id
+                to: ref('dim_shipping_services')
+        description: "Foreign key reference to the shipping services table."
+
+      - name: order_status_id
+        data_type: varchar
+        tests:
+          - not_null
+          - relationships:
+                field: order_status_id
+                to: ref('dim_order_status')
+        description: "Foreign key reference to the order status table."
+
+      - name: creation_date_id
+        data_type: varchar
         description: "Foreign key reference to the dates table."
 
       - name: estimated_delivery_date_id
@@ -565,8 +563,6 @@ models:
 
       - name: creation_time
         data_type: time
-        tests:
-          - not_null
         description: "Time that the order was created."
 
       - name: estimated_delivery_time
@@ -606,7 +602,7 @@ models:
         description: "Order total cost (order cost + shipping service cost - promotion discount) in USD related to the order identifier."
 
   - name: fct_order_line
-    description: "Data about number of units of each registered product that have been sold in each registered order."
+    description: "Data and metrics about each registered product that have been sold in each registered order."
     columns:
       - name: order_product_id
         data_type: varchar

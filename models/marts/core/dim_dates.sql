@@ -6,8 +6,8 @@ WITH stg_dates AS (
 dim_dates AS (
     SELECT
         date_id,
-        month_of_year_id,
-        year_number_id,
+        month_id,
+        year_id,
         date_day,
         --prior_date_day,
         --next_date_day,
