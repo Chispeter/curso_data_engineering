@@ -1,36 +1,17 @@
-WITH int_orders_date__joined AS (
-    SELECT * 
-    FROM {{ ref('int_orders_date__joined') }}
+WITH int_customers_dates_id__joined AS (
+    SELECT *
+    FROM {{ ref('int_customers_dates_id__joined') }}
 ),
 
-int_customer_orders__grouped AS (
-    SELECT customer_id,
-            -- order dates
-            cast(min(creation_date) as date) AS oldest_order_date,
-            cast(max(creation_date) as date) AS most_recent_order_date,
-            -- order cost aggregations
-            cast(min(order_cost_in_usd) as number(38,2)) AS cheapest_order_cost_in_usd,
-            cast(max(order_cost_in_usd) as number(38,2)) AS most_expensive_order_cost_in_usd,
-            cast(avg(order_cost_in_usd) as number(38,2)) AS average_order_cost_in_usd,
-            cast(sum(order_cost_in_usd) as number(38,2)) AS total_amount_spent_in_usd,
-            -- number of orders
-            cast(count(case when order_status = 'no status' then 1 else 0 end) as number(38,0)) AS number_of_pending_orders,
-            cast(count(case when order_status = 'preparing' then 1 else 0 end) as number(38,0)) AS number_of_preparing_orders,
-            cast(count(case when order_status = 'shipped' then 1 else 0 end) as number(38,0)) AS number_of_shipped_orders,
-            cast(count(case when order_status = 'delivered' then 1 else 0 end) as number(38,0)) AS number_of_delivered_orders,
-            -- total number of orders should be equal to the sum of all the above
-            cast(count(order_id) as number(38,2)) AS total_number_of_orders,
-            -- customer_value = average_order_cost_in_usd * total_number_of_orders
-            cast((avg(order_cost_in_usd) *  count(order_id)) as number(38,2)) AS customer_value_in_usd
-    FROM int_orders_date__joined
-    GROUP BY customer_id
+int_order_header_dates_id__joined AS (
+    SELECT *
+    FROM {{ ref('int_order_header_dates_id__joined') }}
 ),
-/*
-int_customers_date__joined AS (
-    SELECT * 
-    FROM {{ ref('int_customers_date__joined') }}
-),
-*/
+
+int_orders_dates_id__joined AS (
+
+)
+
 agg_customer_orders AS (
     SELECT 
         -- DIM_CUSTOMERS

@@ -51,6 +51,12 @@ models:
           - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate customer."
 
+      - name: address_id
+        data_type: varchar
+        tests:
+          - not_null
+        description: "Foreign key reference to the addresses table."
+
       - name: creation_date_id
         data_type: varchar
         description: "Foreign key reference to the dates table."

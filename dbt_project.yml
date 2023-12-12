@@ -60,7 +60,7 @@ models:
       
 
 seeds:
-  +schema: seed_data
+  +schema: seeds
   +database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"  
         
 snapshots:
