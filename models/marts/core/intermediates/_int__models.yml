@@ -133,23 +133,6 @@ models:
         data_type: varchar
         description: "{{ doc('event_type') }}"
 
-  - name: int_order_status_orders
-    description: "Data about registered order status extracted from orders table."
-    columns:
-      - name: order_status_id
-        data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Primary key, a unique ID value for each row. Each row represents a separate order status."
-
-      - name: order_status
-        data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "{{ doc('order_status') }}"
-
   - name: int_orders_dates__joined
     description: ""
     columns:
@@ -176,7 +159,6 @@ models:
         data_type: varchar
         tests:
           - not_null
-
         description: "Foreign key reference to the promotions table."
 
       - name: tracking_id
@@ -228,20 +210,3 @@ models:
       - name: order_status
         data_type: varchar
         description: "{{ doc('order_status') }}"
-
-  - name: int_shipping_service_orders
-    description: "Data about registered shipping services extracted from orders table."
-    columns:
-      - name: shipping_service_id
-        data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Primary key, a unique ID value for each row. Each row represents a separate shipping service."
-
-      - name: shipping_service_name
-        data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Shipping service name related to the shipping service identifier."

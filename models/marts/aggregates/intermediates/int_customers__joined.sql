@@ -16,12 +16,14 @@ dim_dates AS (
 ),
 
 int_customers__joined AS (
-    SELECT
-        -- customer data with date ids joined
+    SELECT 
+        -- customer data with dates
         c.customer_id,
-        d1.date_day     AS creation_date,
-        d2.date_day     AS update_date,
+        c.creation_date_id,
+        c.update_date_id,
+        d1.date_day AS creation_date,
         c.creation_time,
+        d2.date_day AS update_date,
         c.update_time,
         c.first_name,
         c.last_name,
@@ -35,9 +37,9 @@ int_customers__joined AS (
         a.zipcode,
         a.country_name
     FROM dim_customers AS c
+    LEFT JOIN dim_addresses AS a ON c.address_id = a.address_id
     LEFT JOIN dim_dates AS d1 ON c.creation_date_id = d1.date_id
     LEFT JOIN dim_dates AS d2 ON c.update_date_id = d2.date_id
-    LEFT JOIN dim_addreses AS a ON c.address_id = a.address_id
 )
 
 SELECT * FROM int_customers__joined
