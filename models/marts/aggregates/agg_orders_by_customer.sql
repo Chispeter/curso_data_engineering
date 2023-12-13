@@ -49,6 +49,7 @@ customer_orders__grouped AS (
 dim_customers AS (
     SELECT *
     FROM {{ ref('dim_customers') }}
+    WHERE valid_to_utc IS NOT NULL
 ),
 
 dim_addresses AS (
