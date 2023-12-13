@@ -17,7 +17,8 @@ fct_order_line AS (
         order_product_id,
         order_id,
         product_id,
-        number_of_units_of_product_sold
+        number_of_units_of_product_sold,
+        batched_at_utc
     FROM stg_order_products
 )
 
