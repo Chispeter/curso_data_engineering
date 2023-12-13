@@ -1,6 +1,6 @@
 {{
     config(
-        materialized='incremental'
+        materialized='incremental',
         unique_key='order_product_id'
     )
 }}
