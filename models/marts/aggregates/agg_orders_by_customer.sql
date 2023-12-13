@@ -54,7 +54,7 @@ customer_orders__grouped AS (
     FROM fct_order_header AS o_h
     LEFT JOIN dim_orders AS o ON o_h.order_id = o.order_id
     LEFT JOIN dim_dates AS d ON o_h.creation_date_id = d.date_id
-    GROUP BY o.customer_id
+    GROUP BY o.customer_id, o_h.batched_at_utc
 ),
 
 dim_customers AS (

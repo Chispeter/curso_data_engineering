@@ -46,7 +46,7 @@ cou_product_team AS (
     FROM fct_events AS e
     LEFT JOIN dim_customers AS c ON e.customer_id = c.customer_id
     LEFT JOIN dim_dates AS d ON e.creation_date_id = d.date_id
-    GROUP BY 1, 2, 3, 4
+    GROUP BY 1, 2, 3, 4, e.batched_at_utc
 )
 
 SELECT * FROM cou_product_team
