@@ -10,7 +10,7 @@ dim_products AS (
         price_in_usd,
         number_of_units_in_inventory,
         dbt_valid_to AS valid_to_utc
-    FROM stg_products
+    FROM snapshot_products
 )
 
 SELECT * FROM dim_products

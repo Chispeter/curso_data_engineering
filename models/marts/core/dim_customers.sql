@@ -21,7 +21,7 @@ stg_dates AS (
     FROM {{ ref('stg_staging__dates') }}
 ),
 
-int_customers_dates__joined AS (
+dim_customers AS (
     SELECT
         customer_id,
         address_id,
@@ -34,25 +34,9 @@ int_customers_dates__joined AS (
         phone_number,
         email,
         valid_to_utc
-    FROM stg_customers AS c
+    FROM snapshot_customers AS c
     LEFT JOIN stg_dates AS d1 ON c.creation_date = d1.date_day
     LEFT JOIN stg_dates AS d2 ON c.update_date = d2.date_day
-),
-
-dim_customers AS (
-    SELECT 
-        customer_id,
-        address_id,
-        creation_date_id,
-        update_date_id,
-        creation_time,
-        update_time,
-        first_name,
-        last_name,
-        phone_number,
-        email,
-        valid_to_utc
-    FROM int_customers_dates__joined
 )
 
 SELECT * FROM dim_customers

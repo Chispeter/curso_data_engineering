@@ -55,7 +55,7 @@ int_orders_dates__joined AS (
     LEFT JOIN stg_dates AS d3 ON o.delivery_date = d3.date_day
 ),
 
-WITH stg_order_products AS (
+stg_order_products AS (
     SELECT
         order_product_id,
         order_id,
