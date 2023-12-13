@@ -17,7 +17,7 @@ WITH src_sql_server_dbo__orders AS (
         'not yet defined',
         0,
         {{ dbt_utils.generate_surrogate_key(['null']) }},
-        null,
+        min(created_at),
         'no promo',
         null,
         0,

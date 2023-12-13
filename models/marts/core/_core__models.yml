@@ -6,39 +6,26 @@ models:
     columns:
       - name: address_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate address."
 
       - name: street_number
         data_type: number
-        tests:
-          - not_null
         description: "Street number related to the address identifier."
 
       - name: street_name
         data_type: varchar
-        tests:
-          - not_null
         description: "Street name related to the address identifier."
 
       - name: state_name
         data_type: varchar
-        tests:
-          - not_null
         description: "State name related to the address identifier."
 
       - name: zipcode
         data_type: number
-        tests:
-          - not_null
         description: "Zipcode related to the address identifier."
 
       - name: country_name
         data_type: varchar
-        tests:
-          - not_null
         description: "Country name related to the address identifier."
 
   - name: dim_customers
@@ -46,23 +33,26 @@ models:
     columns:
       - name: customer_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate customer."
 
       - name: address_id
         data_type: varchar
-        tests:
-          - not_null
         description: "Foreign key reference to the addresses table."
 
       - name: creation_date_id
         data_type: varchar
+        tests:
+          - relationships:
+              to: ref('dim_dates')
+              field: date_id
         description: "Foreign key reference to the dates table."
 
       - name: update_date_id
         data_type: varchar
+        tests:
+          - relationships:
+              to: ref('dim_dates')
+              field: date_id
         description: "Foreign key reference to the dates table."
 
       - name: creation_time
@@ -75,42 +65,34 @@ models:
 
       - name: first_name
         data_type: varchar
-        tests:
-          - not_null
         description: "First name related to customer identifier."
 
       - name: last_name
         data_type: varchar
-        tests:
-          - not_null
         description: "Last name related to customer identifier."
 
       - name: phone_number
         data_type: number
-        tests:
-          - not_null
         description: "Phone number related to customer identifier."
 
       - name: email
         data_type: varchar
-        tests:
-          - not_null
         description: "Email related to customer identifier."
 
+      - name: valid_to_utc
+        data_type: timestamp
+        description: "Date and time in UTC that customer row data is valid to."
+        
   - name: dim_dates
     description: "Data about registered dates."
     columns:
       - name: date_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate date at day level."
 
       - name: month_id
         data_type: varchar
         tests:
-          - not_null
           - relationships:
               field: month_id
               to: ref('dim_months')
@@ -119,7 +101,6 @@ models:
       - name: year_id
         data_type: varchar
         tests:
-          - not_null
           - relationships:
               field: year_id
               to: ref('dim_years')
@@ -127,99 +108,66 @@ models:
 
       - name: date_day
         data_type: date
-        tests:
-          - not_null
-          - unique
         description: "Date at day level related to the date identifier."
 
       - name: day_of_week_iso
         data_type: number
-        tests:
-          - not_null
         description: "ISO day of week related to the date identifier."
 
       - name: day_of_week_name
         data_type: varchar
-        tests:
-          - not_null
         description: "Day of week name related to the date identifier."
 
       - name: day_of_week_name_short
         data_type: varchar
-        tests:
-          - not_null
         description: "Day of week name short related to the date identifier."
 
       - name: day_of_month
         data_type: number
-        tests:
-          - not_null
         description: "Day of month related to the date identifier."
 
       - name: day_of_year
         data_type: number
-        tests:
-          - not_null
         description: "Day of year related to the date identifier."
 
       - name: week_start_date
         data_type: date
-        tests:
-          - not_null
         description: "Week start date related to the date identifier.´"
 
       - name: week_end_date
         data_type: date
-        tests:
-          - not_null
         description: "Week end date related to the date identifier."
 
       - name: iso_week_start_date
         data_type: date
-        tests:
-          - not_null
         description: "Iso week start date related to the date identifier."
 
       - name: iso_week_end_date
         data_type: date
-        tests:
-          - not_null
         description: "Iso week end date related to the date identifier."
 
       - name: iso_week_of_year
         data_type: number
-        tests:
-          - not_null
         description: "Iso week of year related to the date identifier."
 
       - name: month_start_date
         data_type: date
-        tests:
-          - not_null
         description: "Month start date related to the date identifier."
 
       - name: month_end_date
         data_type: date
-        tests:
-          - not_null
         description: "Month end date related to the date identifier."
 
       - name: quarter_of_year
         data_type: number
-        tests:
-          - not_null
         description: "Quarter of year related to the date identifier."
 
       - name: quarter_start_date
         data_type: date
-        tests:
-          - not_null
         description: "Quarter start date related to the date identifier."
 
       - name: quarter_end_date
         data_type: date
-        tests:
-          - not_null
         description: "Quarter of year related to the date identifier."
 
   - name: dim_months
@@ -253,119 +201,51 @@ models:
           - unique
         description: "Month name short related to the month identifier."
 
-  - name: dim_order_status
-    description: "Data about registered order status."
-    columns:
-      - name: order_status_id
-        data_type: varchar
-        description: "Primary key, a unique ID value for each row. Each row represents a separate order status."
-
-      - name: order_status
-        data_type: varchar
-        description: "{{ doc('order_status') }}"
-
-  - name: dim_orders
-    description: "Data about registered orders."
-    columns:
-      - name: order_id
-        data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Primary key, a unique ID value for each row. Each row represents a separate order."
-
-      - name: customer_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: customer_id
-                to: ref('dim_customers')
-        description: "Foreign key reference to the customers table."
-
-      - name: address_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: address_id
-                to: ref('dim_addresses')
-        description: "Foreign key reference to the addresses table."
-
   - name: dim_products
     description: "Data about registered products."
     columns:
       - name: product_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate product."
 
       - name: name
         data_type: varchar
-        tests:
-          - not_null
         description: "Product name related to product identifier."
 
       - name: price_in_usd
         data_type: number
-        tests:
-          - not_null
-          - positive_values
         description: "Product price in USD related to product identifier."
 
       - name: number_of_units_in_inventory
         data_type: number
-        tests:
-          - not_null
-          - positive_values
         description: "Number of units of a product in inventory related to product identifier."
+
+      - name: valid_to_utc
+        data_type: timestamp
+        description: "Date and time in UTC that product row data is valid to."
 
   - name: dim_promotions
     description: "Data about registered promotions."
     columns:
       - name: promotion_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate promotion."
 
       - name: name
         data_type: varchar
-        tests:
-          - not_null
         description: "Promotion name related to promotion identifier."
 
       - name: discount_in_usd
         data_type: number
-        tests:
-          - not_null
-          - positive_values
         description: "Promotion discount in USD related to promotion identifier."
 
       - name: status
         data_type: varchar
-        tests:
-          - not_null
         description: "{{ doc('promotion_status') }}"
 
-  - name: dim_shipping_services
-    description: "Data about registered shipping services."
-    columns:
-      - name: shipping_service_id
-        data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Primary key, a unique ID value for each row. Each row represents a separate shipping service."
-
-      - name: shipping_service_name
-        data_type: varchar
-        tests:
-          - not_null
-        description: "Shipping service name related to the shipping service identifier."
+      - name: valid_to_utc
+        data_type: timestamp
+        description: "Date and time in UTC that promotion row data is valid to."
 
   - name: dim_years
     description: "Data about registered years."
@@ -389,9 +269,6 @@ models:
     columns:
       - name: budget_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate budget."
 
       - name: year_id
@@ -414,61 +291,37 @@ models:
 
       - name: product_id
         data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: product_id
-                to: ref('dim_products')
         description: "Foreign key reference to the products table."
 
       - name: number_of_units_of_product_expected_to_be_sold
         data_type: number
-        tests:
-          - not_null
-          - positive_values
         description: "Number of units of a product expected to be sold related to the product identifier."
+
+      - name: valid_to_utc
+        data_type: timestamp
+        description: "Date and time in UTC that budget row data is valid to."
 
   - name: fct_events
     description: "Data about registered events"
     columns:
       - name: event_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
         description: "Primary key, a unique ID value for each row. Each row represents a separate event."
 
       - name: customer_id
         data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: customer_id
-                to: ref('dim_customers')
         description: "Foreign key reference to the customers table."
 
       - name: session_id
         data_type: varchar
-        tests:
-          - not_null
         description: "Foreign key reference to an unknown sessions table."
 
       - name: product_id
         data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: product_id
-                to: ref('dim_products')
         description: "Foreign key reference to the products table."
 
       - name: order_id
         data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: order_id
-                to: ref('dim_orders')
         description: "Foreign key reference to the orders table."
 
       - name: creation_date_id
@@ -486,69 +339,47 @@ models:
 
       - name: page_url
         data_type: varchar
-        tests:
-          - not_null
         description: "URL website where the event took place."
 
       - name: event_type
         data_type: varchar
-        tests:
-          - not_null
         description: "{{ doc('event_type') }}"
 
-  - name: fct_order_header
-    description: "Data and metrics about registered orders."
+      - name: batched_at_utc
+        data_type: timestamp
+        description: "Date and time in UTC that the event row data was loaded (inserted or updated)."
+
+  - name: fct_orders
+    description: "Data and metrics about registered orders and each line of products."
     columns:
-      - name: order_header_id
+      - name: order_product_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Primary key, a unique ID value for each row. Each row represents a separate order (order header)."
+        description: "Primary key, a unique ID value for each row. Each row represents a separate order product."
 
       - name: order_id
         data_type: varchar
-        tests:
-          - not_null
-          - unique
-          - relationships:
-                field: order_id
-                to: ref('dim_orders')
         description: "Foreign key reference to the orders table."
+
+      - name: product_id
+        data_type: varchar
+        description: "Foreign key reference to the products table."
+
+      - name: customer_id
+        data_type: varchar
+        description: "Foreign key reference to the customers table."
+
+      - name: address_id
+        data_type: varchar
+        description: "Foreign key reference to the addresses table."
 
       - name: promotion_id
         data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: promotion_id
-                to: ref('dim_promotions')
         description: "Primary key, a unique ID value for each row. Each row represents a separate promotion."
 
       - name: tracking_id
         data_type: varchar
-        tests:
-          - not_null
         description: "Foreign key reference to an unknown trackings table."
-        
-      - name: shipping_service_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: shipping_service_id
-                to: ref('dim_shipping_services')
-        description: "Foreign key reference to the shipping services table."
-
-      - name: order_status_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: order_status_id
-                to: ref('dim_order_status')
-        description: "Foreign key reference to the order status table."
-
+      
       - name: creation_date_id
         data_type: varchar
         description: "Foreign key reference to the dates table."
@@ -572,6 +403,14 @@ models:
       - name: delivery_time
         data_type: time
         description: "Time that the order was delivered."
+        
+      - name: number_of_units_of_product_sold
+        data_type: number
+        description: "Number of units of product sold related to the product identifier."
+    
+      - name: shipping_service_name
+        data_type: varchar
+        description: "Shipping service name related to the order identifier."
 
       - name: shipping_service_cost_in_usd
         data_type: number
@@ -580,58 +419,10 @@ models:
           - positive_values
         description: "Shipping service cost in USD related to the order identifier."
 
-      - name: promotion_discount_in_usd
-        data_type: number
-        tests:
-          - not_null
-          - positive_values
-        description: "Promotion discount in USD related to promotion identifier."
-
-      - name: order_cost_in_usd
-        data_type: number
-        tests:
-          - not_null
-          - positive_values
-        description: "Order cost in USD related to the order identifier."
-
-      - name: order_total_cost_in_usd
-        data_type: number
-        tests:
-          - not_null
-          - positive_values
-        description: "Order total cost (order cost + shipping service cost - promotion discount) in USD related to the order identifier."
-
-  - name: fct_order_line
-    description: "Data and metrics about each registered product that have been sold in each registered order."
-    columns:
-      - name: order_product_id
+      - name: order_status
         data_type: varchar
-        tests:
-          - not_null
-          - unique
-        description: "Primary key, a unique ID value for each row. Each row represents a separate order product (order line)."
+        description: "Order status related to the order identifier."
 
-      - name: order_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: order_id
-                to: ref('dim_orders')
-        description: "Foreign key reference to the orders table."
-
-      - name: product_id
-        data_type: varchar
-        tests:
-          - not_null
-          - relationships:
-                field: product_id
-                to: ref('dim_products')
-        description: "Foreign key reference to the products table."
-
-      - name: number_of_units_of_product_sold
-        data_type: number
-        tests:
-          - not_null
-          - positive_values
-        description: "Number of units of product sold related to the product identifier."
+      - name: batched_at_utc
+        data_type: timestamp
+        description: "Date and time in UTC that the order row data was loaded (inserted or updated)."

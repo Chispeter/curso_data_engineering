@@ -5,7 +5,7 @@
 WITH total_number_of_orders_by_customer AS (
      SELECT customer_id,
             count(distinct order_id) AS total_number_of_orders_by_customer
-     FROM {{ ref('dim_orders') }}
+     FROM {{ ref('fct_orders') }}
      GROUP BY customer_id
 ),
 

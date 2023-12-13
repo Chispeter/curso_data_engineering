@@ -220,8 +220,12 @@ models:
               to: ref('stg_sql_server_dbo__promotions')
         description: Foreign key reference to the promotions table.
       - name: tracking_id
+        tests:
+          - not_null
         description: Foreign key reference to an unknown trackings table.
       - name: shipping_service_name
+        tests:
+          - not_null
         description: Shipping service name related to the order identifier.
       - name: shipping_service_cost_in_usd
         tests:
@@ -243,6 +247,8 @@ models:
               quote: true
         description: "{{ doc('order_status') }}"
       - name: created_at_utc
+        tests:
+          - not_null
         description: Date and time in UTC that the order was created.
       - name: estimated_delivery_at_utc
         description: Date and time in UTC that the order was estimated to be delivered.
@@ -274,10 +280,12 @@ models:
         description: Product name related to product identifier.
       - name: price_in_usd
         tests:
+          - not_null
           - positive_values
         description: Product price in USD related to product identifier.
       - name: number_of_units_in_inventory
         tests:
+          - not_null
           - positive_values
         description: Number of units of a product in inventory related to product identifier.
       - name: was_this_row_deleted
@@ -311,6 +319,7 @@ models:
         description: Promotion discount in USD related to promotion identifier.
       - name: status
         tests:
+          - not_null
           - accepted_values:
               values: ['active', 'inactive']
               quote: true

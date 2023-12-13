@@ -10,6 +10,7 @@ WITH base_sql_server_dbo__orders AS (
     {% if is_incremental() %}
         WHERE _fivetran_synced > (SELECT max(batched_at_utc) FROM {{ this }})
     {% endif %}
+
 ),
 
 base_sql_server_dbo__promos AS (

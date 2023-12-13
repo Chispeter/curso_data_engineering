@@ -1,6 +1,6 @@
-WITH stg_products AS (
+WITH snapshot_products AS (
     SELECT *
-    FROM {{ ref('stg_sql_server_dbo__products') }}
+    FROM {{ ref('snapshot_products') }}
 ),
 
 dim_products AS (
@@ -8,7 +8,8 @@ dim_products AS (
         product_id,
         name,
         price_in_usd,
-        number_of_units_in_inventory
+        number_of_units_in_inventory,
+        dbt_valid_to AS valid_to_utc
     FROM stg_products
 )
 

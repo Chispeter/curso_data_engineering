@@ -1,6 +1,6 @@
-WITH stg_promotions AS (
+WITH snapshot_promotions AS (
     SELECT *
-    FROM {{ ref('stg_sql_server_dbo__promotions') }}
+    FROM {{ ref('snapshot_promotions') }}
 ),
 
 dim_promotions AS (
@@ -8,8 +8,9 @@ dim_promotions AS (
         promotion_id,
         name,
         discount_in_usd,
-        status
-    FROM stg_promotions
+        status,
+        dbt_valid_to AS valid_to_utc
+    FROM snapshot_promotions
 )
 
 SELECT * FROM dim_promotions

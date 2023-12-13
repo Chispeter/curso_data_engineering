@@ -4,25 +4,15 @@
     )
 }}
 
-WITH fct_order_header AS (
+WITH fct_orders AS (
     SELECT
         order_id,
+        customer_id,
         creation_date_id,
         creation_time,
         order_cost_in_usd,
         batched_at_utc
-    FROM {{ ref('fct_order_header') }}
-    {% if is_incremental() %}
-        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
-    {% endif %}
-),
-
-dim_orders AS (
-    SELECT
-        order_id,
-        customer_id,
-        batched_at_utc
-    FROM {{ ref('dim_orders') }}
+    FROM {{ ref('fct_orders') }}
     {% if is_incremental() %}
         WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
     {% endif %}
@@ -39,22 +29,21 @@ customer_orders__grouped AS (
     SELECT
         o.customer_id,
         -- order dates
-        cast(min(timestamp_from_parts(d.date_day, o_h.creation_time)) as date)      AS oldest_order_date,
-        cast(max(timestamp_from_parts(d.date_day, o_h.creation_time)) as date)      AS most_recent_order_date,
+        cast(min(timestamp_from_parts(d.date_day, o.creation_time)) as date)      AS oldest_order_date,
+        cast(max(timestamp_from_parts(d.date_day, o.creation_time)) as date)      AS most_recent_order_date,
         -- order cost aggregations
-        cast(min(o_h.order_cost_in_usd) as number(38,2))                            AS cheapest_order_cost_in_usd,
-        cast(max(o_h.order_cost_in_usd) as number(38,2))                            AS most_expensive_order_cost_in_usd,
-        cast(avg(o_h.order_cost_in_usd) as number(38,2))                            AS average_order_cost_in_usd,
-        cast(sum(o_h.order_cost_in_usd) as number(38,2))                            AS total_amount_spent_in_usd,
+        cast(min(o.order_cost_in_usd) as number(38,2))                            AS cheapest_order_cost_in_usd,
+        cast(max(o.order_cost_in_usd) as number(38,2))                            AS most_expensive_order_cost_in_usd,
+        cast(avg(o.order_cost_in_usd) as number(38,2))                            AS average_order_cost_in_usd,
+        cast(sum(o.order_cost_in_usd) as number(38,2))                            AS total_amount_spent_in_usd,
         -- total number of orders
         cast(count(o.customer_id) as number(38,2))                                  AS total_number_of_orders,
         -- customer_value = average_order_cost_in_usd * total_number_of_orders
-        cast((avg(o_h.order_cost_in_usd) * count(o.customer_id)) as number(38,2))   AS customer_value_in_usd,
-        o_h.batched_at_utc                                                          AS batched_at_utc
-    FROM fct_order_header AS o_h
-    LEFT JOIN dim_orders AS o ON o_h.order_id = o.order_id
-    LEFT JOIN dim_dates AS d ON o_h.creation_date_id = d.date_id
-    GROUP BY o.customer_id, o_h.batched_at_utc
+        cast((avg(o.order_cost_in_usd) * count(o.customer_id)) as number(38,2))   AS customer_value_in_usd,
+        o.batched_at_utc                                                          AS batched_at_utc
+    FROM fct_orders AS o
+    LEFT JOIN dim_dates AS d ON o.creation_date_id = d.date_id
+    GROUP BY o.customer_id, o.batched_at_utc
 ),
 
 dim_customers AS (
