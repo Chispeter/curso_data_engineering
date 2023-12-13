@@ -43,6 +43,7 @@ models:
     staging:
       +materialized: view
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
+      +schema: staging
       google_sheets:
         +schema: google_sheets
       sql_server_dbo:
@@ -53,10 +54,14 @@ models:
       +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
       aggregates:
         +schema: aggregates
-      intermediates:
-        +schema: intermediates
       core:
         +schema: core
+        intermediates:
+          +schema: intermediates
+      logistics:
+        +schema: logistics
+      marketing:
+        +schema: marketing
       
 
 seeds:

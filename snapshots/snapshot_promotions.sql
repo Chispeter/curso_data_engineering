@@ -4,7 +4,7 @@
     config(
       unique_key='promotion_id',
       strategy='check',
-      check_cols=['name', 'discount_in_percentage', 'status']
+      check_cols=['name', 'discount_in_usd', 'status']
     )
 }}
 

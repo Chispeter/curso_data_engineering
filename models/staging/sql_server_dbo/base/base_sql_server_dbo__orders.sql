@@ -1,6 +1,9 @@
 WITH src_sql_server_dbo__orders AS (
     SELECT * 
     FROM {{ source('sql_server_dbo', 'orders') }}
+    {% if is_incremental() %}
+    WHERE _fivetran_synced > (SELECT max(_fivetran_synced) FROM {{ this }})
+    {% endif %}
     UNION ALL
     SELECT
         {{ dbt_utils.generate_surrogate_key(['null']) }},
@@ -19,9 +22,6 @@ WITH src_sql_server_dbo__orders AS (
         null,
         min(_fivetran_synced)
     FROM {{ source('sql_server_dbo', 'orders') }}
-    {% if is_incremental() %}
-    WHERE _fivetran_synced > (SELECT max(_fivetran_synced) FROM {{ this }})
-    {% endif %}
 ),
 
 base_sql_server_dbo__orders AS (
@@ -45,3 +45,6 @@ base_sql_server_dbo__orders AS (
 )
 
 SELECT * FROM base_sql_server_dbo__orders
+    
+    
+    
