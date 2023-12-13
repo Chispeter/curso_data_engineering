@@ -349,7 +349,7 @@ models:
         data_type: timestamp
         description: "Date and time in UTC that the event row data was loaded (inserted or updated)."
 
-  - name: fct_orders
+  - name: fct_order_products
     description: "Data and metrics about registered orders and each line of products."
     columns:
       - name: order_product_id

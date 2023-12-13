@@ -68,7 +68,7 @@ stg_order_products AS (
     {% endif %}
 ),
 
-fct_orders AS (
+fct_order_products AS (
     SELECT
         o_p.order_product_id,
         o_p.order_id,
@@ -92,4 +92,4 @@ fct_orders AS (
     LEFT JOIN int_orders_dates__joined AS o ON o_p.order_id = o.order_id
 )
 
-SELECT * FROM fct_orders
+SELECT * FROM fct_order_products
