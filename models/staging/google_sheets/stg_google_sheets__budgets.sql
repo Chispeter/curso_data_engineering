@@ -1,15 +1,6 @@
-{{ config(
-    materialized='incremental',
-    unique_key='budget_id'
-) 
-}}
-
 WITH src_google_sheets__budgets AS (
     SELECT * 
     FROM {{ source('google_sheets', 'budget') }}
-    {% if is_incremental() %}
-        WHERE _fivetran_synced > (SELECT max(batched_at_utc) FROM {{ this }})
-    {% endif %}
 ),
 
 stg_google_sheets__budgets AS (

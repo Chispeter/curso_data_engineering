@@ -1,3 +1,9 @@
+{{
+    config(
+        materialized='incremental'
+    )
+}}
+
 WITH stg_events AS (
     SELECT
         event_id,
@@ -8,8 +14,12 @@ WITH stg_events AS (
         cast(created_at_utc as date) AS creation_date,
         cast(created_at_utc as time) AS creation_time,
         page_url,
-        event_type
+        event_type,
+        batched_at_utc
     FROM {{ ref('stg_sql_server_dbo__events') }}
+    {% if is_incremental() %}
+        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 stg_dates AS (
@@ -29,7 +39,8 @@ int_events_dates__joined AS (
         d.date_id               AS creation_date_id,
         e.creation_time         AS creation_time,
         e.page_url              AS page_url,
-        e.event_type            AS event_type
+        e.event_type            AS event_type,
+        e.batched_at_utc        AS batched_at_utc
     FROM stg_events AS e
     LEFT JOIN stg_dates AS d ON e.creation_date = d.date_day
 )

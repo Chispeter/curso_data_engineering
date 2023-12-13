@@ -1,9 +1,11 @@
 {% set start_date_value = "2000-01-01" %} -- 1) company year foundation or 2) create macro that calculates the minimum date in all the source tables
 {% set end_date_value = "2050-12-31" %}
 
-{{ config(
-    materialized='table'
-) }}
+{{
+    config(
+        materialized='table'
+    )
+}}
 
 WITH src_dates AS (
     {{ dbt_date.get_date_dimension(start_date = start_date_value, end_date = end_date_value) }}

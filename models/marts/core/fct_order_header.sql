@@ -1,6 +1,15 @@
+{{
+    config(
+        materialized='incremental'
+    )
+}}
+
 WITH int_orders_dates__joined AS (
     SELECT *
     FROM {{ ref('int_orders_dates__joined') }}
+    {% if is_incremental() %}
+        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 stg_promotions AS (
@@ -38,7 +47,8 @@ fct_order_header AS (
         p.discount_in_usd                                           AS promotion_discount_in_usd,
         o_d.order_cost_in_usd                                       AS order_cost_in_usd,
         -- order_total_cost_in_usd = order_cost_in_usd + shipping_service_cost_in_usd - promotion_discount_in_usd
-        o_d.order_total_cost_in_usd                                 AS order_total_cost_in_usd
+        o_d.order_total_cost_in_usd                                 AS order_total_cost_in_usd,
+        o_d.batched_at_utc                                          AS batched_at_utc
     FROM int_orders_dates__joined AS o_d
     LEFT JOIN stg_promotions AS p ON o_d.promotion_id = p.promotion_id
     LEFT JOIN int_shipping_service_orders AS ss_o ON o_d.shipping_service_name = ss_o.shipping_service_name

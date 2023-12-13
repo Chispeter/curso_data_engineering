@@ -1,6 +1,15 @@
+{{
+    config(
+        materialized='incremental'
+    )
+}}
+
 WITH base_sql_server_dbo__orders AS (
     SELECT *
     FROM {{ ref('base_sql_server_dbo__orders') }}
+    {% if is_incremental() %}
+        WHERE _fivetran_synced > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 base_sql_server_dbo__promos AS (

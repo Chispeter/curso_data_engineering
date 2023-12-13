@@ -1,17 +1,31 @@
+{{
+    config(
+        materialized='incremental'
+    )
+}}
+
 WITH fct_order_header AS (
     SELECT
         order_id,
         creation_date_id,
         creation_time,
-        order_cost_in_usd
+        order_cost_in_usd,
+        batched_at_utc
     FROM {{ ref('fct_order_header') }}
+    {% if is_incremental() %}
+        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 dim_orders AS (
     SELECT
         order_id,
-        customer_id
+        customer_id,
+        batched_at_utc
     FROM {{ ref('dim_orders') }}
+    {% if is_incremental() %}
+        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 dim_dates AS (
@@ -35,7 +49,8 @@ customer_orders__grouped AS (
         -- total number of orders
         cast(count(o.customer_id) as number(38,2))                                  AS total_number_of_orders,
         -- customer_value = average_order_cost_in_usd * total_number_of_orders
-        cast((avg(o_h.order_cost_in_usd) * count(o.customer_id)) as number(38,2))   AS customer_value_in_usd
+        cast((avg(o_h.order_cost_in_usd) * count(o.customer_id)) as number(38,2))   AS customer_value_in_usd,
+        o_h.batched_at_utc                                                          AS batched_at_utc
     FROM fct_order_header AS o_h
     LEFT JOIN dim_orders AS o ON o_h.order_id = o.order_id
     LEFT JOIN dim_dates AS d ON o_h.creation_date_id = d.date_id
@@ -78,7 +93,8 @@ customer_orders__joined AS (
         -- total number of orders should be equal to the sum of all the above
         coalesce (c_o.total_number_of_orders, 0)            AS total_number_of_orders,
         -- customer_value = average_order_cost_in_usd * total_number_of_orders
-        coalesce(c_o.customer_value_in_usd, 0)              AS customer_value_in_usd
+        coalesce(c_o.customer_value_in_usd, 0)              AS customer_value_in_usd,
+        c_o.batched_at_utc                                  AS batched_at_utc
     FROM dim_customers AS c
     LEFT JOIN dim_addresses AS a ON c.address_id = a.address_id
     LEFT JOIN customer_orders__grouped AS c_o ON c.customer_id = c_o.customer_id

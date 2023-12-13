@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='incremental'
+        unique_key='order_id'
+    )
+}}
+
 WITH stg_orders AS (
     SELECT
         order_id,
@@ -15,8 +22,12 @@ WITH stg_orders AS (
         shipping_service_cost_in_usd,
         order_cost_in_usd,
         order_total_cost_in_usd,
-        order_status
+        order_status,
+        batched_at_utc
     FROM {{ ref('stg_sql_server_dbo__orders') }}
+    {% if is_incremental() %}
+        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 stg_dates AS (
@@ -43,7 +54,8 @@ int_orders_dates__joined AS (
         o.shipping_service_cost_in_usd      AS shipping_service_cost_in_usd,
         o.order_cost_in_usd                 AS order_cost_in_usd,
         o.order_total_cost_in_usd           AS order_total_cost_in_usd,
-        o.order_status                      AS order_status
+        o.order_status                      AS order_status,
+        o.batched_at_utc                    AS batched_at_utc
     FROM stg_orders AS o
     LEFT JOIN stg_dates AS d1 ON o.creation_date = d1.date_day
     LEFT JOIN stg_dates AS d2 ON o.estimated_delivery_date = d2.date_day

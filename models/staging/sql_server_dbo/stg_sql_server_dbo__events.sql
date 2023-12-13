@@ -1,6 +1,7 @@
 {{
     config(
-        materialized='incremental'
+        materialized='incremental',
+        unique_key='event_id'
     )
 }}
 
@@ -8,7 +9,7 @@ WITH src_sql_server_dbo__events AS (
     SELECT *
     FROM {{ source('sql_server_dbo', 'events') }}
     {% if is_incremental() %}
-    WHERE _fivetran_synced > (SELECT max(batched_at_utc) FROM {{ this }})
+        WHERE _fivetran_synced > (SELECT max(batched_at_utc) FROM {{ this }})
     {% endif %}
 ),
 
