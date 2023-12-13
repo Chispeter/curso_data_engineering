@@ -11,6 +11,5 @@
 
 SELECT *
 FROM {{ ref('stg_sql_server_dbo__products') }}
-WHERE batched_at_utc = (SELECT max(batched_at_utc) FROM {{ ref('stg_sql_server_dbo__products') }})
 
 {% endsnapshot %}
