@@ -6,6 +6,7 @@
 
 WITH fct_order_products AS (
     SELECT
+        order_id,
         product_id,
         customer_id,
         promotion_id,
@@ -42,6 +43,7 @@ dim_dates AS (
 
 metrics_by_order AS (
     SELECT
+        o_p.order_id,
         o_p.customer_id,
         o_p.promotion_id,
         sum(o_p.number_of_units_of_product_sold * prod.price_in_usd)     AS order_cost_in_usd,
@@ -53,7 +55,7 @@ metrics_by_order AS (
     LEFT JOIN dim_promotions AS prom ON o_p.promotion_id = prom.promotion_id
     LEFT JOIN dim_products AS prod ON o_p.product_id = prod.product_id
     LEFT JOIN dim_dates AS d ON o_p.creation_date_id = d.date_id
-    GROUP BY 1, 2, 4, 5, 6, 7
+    GROUP BY 1, 2, 3, 5, 6, 7, 8
 ),
 
 customer_orders__grouped AS (
@@ -70,9 +72,9 @@ customer_orders__grouped AS (
         cast(sum(order_shipping_service_cost_in_usd) as number(38,2))           AS shipping_service_total_amount_spent_in_usd,
         cast(sum(order_promotion_discount_in_usd) as number(38,2))              AS promotion_total_amount_saving_in_usd,
         -- total number of orders
-        cast(count(customer_id) as number(38,2))                                AS total_number_of_orders,
+        cast(count(order_id) as number(38,2))                                   AS total_number_of_orders,
         -- customer_value = average_order_cost_in_usd * total_number_of_orders
-        cast((avg(order_cost_in_usd) * count(customer_id)) as number(38,2))     AS customer_value_in_usd,
+        cast((avg(order_cost_in_usd) * count(order_id)) as number(38,2))     AS customer_value_in_usd,
         batched_at_utc                                                          AS batched_at_utc
     FROM metrics_by_order
     GROUP BY customer_id, batched_at_utc
