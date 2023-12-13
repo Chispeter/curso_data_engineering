@@ -1,11 +1,21 @@
+{{
+    config(
+        materialized='incremental'
+    )
+}}
+
 WITH fct_events AS (
     SELECT
         session_id,
         customer_id,
         creation_date_id,
         creation_time,
-        event_type
+        event_type,
+        batched_at_utc
     FROM {{ ref('fct_events') }}
+    {% if is_incremental() %}
+        WHERE batched_at_utc > (SELECT max(batched_at_utc) FROM {{ this }})
+    {% endif %}
 ),
 
 dim_dates AS (
@@ -31,7 +41,8 @@ cou_product_team AS (
             count(case when e.event_type = 'page_view' then 1 end) AS page_view,
             count(case when e.event_type = 'add_to_cart' then 1 end) AS add_to_cart,
             count(case when e.event_type = 'checkout' then 1 end) AS checkout,
-            count(case when e.event_type = 'package_shipped' then 1 end) AS package_shipped
+            count(case when e.event_type = 'package_shipped' then 1 end) AS package_shipped,
+            e.batched_at_utc                                             AS batched_at_utc
     FROM fct_events AS e
     LEFT JOIN dim_customers AS c ON e.customer_id = c.customer_id
     LEFT JOIN dim_dates AS d ON e.creation_date_id = d.date_id
