@@ -20,18 +20,18 @@ WITH fct_order_products AS (
     {% endif %}
 ),
 
-dim_promotions AS (
-    SELECT
-        promotion_id,
-        discount_in_usd
-    FROM {{ ref('dim_promotions') }}
-),
-
 dim_products AS (
     SELECT
         product_id,
         price_in_usd
     FROM {{ ref('dim_products') }}
+),
+
+dim_promotions AS (
+    SELECT
+        promotion_id,
+        discount_in_usd
+    FROM {{ ref('dim_promotions') }}
 ),
 
 dim_dates AS (
@@ -120,10 +120,10 @@ customer_orders__joined AS (
         coalesce (c_o.total_number_of_orders, 0)            AS total_number_of_orders,
         -- customer_value = average_order_cost_in_usd * total_number_of_orders
         coalesce(c_o.customer_value_in_usd, 0)              AS customer_value_in_usd,
-        c_o.batched_at_utc                                  AS batched_at_utc
+        c_o.batched_at_utc
     FROM dim_customers AS c
     LEFT JOIN dim_addresses AS a ON c.address_id = a.address_id
-    LEFT JOIN customer_orders__grouped AS c_o ON c.customer_id = c.customer_id
+    LEFT JOIN customer_orders__grouped AS c_o ON c.customer_id = c_o.customer_id
 )
 
 SELECT * FROM customer_orders__joined
