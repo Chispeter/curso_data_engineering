@@ -56,8 +56,6 @@ models:
         +schema: aggregates
       core:
         +schema: core
-        intermediates:
-          +schema: intermediates
       logistics:
         +schema: logistics
       marketing:
