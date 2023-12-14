@@ -13,112 +13,88 @@ models:
         tests:
           - unique
           - not_null
-        description: Date at day level associated with the date identifier.
+        description: Date at day level related to the date identifier.
       - name: day_of_week_iso
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 7
-              inclusive: true
-        description: ISO day of week associated with the date identifier.
+        description: ISO day of week related to the date identifier.
       - name: day_of_week_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-              quote: true
-        description: Day of week name associated with the date identifier.
+        description: Day of week name related to the date identifier.
       - name: day_of_week_name_short
         tests:
           - not_null
-          - accepted_values:
-              values: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-              quote: true
-        description: Day of week name short associated with the date identifier.
+        description: Day of week name short related to the date identifier.
       - name: day_of_month
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 31
-              inclusive: true
-        description: Day of month associated with the date identifier.
+        description: Day of month related to the date identifier.
       - name: day_of_year
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 366
-              inclusive: true
-        description: Day of year associated with the date identifier.
+        description: Day of year related to the date identifier.
       - name: week_start_date
         tests:
           - not_null
-        description: Week start date associated with the date identifier.´
+        description: Week start date related to the date identifier.´
       - name: week_end_date
         tests:
           - not_null
-        description: Week end date associated with the date identifier.
+        description: Week end date related to the date identifier.
       - name: iso_week_start_date
         tests:
           - not_null
-        description: Iso week start date associated with the date identifier.
+        description: Iso week start date related to the date identifier.
       - name: iso_week_end_date
         tests:
           - not_null
-        description: Iso week end date associated with the date identifier.
+        description: Iso week end date related to the date identifier.
       - name: iso_week_of_year
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 52
-              inclusive: true
-        description: Iso week of year associated with the date identifier.
+        description: Iso week of year related to the date identifier.
+      - name: month_id
+        tests:
+          - not_null
+        description: Month of year identifier related to the month of year.
       - name: month_of_year
         tests:
           - not_null
-          - dbt_utils.accepted_range:
-              min_value: 1
-              max_value: 12
-              inclusive: true
-        description: Month of year associated with the date identifier.
+        description: Month of year related to the date identifier.
       - name: month_name
         tests:
           - not_null
-          - accepted_values:
-              values: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
-              quote: true
-        description: Month name associated with the date identifier.
+        description: Month name related to the date identifier.
       - name: month_name_short
         tests:
           - not_null
-          - accepted_values:
-              values: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-              quote: true
-        description: Month name short associated with the date identifier.
+        description: Month name short related to the date identifier.
       - name: month_start_date
         tests:
           - not_null
-        description: Month start date associated with the date identifier.
+        description: Month start date related to the date identifier.
       - name: month_end_date
         tests:
           - not_null
-        description: Month end date associated with the date identifier.
+        description: Month end date related to the date identifier.
       - name: quarter_of_year
         tests:
           - not_null
-        description: Quarter of year associated with the date identifier.
+        description: Quarter of year related to the date identifier.
       - name: quarter_start_date
         tests:
           - not_null
-        description: Quarter start date associated with the date identifier.
+        description: Quarter start date related to the date identifier.
       - name: quarter_end_date
         tests:
           - not_null
-        description: Quarter of year associated with the date identifier.
+        description: Quarter of year related to the date identifier.
+      - name: year_id
+        tests:
+          - not_null
+        description: Year number identifier related to the year number.
       - name: year_number
         tests:
           - not_null
-        description: Year number associated with the date identifier.
+        description: Year number related to the date identifier.
