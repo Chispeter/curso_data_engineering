@@ -59,8 +59,7 @@ models:
       logistics:
         +schema: logistics
       marketing:
-        +schema: marketing
-      
+        +schema: marketing 
 
 seeds:
   +schema: seeds
