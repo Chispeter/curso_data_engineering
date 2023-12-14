@@ -1,4 +1,4 @@
-WITH stg_dates AS (
+WITH distinct_years AS (
     SELECT
         year_id,
         year_number
@@ -10,7 +10,7 @@ dim_years AS (
     SELECT
         year_id,
         year_number
-    FROM stg_dates
+    FROM distinct_years
 )
 
 SELECT * FROM dim_years
